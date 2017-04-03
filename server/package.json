@@ -1,0 +1,12 @@
+{
+  "author": "EDA397G1",
+  "name": "The Planning game server",
+  "description": "Server for the planning game app",
+  "version": "0.0.0",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "mongoose": "^4.9.3",
+    "socket.io": "^1.7.3"
+  }
+}
