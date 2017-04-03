@@ -1,8 +1,31 @@
 var assert = require("assert");
-describe("Array", function () {
-  describe("#indexOf()", function () {
+
+
+describe("Array", function (cb) {
+  var threeArray;
+
+  before('ArrayInitiation',function() {
+    // runs before all tests in this block
+    threeArray = [1,2,3];
+  });
+
+  after(function() {
+    // runs after all tests in this block
+  });
+
+  beforeEach(function() {
+    // runs before each test in this block
+  });
+
+  afterEach(function() {
+    // runs after each test in this block
+  });
+
+  describe("#indexOf()", function (cb) {
+    console.log("index: ", cb);
     it("Should return -1 when the value is not present", function () {
-      assert.equal(-1, [1,2,3].indexOf(4));
+
+      assert.equal(-1, threeArray.indexOf(4));
     })
   })
 })
