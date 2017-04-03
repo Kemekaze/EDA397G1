@@ -68,11 +68,10 @@ Efforts:{
 
 
 
-server.listen(80);
-
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+server.listen(80, function(){
+  console.log("Server up, port 80");
 });
+
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
