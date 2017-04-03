@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+
+/**
+ * Created by Jesper Kjellqvist 03/04/17
+ */
 public class MainMenuActivity extends AppCompatActivity
 {
     String[] array = {"henriknumes game", "fredrik1337s game", "Kemekazes game", "gustavbiles game",
