@@ -1,4 +1,21 @@
 var assert = require("assert");
+var indexjs = require("../index.js");
+
+
+describe("MongoDB", function () {
+  const mongoose = require("mongoose");
+  before("Connect to database", function () {
+    mongoose.
+  })
+})
+
+
+
+
+
+
+
+
 
 
 describe("Array", function () {
@@ -24,6 +41,6 @@ describe("Array", function () {
   describe("#indexOf()", function () {
     it("Should return -1 when the value is not present", function () {
       assert.equal(-1, threeArray.indexOf(4));
-    })
+    });
   })
 })

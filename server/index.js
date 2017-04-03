@@ -1,11 +1,23 @@
-var app = require('express')();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var lib = require("./lib");
-var SERVER_PORT = 9000;
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const lib = require("./lib");
+const config = require("./config/database");
+const mongoose = require("mongoose");
+
+
+mongoose.connect(config.database);
+mongoose.connection.on('connected', function () {
+  console.log("Connected to database ", config.database);
+})
+
+mongoose.connection.on('error', function (err) {
+  console.log("Database error: ", err);
+})
+
+const SERVER_PORT = 9000;
 console.log(lib);
 var clients = {
-
 
 };
 
@@ -54,7 +66,6 @@ Efforts:{
 
 */
 
-var db =
 
 server.listen(9000, function(){
   console.log("Server up, port 9000");
