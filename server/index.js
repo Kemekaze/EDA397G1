@@ -1,8 +1,9 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
-
+var lib = require("./lib");
+var SERVER_PORT = 9000;
+console.log(lib);
 var clients = {
 
 
@@ -68,8 +69,8 @@ Efforts:{
 
 
 
-server.listen(80, function(){
-  console.log("Server up, port 80");
+server.listen(9000, function(){
+  console.log("Server up, port 9000");
 });
 
 
