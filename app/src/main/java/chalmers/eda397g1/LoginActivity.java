@@ -382,7 +382,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         /**
-         * On successful login, go to the activity screen (EARLY STAGE MOCK-UP)
+         * On successful login, go to the activity screen (EARLY STAGE PLACEHOLDER)
          */
         void successLogin(){
             startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
