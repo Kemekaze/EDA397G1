@@ -1,6 +1,6 @@
 {
   "author": "EDA397G1",
-  "name": "The Planning game server",
+  "name": "ThePlanningGameServer",
   "description": "Server for the planning game app",
   "version": "0.0.0",
   "main": "index.js",
