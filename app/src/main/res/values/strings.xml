@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EDA397G1</string>
+    <string name="title_activity_lobby">LobbyActivity</string>
 </resources>
