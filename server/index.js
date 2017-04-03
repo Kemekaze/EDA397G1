@@ -48,26 +48,13 @@ Client:{
   }
 }
 
-Settings:{
-  client_id: client_id,
-  client_secret: secret
-  redirect_uri: url,
-  scope: scope[]
-  state: state (random string)
-}
-
 Efforts:{
   values:[] effort_value[]
 }
 
+*/
 
-
-
-
-
-}*/
-
-
+var db =
 
 server.listen(9000, function(){
   console.log("Server up, port 9000");
