@@ -1,5 +1,4 @@
 <resources>
-<<<<<<< HEAD
     <string name="app_name">The Planning Game</string>
     <string name="title_activity_login">Sign in to GitHub</string>
 
@@ -16,8 +15,5 @@
         completions."
     </string>
     <string name="title_activity_main_menu">Join or Host a Planning Game</string>
-=======
-    <string name="app_name">EDA397G1</string>
     <string name="title_activity_lobby">LobbyActivity</string>
->>>>>>> chooseRepo
 </resources>
