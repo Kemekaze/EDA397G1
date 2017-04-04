@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // User Schema
 const ClientSchema = mongoose.Schema({
   phone_id: {
-    type: String
+    type: String,
     required: true,
     unique: true
   },

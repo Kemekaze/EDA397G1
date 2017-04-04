@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 // User Schema
-const EffortSchema = mongoose.Schema(
+const EffortSchema = mongoose.Schema({
   values:{
     type: [Number],
-    required: true;
+    required: true
   }
 });
 
