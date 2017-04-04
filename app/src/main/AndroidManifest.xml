@@ -17,7 +17,9 @@
         <activity android:name=".MainActivity">
         </activity>
 
-        <activity android:name=".ChooseRepoProjectActivity">
+        <activity
+            android:name=".ChooseRepoProjectActivity"
+            android:label="@string/title_activity_choose_project">
         </activity>
 
         <activity
@@ -34,8 +36,7 @@
 
         <activity
             android:name=".LobbyActivity"
-            android:label="@string/title_activity_lobby"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_lobby">
         </activity>
 
         <activity android:name=".VoteActivity">

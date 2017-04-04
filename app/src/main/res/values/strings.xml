@@ -15,5 +15,6 @@
         completions."
     </string>
     <string name="title_activity_main_menu">Join or Host a Planning Game</string>
-    <string name="title_activity_lobby">LobbyActivity</string>
+    <string name="title_activity_lobby">Lobby</string>
+    <string name="title_activity_choose_project">Choose repository and project</string>
 </resources>
