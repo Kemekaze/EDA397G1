@@ -10,14 +10,24 @@ var Handler = module.exports = function(io,config) {
     _this.on(socket);
   });
 };
+//client connected
 Handler.prototype.clientConnected = function(socket){
   console.log('[Socket] connected: '+socket.id);
   this.clients.push(socket);
 }
+//client disconnected
+Handler.prototype.clientDisconnected = function(socket){
+  socket.on('disconnect', function (data) {
+    console.log("[Socket] disconnected: ", socket.id);
+    if(socket.auth)
+	    clients.splice(clients.indexOf(socket),1);
+  });
+}
+//validate token
 Handler.prototype.validateToken = function(token){
     return (this.token == token);
 }
-
+//socket events for client authentication
 Handler.prototype.authenticate = function(socket) {
   socket.on('authentication', function (data) {
     if(this.validateToken(data.token)){
@@ -34,13 +44,10 @@ Handler.prototype.authenticate = function(socket) {
           socket.disconnect('unauthorized');
       }
   }, this.timeout);
-  socket.on('disconnect', function (data) {
-    console.log("[Socket] disconnected: ", socket.id);
-    if(socket.auth)
-	    clients.splice(clients.indexOf(socket),1);
-  });
+  this.clientDisconnected(socket);
+
 };
-//list with socket.on
+//socket events for git authentication
 Handler.prototype.gitAuthentication = function(socket){
   socket.on('authenticate.github', function (data) {
 
@@ -49,6 +56,7 @@ Handler.prototype.gitAuthentication = function(socket){
 
   });
 }
+//any other socket event
 Handler.prototype.on = function(socket){
   socket.on('next.round', function (data) {
 
