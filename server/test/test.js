@@ -1,5 +1,5 @@
 var assert = require("assert");
-var indexjs = require("../index.js");
+var indexjs = require("../lib");
 
 
 describe("MongoDB", function () {
