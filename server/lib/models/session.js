@@ -19,7 +19,7 @@ const SessionSchema = mongoose.Schema({
           type: Number,
           required: true
         },
-        name: String:
+        name: String,
         business_value: Number,
         effort_value: Number,
         votes: [{
@@ -33,6 +33,7 @@ const SessionSchema = mongoose.Schema({
             }]
         }]
     }]
+  }
 });
 
 // Export the model
