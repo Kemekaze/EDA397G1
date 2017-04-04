@@ -73,7 +73,12 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class));
+                // Start lobby as host
+                Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("isHost", true);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
     }

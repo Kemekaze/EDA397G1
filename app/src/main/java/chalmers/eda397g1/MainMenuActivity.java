@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -30,8 +31,21 @@ public class MainMenuActivity extends AppCompatActivity
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, array);
 
-        ListView listView = (ListView) findViewById(R.id.availabe_games);
-        listView.setAdapter(adapter);
+        ListView gameListView = (ListView) findViewById(R.id.availabe_games);
+        gameListView.setAdapter(adapter);
+
+        gameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // Start a lobby as a client
+                Intent intent = new Intent(MainMenuActivity.this, LobbyActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("isHost", false);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()

@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class LobbyActivity extends AppCompatActivity {
     ListView playerListView;
+    Button startGameButton;
+    Boolean isHost;
 
     // Dummy Players
     String[] players = new String[] {"Player 1",
@@ -31,7 +34,18 @@ public class LobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        // Find out if this is a lobby started by a host
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            isHost = b.getBoolean("isHost");
+
         playerListView = (ListView) findViewById(R.id.playerList);
+        startGameButton = (Button) findViewById(R.id.startGameButton);
+
+        // If this is not a host make the startGame button invisible
+        if( !isHost )
+            startGameButton.setVisibility(View.GONE);
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, players);
