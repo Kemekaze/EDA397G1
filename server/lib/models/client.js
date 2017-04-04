@@ -20,7 +20,7 @@ const ClientSchema = mongoose.Schema({
       type: String
     },
     expires_in: {
-      type: Date
+      type: String // Should be Date?
     }
   }
 });

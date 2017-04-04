@@ -21,6 +21,17 @@ var clients = {
 
 };
 
+var Client = mongoose.model('Client');
+
+let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
+client.save(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('--> client registered');
+  }
+});
+
 /*
 business_value: fibonocci sequence
 effort_value:  predefined range
