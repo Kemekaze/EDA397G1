@@ -8,8 +8,8 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
@@ -23,15 +23,16 @@
         android:layout_marginEnd="8dp">
 
         <ListView
-            android:id= "@+id/playerList"
+            android:id="@+id/playerList"
             android:layout_width="match_parent"
-            android:layout_height="510dp" />
+            android:layout_height="436dp"
+            />
 
         <Button
             android:id="@+id/startGameButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".1"
+            android:layout_weight="0.06"
             android:layout_gravity="center_horizontal"
             android:text="Start Game"
             android:textSize="32dp"
