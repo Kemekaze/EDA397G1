@@ -1,11 +1,55 @@
 var assert = require("assert");
-var indexjs = require("../lib");
 
 
 describe("MongoDB", function () {
+  var indexjs = require("../lib");
+  var config = require("../config/database");
   const mongoose = require("mongoose");
   before("Connect to database", function () {
-    mongoose.
+    console.log("*** MongoDB tests ***");
+  })
+
+  beforeEach("Clean DB", function (done) {
+    // clear db
+
+    function clearDB() {
+      for (var i in mongoose.connection.collections) {
+        mongoose.connection.collections[i].remove(function () {})
+      }
+      return done();
+    }
+
+    if (mongoose.connection.readyState === 0) {
+      mongoose.connect(config.database, function (err) {
+        if (err) {
+          throw err;
+        }
+      });
+    }
+    return clearDB();
+  })
+
+  afterEach(function (done) {
+    mongoose.disconnect();
+    return done();
+  })
+
+  it("Sometest", function () {
+    var Client = mongoose.model('Client');
+
+    let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
+    client.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('--> client registered');
+      }
+    });
+    var query = Client.findOne({ 'phone_id': 'PHONEIDSTRING' });
+    //query.select('phone_id github_id')
+    assert.equal(query.phone_id, "PHONEIDSTRING");
+    assert.equal(query.github_id, "GITHUBIDSTRING")
+
   })
 })
 
