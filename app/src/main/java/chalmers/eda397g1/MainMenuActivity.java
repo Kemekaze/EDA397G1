@@ -17,7 +17,7 @@ import android.widget.ListView;
  */
 public class MainMenuActivity extends AppCompatActivity
 {
-    String[] array = {"henriknumes game", "fredrik1337s game", "Kemekazes game", "gustavbiles game",
+    String[] array = {"henriknumes game", "fredrik1337s game", "Kemekazes game", "gustavblides game",
             "barajagmartins game", "lightwalks game", "ziweiSWs game", "blablas game", "blablas game"
             , "blablas game", "blablas game"};
 
