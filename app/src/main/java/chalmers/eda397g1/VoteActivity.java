@@ -33,7 +33,7 @@ public class VoteActivity extends AppCompatActivity
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(VoteActivity.this, VoteResultsActivity.class));
+                startActivity(new Intent(VoteActivity.this, DisplayRoundResultsActivity.class));
             }
         });
     }

@@ -29,13 +29,11 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
 
         <activity
@@ -45,8 +43,14 @@
 
         <activity android:name=".VoteActivity"
                   android:label="@string/title_activity_vote">
-
         </activity>
+
+        <activity
+            android:name=".DisplayRoundResultsActivity"
+            android:label="Round Results">
+        </activity>
+
+
 
         <activity
             android:name=".MainMenuActivity"

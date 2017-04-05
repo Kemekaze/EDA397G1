@@ -73,7 +73,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start lobby as host
+                // Start lobby as hostgit
                 Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("isHost", true);
