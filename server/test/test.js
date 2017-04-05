@@ -34,18 +34,18 @@ describe("MongoDB", function () {
     return clearDB();
   })
 
-  after(function (done) {
+  afterEach(function (done) {
     mongoose.disconnect();
     return done();
   })
 
-  it("getClientByPhoneId: populated", function () {
+  it("getClientByPhoneId: populated", function (done) {
     let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
     client.save();
     Client.getClientByPhoneId(client.phone_id, function (err, userFromDB) {
-      assert.doesNotThrow(err);
       assert.equal(userFromDB.phone_id, "PHONEIDSTRING");
-      assert.equal(userFromDB.github_id, "GITHUBIDSTRING")
+      assert.equal(userFromDB.github_id, "GITHUBIDSTRING");
+      done();
     });
   })
 
@@ -59,14 +59,26 @@ describe("MongoDB", function () {
     });
   })
 
-  it("addClient: normal", function () {
-
-    Client.addClient(new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'}));
-
-    Client.getClientByPhoneId('PHONEIDSTRING', function (err, userFromDB) {
-      assert.equal(userFromDB.phone_id, "PHONEIDSTRING");
-      assert.equal(userFromDB.github_id, "GITHUBIDSTRING")
-    });
-  })
+  // it("addClient: normal", function (done) {
+  //   let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
+  //   Client.addClient(client);
+  //
+  //   Client.getClientByPhoneId(client.phone_id, function (err, userFromDB) {
+  //     assert.equal(userFromDB.phone_id, "PHONEIDSTRING");
+  //     assert.equal(userFromDB.github_id, "GITHUBIDSTRING");
+  //     done();
+  //   });
+  // })
+  //
+  // it("removeClient: normal", function (done) {
+  //   Client.addClient(new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'}));
+  //   Client.removeClient();
+  //
+  //   Client.getClientByPhoneId('PHONEIDSTRING', function (err, userFromDB) {
+  //     console.log(err);
+  //     done();
+  //   })
+  //
+  // })
 
 })
