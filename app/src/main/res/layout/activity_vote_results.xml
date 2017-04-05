@@ -8,14 +8,17 @@
     android:paddingRight="16dp"
     android:orientation="vertical" >
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VOTING RESULTS" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="VOTING RESULTS"
+        android:textSize="20sp"/>
 
     <ListView
         android:id="@+id/voteResultsList"
         android:layout_width="match_parent"
-        android:layout_height="436dp"
-        />
+        android:layout_height="398dp"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

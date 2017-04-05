@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
+    private Button voteButton;
     ListView issueListView;
     String[] voteIssues = new String[]{
             "value 10 issue1",
@@ -27,12 +29,23 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vote_on_lowest_effort);
 
 
+        // Temporary vote button
+        voteButton = (Button) findViewById(R.id.button1);
+
         //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
 
         ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
         issueListView.setAdapter(voteListAdapter);
+
+        // Initialize voteButton
+        voteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+            }
+        });
 
 
         issueListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){

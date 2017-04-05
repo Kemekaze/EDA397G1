@@ -17,6 +17,10 @@
         <activity android:name=".MainActivity">
         </activity>
 
+        <activity android:name=".VoteResultsActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
             android:name=".ChooseRepoProjectActivity"
             android:label="@string/title_activity_choose_project">
