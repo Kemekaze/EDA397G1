@@ -5,9 +5,8 @@ var indexjs = require("../index.js");
 describe("MongoDB", function () {
   const mongoose = require("mongoose");
   before("Connect to database", function () {
-    mongoose.
-  })
-})
+  });
+});
 
 
 
