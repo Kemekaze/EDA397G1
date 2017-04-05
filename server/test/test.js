@@ -20,6 +20,8 @@ describe("MongoDB", function () {
     }
 
     if (mongoose.connection.readyState === 0) {
+      // Mongoose promise library is depracated. Replacing it.
+      mongoose.Promise = global.Promise;
       mongoose.connect(config.database, function (err) {
         if (err) {
           throw err;
@@ -34,23 +36,29 @@ describe("MongoDB", function () {
     return done();
   })
 
-  it("Sometest", function () {
+  it("getClientByPhoneId: Populated", function () {
     var Client = mongoose.model('Client');
-
     let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
-    client.save(function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('--> client registered');
-      }
-    });
-    var query = Client.findOne({ 'phone_id': 'PHONEIDSTRING' });
-    //query.select('phone_id github_id')
-    assert.equal(query.phone_id, "PHONEIDSTRING");
-    assert.equal(query.github_id, "GITHUBIDSTRING")
+    client.save();
 
+    var user = Client.getClientById(phone_id);
+    assert.equal(user.phone_id, "PHONEIDSTRING");
+    assert.equal(user.github_id, "GITHUBIDSTRING")
+
+    // Client.findOne(function (err, res) {
+    //     console.log(res.phone_id);
+    //
+    // });
+
+    // var query = Client.findOne({ 'phone_id': 'PHONEIDSTRING' });
+    //query.select('phone_id github_id')
   })
+
+  it.skip("getClientByPhoneId: empty phone_id", function () {})
+
+  it.skip("getClientByPhoneId: populated", function () {})
+
+  it.skip("addClient: empty phone_id", function () {})
 })
 
 
