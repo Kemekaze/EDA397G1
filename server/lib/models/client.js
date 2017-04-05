@@ -27,3 +27,20 @@ const ClientSchema = mongoose.Schema({
 
 // Export the model
 const Client = module.exports = mongoose.model('Client', ClientSchema);
+
+module.exports.addClient = function(newClient, callback){
+  newClient.save(callback);
+}
+
+module.exports.removeClient = function(id, callback){
+  Client.findByIdAndRemove(id, callback);
+}
+
+module.exports.getClientById = function(id, callback){
+  User.findById(id, callback);
+}
+
+module.exports.getClientByPhoneId = function(phoneId, callback){
+  const query = {phone_id: phoneId};
+  Client.findOne(query, callback);
+}
