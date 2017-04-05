@@ -28,7 +28,7 @@ public class MainMenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, array);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_mainmenulist, array);
 
         ListView listView = (ListView) findViewById(R.id.availabe_games);
         listView.setAdapter(adapter);

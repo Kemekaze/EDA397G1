@@ -38,7 +38,9 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".VoteActivity">
+        <activity android:name=".VoteActivity"
+                  android:label="@string/title_activity_vote">
+
         </activity>
 
         <activity

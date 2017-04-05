@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">The Planning Game</string>
     <string name="title_activity_login">Sign in to GitHub</string>
+    <string name="title_activity_vote">Vote on Effort</string>
 
-    <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in</string>
