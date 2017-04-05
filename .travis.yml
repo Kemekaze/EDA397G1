@@ -15,5 +15,9 @@ before_install:
   - chmod -R ugo+x travis-script/
   - source ./travis-script/install-dep.sh
 services: mongodb
+branches:
+  only:
+  - master
+  - develop
 script:
   - ./travis-script/server.sh
