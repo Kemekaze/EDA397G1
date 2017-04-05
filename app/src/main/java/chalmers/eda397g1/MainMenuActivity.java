@@ -17,7 +17,7 @@ import android.widget.ListView;
  */
 public class MainMenuActivity extends AppCompatActivity
 {
-    String[] array = {"henriknumes game", "fredrik1337s game", "Kemekazes game", "gustavbiles game",
+    String[] array = {"henriknumes game", "fredrik1337s game", "Kemekazes game", "gustavblides game",
             "barajagmartins game", "lightwalks game", "ziweiSWs game", "blablas game", "blablas game"
             , "blablas game", "blablas game"};
 
@@ -29,7 +29,7 @@ public class MainMenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, array);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_mainmenulist, array);
 
         ListView gameListView = (ListView) findViewById(R.id.availabe_games);
         gameListView.setAdapter(adapter);
