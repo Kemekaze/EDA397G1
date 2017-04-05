@@ -5,6 +5,8 @@ describe("MongoDB", function () {
   var indexjs = require("../lib");
   var config = require("../config/database");
   const mongoose = require("mongoose");
+  var Client = mongoose.model('Client');
+
   before("Connect to database", function () {
     console.log("*** MongoDB tests ***");
   })
@@ -36,29 +38,54 @@ describe("MongoDB", function () {
     return done();
   })
 
-  it("getClientByPhoneId: Populated", function () {
-    var Client = mongoose.model('Client');
+  it("getClientByPhoneId: populated", function () {
     let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
     client.save();
-
-    var user = Client.getClientById(phone_id);
-    assert.equal(user.phone_id, "PHONEIDSTRING");
-    assert.equal(user.github_id, "GITHUBIDSTRING")
-
-    // Client.findOne(function (err, res) {
-    //     console.log(res.phone_id);
-    //
-    // });
-
-    // var query = Client.findOne({ 'phone_id': 'PHONEIDSTRING' });
-    //query.select('phone_id github_id')
+    Client.getClientByPhoneId(client.phone_id, function (err, userFromDB) {
+      assert.doesNotThrow(err);
+      assert.equal(userFromDB.phone_id, "PHONEIDSTRING");
+      assert.equal(userFromDB.github_id, "GITHUBIDSTRING")
+    });
   })
 
-  it.skip("getClientByPhoneId: empty phone_id", function () {})
+  it("getClientByPhoneId: empty phone_id", function () {
+    let client = new Client({ phone_id: '', github_id: 'GITHUBIDSTRING'});
+    client.save();
+    Client.getClientByPhoneId(client.phone_id, function (err, userFromDB) {
+      assert.throws(err);
+    })
+  })
 
-  it.skip("getClientByPhoneId: populated", function () {})
+  it("getClientByPhoneId: empty github_id", function () {
+    let client = new Client({ phone_id: 'PHONEIDSTRING', github_id: ''});
+    client.save();
+    Client.getClientByPhoneId(client.phone_id, function (err, userFromDB) {
+      assert.throws(err);
+    })
+  })
 
-  it.skip("addClient: empty phone_id", function () {})
+  it("getClientByPhoneId: no client added", function () {
+    // no client added
+    Client.getClientByPhoneId(null, function (err, userFromDB) {
+      assert.throws(err);
+    })
+  })
+
+  it("addClient: normal", function () {
+    var user = Client.addClient(
+      { phone_id: 'PHONEIDSTRING', github_id: 'GITHUBIDSTRING'});
+
+    var user = Client.getClientByPhoneId(client.phone_id);
+    assert.equal(user.phone_id, "PHONEIDSTRING");
+    assert.equal(user.github_id, "GITHUBIDSTRING")
+  })
+
+  it("addClient: empty phone_id", function () {})
+
+  it("addClient: empty github_id", function () {})
+
+
+
 })
 
 
