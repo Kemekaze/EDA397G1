@@ -20,5 +20,6 @@
             android:layout_weight="0.06"
             android:layout_gravity="center_horizontal"
             android:text="Start Game"
-            android:textSize="32dp" />
+            android:textSize="32dp"
+            />
 </LinearLayout>
