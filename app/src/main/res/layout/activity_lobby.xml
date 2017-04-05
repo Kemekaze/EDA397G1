@@ -10,16 +10,16 @@
         <ListView
             android:id="@+id/playerList"
             android:layout_width="match_parent"
-            android:layout_height="436dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
             />
 
-        <Button
-            android:id="@+id/startGameButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.06"
-            android:layout_gravity="center_horizontal"
-            android:text="Start Game"
-            android:textSize="32dp"
-            />
+    <Button
+        android:id="@+id/startGameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Start Game"
+        android:textSize="32dp"
+        />
 </LinearLayout>
