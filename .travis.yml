@@ -14,6 +14,6 @@ android:
 before_install:
   - chmod -R ugo+x travis-script/
   - source ./travis-script/install-dep.sh
-
+services: mongodb
 script:
   - ./travis-script/server.sh
