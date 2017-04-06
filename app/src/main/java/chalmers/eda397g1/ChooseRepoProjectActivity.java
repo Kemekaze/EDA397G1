@@ -3,6 +3,7 @@ package chalmers.eda397g1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,9 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-/**
- * Created by fredrikhansson on 03/04/17.
- */
+import java.util.HashMap;
+
+import de.greenrobot.event.EventBus;
+
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
 
@@ -23,7 +25,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     //Hardcoded repo names and project names. Must find way to get them from git
     private static final String[]repos = {"Repo 1", "Repo 2", "Repo 3"};
     private static final String[]projects = {"Project 1", "Project 2", "Project 3"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,5 +82,35 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        requestRepositoryData();
+    }
+
+    /**
+     * Initiates request for the repository and project data of this user.
+     * Results will later be provided by call-back method receiveRepositoryData(...)
+     */
+    private void requestRepositoryData() {
+        // TODO: Request data from server
+    }
+
+    /**
+     * Callback method to receive repository and project data from the server
+     * @param data The keys are the repository names, the values the projects
+     */
+    public void onReceiveRepositoryData(HashMap<String,String> data){
+        // TODO: receive and display data
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }
