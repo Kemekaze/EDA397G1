@@ -8,11 +8,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class LobbyActivity extends AppCompatActivity {
     ListView playerListView;
     Button startGameButton;
     Boolean isHost;
+    TextView projectHeadline;
+    String chosenProject;
 
     // Dummy Players
     String[] players = new String[] {"Player 1",
@@ -35,13 +38,17 @@ public class LobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        String chosenProject = getIntent().getStringExtra("chosenProject");
+
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
         if(b != null)
             isHost = b.getBoolean("isHost");
-
+        projectHeadline = (TextView) findViewById(R.id.projectHeadline);
         playerListView = (ListView) findViewById(R.id.playerList);
         startGameButton = (Button) findViewById(R.id.startGameButton);
+
+        projectHeadline.setText(chosenProject);
 
         // If this is not a host make the startGame button invisible
         if( !isHost )
@@ -65,8 +72,10 @@ public class LobbyActivity extends AppCompatActivity {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String chosenProject = getIntent().getStringExtra("chosenProject");
 
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+                intent.putExtra("chosenProject", chosenProject);
                 startActivity(intent);
             }
         });

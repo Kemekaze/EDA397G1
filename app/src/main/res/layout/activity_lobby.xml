@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.LobbyActivity">
 
+    <TextView
+        android:id="@+id/projectHeadline"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Dafault Project"
+        android:textSize="32sp"/>
         <ListView
             android:id="@+id/playerList"
             android:layout_width="match_parent"

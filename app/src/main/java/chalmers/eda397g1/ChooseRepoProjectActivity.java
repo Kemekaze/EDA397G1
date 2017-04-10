@@ -63,6 +63,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.v("item", (String) adapterView.getItemAtPosition(i));
+                //String chosenProject = (String) adapterView.getItemAtPosition(i);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -77,6 +78,10 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("isHost", true);
+
+                String chosenProject = projectSpinner.getSelectedItem().toString();
+                intent.putExtra("chosenProject", chosenProject);
+
                 intent.putExtras(b);
                 startActivity(intent);
             }
