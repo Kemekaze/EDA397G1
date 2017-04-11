@@ -10,12 +10,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import io.socket.emitter.Emitter;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
+    private static final String TAG = "eda397 - VoteOnLowestEffortActivity";
+
 
     private Button voteButton;
     ListView issueListView;
@@ -30,6 +35,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_vote_on_lowest_effort);
 
         EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS));
@@ -66,6 +72,18 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onResponseEvent(String[] event){
+        Log.i(TAG, "onResponseEvent");
+        voteIssues = event;
     }
 
 }

@@ -167,7 +167,7 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventRequestBacklogItems");
-
+            EventBus.getDefault().post(new String[]{"item1", "item2", "item3"});
         }
     };
 
@@ -178,6 +178,7 @@ public class SocketService extends Service {
     public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
         //socket.emit(event.getEventName(),event.getData());
+        EventBus.getDefault().post(new String[]{"item1", "item2", "item3"}); // TODO: remove when server is up
     }
 
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
