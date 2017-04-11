@@ -16,11 +16,13 @@
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity">
         </activity>
 
-        <activity android:name=".VoteResultsActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".VoteResultsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
@@ -33,7 +35,6 @@
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -43,8 +44,9 @@
             android:label="@string/title_activity_lobby">
         </activity>
 
-        <activity android:name=".VoteActivity"
-                  android:label="@string/title_activity_vote">
+        <activity
+            android:name=".VoteActivity"
+            android:label="@string/title_activity_vote">
         </activity>
 
         <activity
@@ -59,9 +61,9 @@
             android:label="@string/title_activity_main_menu"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".VoteOnLowestEffortActivity"
+        <activity
+            android:name=".VoteOnLowestEffortActivity"
             android:label="Vote On Items">
-
         </activity>
 
         <service android:name=".Services.SocketService" />
