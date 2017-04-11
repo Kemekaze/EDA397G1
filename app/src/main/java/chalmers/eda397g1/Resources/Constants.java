@@ -20,7 +20,7 @@ public class Constants {
         public static final String AUTHENTICATE_GITHUB = "authenticate.github";
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
 
-
+        public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
 
     }
 }

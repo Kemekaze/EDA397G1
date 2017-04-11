@@ -82,6 +82,8 @@ public class SocketService extends Service {
         //Thirdparty athentication
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthorizedGithub);
         socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthorizedBitbucket);
+
+        socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
     }
 
     @Override
@@ -160,14 +162,24 @@ public class SocketService extends Service {
         }
     };
 
+    private Emitter.Listener eventRequestBacklogItems = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventRequestBacklogItems");
+
+        }
+    };
+
 
 
     //Eventbus events
     @Subscribe
-    public void emit(RequestEvent event){
-        Log.i(TAG, "emit(RequestEvent)");
+    public void onRequestEvent(RequestEvent event){
+        Log.i(TAG, "emit(RequestEvent): " + event.getEventName());
         socket.emit(event.getEventName(),event.getData());
     }
+    
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override
         public boolean verify(String hostname, SSLSession session) {

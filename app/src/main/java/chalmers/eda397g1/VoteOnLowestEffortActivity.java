@@ -11,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Resources.Constants;
+import de.greenrobot.event.EventBus;
+
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
     private Button voteButton;
@@ -27,6 +31,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_on_lowest_effort);
+
+        EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS));
 
 
         // Temporary vote button
