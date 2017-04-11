@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">The Planning Game</string>
+    <string name="app_name">XPlan</string>
     <string name="title_activity_login">Sign in to GitHub</string>
     <string name="title_activity_vote">Vote on Effort</string>
 
