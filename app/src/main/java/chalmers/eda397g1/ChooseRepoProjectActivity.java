@@ -79,7 +79,9 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putBoolean("isHost", true);
 
+                String chosenRepo = repoSpinner.getSelectedItem().toString();
                 String chosenProject = projectSpinner.getSelectedItem().toString();
+                intent.putExtra("chosenRepo", chosenRepo);
                 intent.putExtra("chosenProject", chosenProject);
 
                 intent.putExtras(b);

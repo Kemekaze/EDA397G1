@@ -8,6 +8,12 @@
     tools:context="chalmers.eda397g1.LobbyActivity">
 
     <TextView
+        android:id="@+id/repoHeadline"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Dafault Repo"
+        android:textSize="32sp"/>
+    <TextView
         android:id="@+id/projectHeadline"
         android:layout_width="match_parent"
         android:layout_height="50dp"

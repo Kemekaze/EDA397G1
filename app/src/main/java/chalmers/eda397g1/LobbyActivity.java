@@ -15,7 +15,7 @@ public class LobbyActivity extends AppCompatActivity {
     Button startGameButton;
     Boolean isHost;
     TextView projectHeadline;
-    String chosenProject;
+    TextView repoHeadline;
 
     // Dummy Players
     String[] players = new String[] {"Player 1",
@@ -38,16 +38,20 @@ public class LobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        String chosenRepo = getIntent().getStringExtra("chosenRepo");
         String chosenProject = getIntent().getStringExtra("chosenProject");
 
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
         if(b != null)
             isHost = b.getBoolean("isHost");
+        repoHeadline = (TextView) findViewById(R.id.repoHeadline);
         projectHeadline = (TextView) findViewById(R.id.projectHeadline);
         playerListView = (ListView) findViewById(R.id.playerList);
         startGameButton = (Button) findViewById(R.id.startGameButton);
 
+        // Add headline to show the chosenRepo and chosenProject
+        repoHeadline.setText(chosenRepo);
         projectHeadline.setText(chosenProject);
 
         // If this is not a host make the startGame button invisible
