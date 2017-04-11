@@ -55,6 +55,7 @@ public class SocketService extends Service {
     }
     private void setupIO() throws Exception{
         String host = "https://" + Constants.SERVER_IP+":"+Constants.SERVER_PORT;
+        Log.i(TAG, "Connecting to: " + host);
         SSLContext sc = SSLContext.getInstance("TLS");
         sc.init(null, trustAllCerts, new SecureRandom());
         IO.setDefaultSSLContext(sc);
@@ -166,7 +167,7 @@ public class SocketService extends Service {
     @Subscribe
     public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
-        //socket.emit(event.getEventName(),event.getData());
+        socket.emit(event.getEventName(),event.getData());
     }
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override
