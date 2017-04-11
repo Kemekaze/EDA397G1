@@ -176,8 +176,8 @@ public class SocketService extends Service {
     //Eventbus events
     @Subscribe
     public void onRequestEvent(RequestEvent event){
-        Log.i(TAG, "emit(RequestEvent): " + event.getEventName());
-        socket.emit(event.getEventName(),event.getData());
+        Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
+        //socket.emit(event.getEventName(),event.getData());
     }
 
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
