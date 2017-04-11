@@ -55,6 +55,7 @@ public class SocketService extends Service {
     }
     private void setupIO() throws Exception{
         String host = "https://" + Constants.SERVER_IP+":"+Constants.SERVER_PORT;
+        Log.i(TAG, "Connecting to: " + host);
         SSLContext sc = SSLContext.getInstance("TLS");
         sc.init(null, trustAllCerts, new SecureRandom());
         IO.setDefaultSSLContext(sc);
