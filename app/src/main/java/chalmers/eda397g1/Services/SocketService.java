@@ -179,7 +179,7 @@ public class SocketService extends Service {
         Log.i(TAG, "emit(RequestEvent): " + event.getEventName());
         socket.emit(event.getEventName(),event.getData());
     }
-    
+
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override
         public boolean verify(String hostname, SSLSession session) {
