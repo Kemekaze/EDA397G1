@@ -23,6 +23,8 @@ public class Constants {
         public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
         public static final String REQUEST_PROJECTS = "request.projects";
 
+        public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";
+
 
     }
 }

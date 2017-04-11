@@ -1,26 +1,13 @@
 package chalmers.eda397g1.Events;
 
 /**
- * Created by elias on 2017-04-05.
+ * Created by Martin on 2017-04-11.
  */
 
-public class RequestEvent {
-
-    private String eventName;
-    private Object data = null;
-    public RequestEvent(String eventName, Object data) {
-        this.eventName = eventName;
-        this.data = data;
-    }
-    public RequestEvent(String eventName) {
-        this.eventName = eventName;
+public class RequestEvent extends ParentEvent {
+    public RequestEvent(String eventName, String data) {
+        super(eventName, data);
     }
 
-    public String getEventName() {
-        return eventName;
-    }
-
-    public Object getData() {
-        return data;
-    }
+    public RequestEvent(String eventName) { super(eventName); }
 }

@@ -13,13 +13,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import io.socket.emitter.Emitter;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
-    private static final String TAG = "eda397 - VoteOnLowestEffortActivity";
+    private static final String TAG = "VoteOnLow..Activity";
 
 
     private Button voteButton;
@@ -81,9 +82,9 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onResponseEvent(String[] event){
-        Log.i(TAG, "onResponseEvent");
-        voteIssues = event;
+    public void onResponseEvent(VoteOnLowestEffortEvent event){
+        Log.i(TAG, "onResponseEvent" + event.getEventName());
+        voteIssues = (String[]) event.getData();
     }
 
 }

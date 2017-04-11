@@ -16,6 +16,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -178,7 +179,9 @@ public class SocketService extends Service {
     public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
         //socket.emit(event.getEventName(),event.getData());
-        EventBus.getDefault().post(new String[]{"item1", "item2", "item3"}); // TODO: remove when server is up
+        EventBus.getDefault().post(new VoteOnLowestEffortEvent(
+                Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS,
+                new String[]{"item1", "item2", "item3"})); // TODO: remove when server is up
     }
 
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
