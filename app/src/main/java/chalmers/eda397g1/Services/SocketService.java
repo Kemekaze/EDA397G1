@@ -164,7 +164,7 @@ public class SocketService extends Service {
 
     //Eventbus events
     @Subscribe
-    public void emit(RequestEvent event){
+    public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent)");
         socket.emit(event.getEventName(),event.getData());
     }
