@@ -15,6 +15,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -162,12 +163,16 @@ public class SocketService extends Service {
     };
 
 
-
     //Eventbus events
     @Subscribe
     public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
         socket.emit(event.getEventName(), event.getData());
+
+        if(event.getEventName().equals(Constants.SocketEvents.REQUEST_PROJECTS)){
+            Log.d("","Sending dummy response to ChooserepoActivity.");
+            EventBus.getDefault().post(new ReposProjectsEvent());
+        }
     }
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override

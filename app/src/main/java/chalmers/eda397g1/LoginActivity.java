@@ -106,6 +106,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Start socket service
         startService(new Intent(this, SocketService.class));
+        // Debug
+        mEmailView.setText("test@test.com");
+        mPasswordView.setText("testtest");
     }
 
     private void populateAutoComplete()
