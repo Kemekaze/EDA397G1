@@ -33,6 +33,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Services.SocketService;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -101,6 +103,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        // Start socket service
+        startService(new Intent(this, SocketService.class));
     }
 
     private void populateAutoComplete()

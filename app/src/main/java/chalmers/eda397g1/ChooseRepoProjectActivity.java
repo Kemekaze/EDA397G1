@@ -13,6 +13,8 @@ import android.widget.Spinner;
 
 import java.util.HashMap;
 
+import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 
 
@@ -91,7 +93,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
      * Results will later be provided by call-back method receiveRepositoryData(...)
      */
     private void requestRepositoryData() {
-        // TODO: Request data from server
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.REQUEST_PROJECTS);
+        EventBus.getDefault().post(event);
     }
 
     /**
@@ -105,12 +108,12 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
     }
 }
