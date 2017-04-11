@@ -8,10 +8,11 @@
     android:paddingRight="16dp"
     >
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VOTING RESULTS" />
+        android:text="VOTING RESULTS"
+        android:textSize="40dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -21,19 +22,19 @@
         android:paddingRight="16dp"
         >
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="2" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="4" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="70"
@@ -50,19 +51,19 @@
         android:paddingRight="16dp"
         >
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="5" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="8" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="70"
@@ -79,19 +80,19 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="50" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="24" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="70"
@@ -108,19 +109,19 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="50" />
 
-        <EditText
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="240" />
 
-        <EditText
+        <TextView
 
             android:layout_width="0dp"
             android:layout_height="match_parent"
