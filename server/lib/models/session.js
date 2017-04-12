@@ -5,6 +5,7 @@ const SessionSchema = mongoose.Schema({
   leader: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Client'
+    //required: true  // TODO: should be required
   },
   clients:[{
     type: mongoose.Schema.Types.ObjectId,
