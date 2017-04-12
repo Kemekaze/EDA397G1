@@ -15,6 +15,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -25,8 +26,9 @@ import io.socket.emitter.Emitter;
 
 
 public class SocketService extends Service {
-    private static final String TAG = "eda397";
+    private static final String TAG = "eda397.SocketService";
 
+    SocketServiceCallback socketServiceCallback;
     private static Socket socket;
 
     public SocketService() {
@@ -157,6 +159,7 @@ public class SocketService extends Service {
             Log.i(TAG, "eventAuthorizedBitbucket");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
+            EventBus.getDefault().post(new LoginEvent(args));
         }
     };
 
@@ -188,6 +191,7 @@ public class SocketService extends Service {
                                        String authType) throws CertificateException {
         }
     }};
+
 
 
 }

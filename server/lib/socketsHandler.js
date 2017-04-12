@@ -1,7 +1,12 @@
 var github = require('octonode');
 var Handler = module.exports = function(io,config) {
-  this.timeout = config.timeout;
-  this.token = config.token;
+  if (config.hasOwnProperty('dev')) {
+    this.dev_credentials = config.dev;
+    this.dev = true;
+  }else {
+    this.dev = false;
+  }
+  this.token = config.socketIO.token;
   this.clients = [];
   this.sessions = [];
   this.io = io;
@@ -52,16 +57,27 @@ method.authenticate = function(socket) {
 method.gitAuthentication = function(socket){
   var _this = this;
   socket.on('authenticate.github', function (data) {
-    var client = github.client({
-      username: data.username,
-      password: data.password
+    console.log("authenticate.github");
+    if (_this.dev) {
+      //data = _this.dev_credentials;
+    }
+
+    var client = github.client(data,function(err,data,headers){
+      console.log("error: " + err);
+      console.log("data: " + data);
+      console.log("headers:" + headers);
+    });
+    client.me().info(function(err,data,headers){
+      console.log("error: " + err);
+      console.log("data: " + data);
+      console.log("headers:" + headers);
     });
     //other validation for when user/pass is wrong needed. This will not be null
     if(client != null || typeof client !== undefined){
       socket.git.github = client;
       socket.emit('authenticate.github',_this.response(200,{},{}));
     }else{
-      socket.emit('authenticate.github',_this.response(404,{},{
+      socket.emit('authenticate.github',_this.response(401,{},{
         error:'Invalid',
         message:'Invalid username/password'}));
     }

@@ -10,6 +10,14 @@ public class Constants {
     public static final String SERVER_PORT = "9000";
     public static final String SERVER_TOKEN = "42ig3Psps3oGbQ6H";
 
+    public class StatusCodes{
+
+        public static final int OK = 200;
+        public static final int UNAUTHORIZED = 401;
+        public static final int NOT_FOUND = 404;
+        public static final int SERVER_ERROR = 500;
+        public static final int NOT_IMPLEMENTED = 501;
+    }
 
     public class SocketEvents {
 
