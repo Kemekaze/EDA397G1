@@ -22,6 +22,7 @@ mongoose.connection.on('error', function (err) {
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname+'/test/index.html');
-})
+});
 server.listen(config.config.PORT, function(){
   console.log("[Server]",require('ip').address()+':'+config.config.PORT);
+});
