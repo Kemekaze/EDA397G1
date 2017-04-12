@@ -2,7 +2,13 @@ var github = require('octonode');
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
+
 module.exports = function (socket,data,callback){
+  var dev = getDev();
+  if(dev!= null){
+    data.auth.username = dev.username;
+    data.auth.password = dev.password;
+  }
   var client = github.client(data.auth);
   client.me().info(function(err,client_data,headers){
     if(err){
@@ -38,3 +44,12 @@ module.exports = function (socket,data,callback){
     }
   });
 };
+
+function getDev(){
+  var fs = require('fs');
+  var path = "../../config/dev.js";
+  if (fs.existsSync(path)) {
+      return require(path);
+  }
+  return null;
+}
