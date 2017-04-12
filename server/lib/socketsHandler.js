@@ -2,11 +2,7 @@ var mongoose = require('mongoose');
 var path = require('path');
 var Handler = module.exports = function(io,config) {
   var self = this;
-  if (config.hasOwnProperty('dev')) {
-    self.dev = true;
-  }else {
-    self.dev = false;
-  }
+  self.dev = true;
   self.token = config.socketIO.token;
   self.clients = [];
   self.io = io;
@@ -24,6 +20,7 @@ method.setup = function(){
       if(!socket.auth) return;
       self.on(socket);
     });
+    self.clientDisconnected(socket);
   });
 }
 
@@ -36,10 +33,11 @@ method.clientConnected = function(socket){
 }
 //client disconnected
 method.clientDisconnected = function(socket){
+  var self = this;
   socket.on('disconnect', function (data) {
     if(this.dev) console.log("[Socket] disconnected:", socket.id);
     if(socket.auth)
-	    clients.splice(clients.indexOf(socket),1);
+	    self.clients.splice(self.clients.indexOf(socket),1);
   });
 }
 //validate token
@@ -56,8 +54,8 @@ method.authenticate = function(socket, cb) {
     socket.auth = false;
     if(this.dev) console.log("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
-    this.clientDisconnected(socket);
   }
+
   cb();
 };
 //any other socket event
@@ -74,17 +72,11 @@ method.on = function(socket){
       }
       socket.on(name,function(content){
         if(self.dev) console.log("[Socket]",name);
-        require(path.join(dir, file))(socket, content,function(status, data, errors){
-          socket.emit(name,self.response(status, data, errors));
+        require(path.join(dir, file))(socket, content,function(payload){
+          socket.emit(name,payload);
         });
       });
     }
   });
+
 }
-method.response = function (status,payload,errors) {
-  return {
-    status:status,
-    data: payload,
-    errors: errors
-  };
-};

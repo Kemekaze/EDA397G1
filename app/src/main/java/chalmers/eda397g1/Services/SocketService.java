@@ -8,6 +8,7 @@ import android.util.Log;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.PriorityQueue;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -31,8 +32,13 @@ public class SocketService extends Service {
     SocketServiceCallback socketServiceCallback;
     private static Socket socket;
 
+    private static boolean isConnected = false;
+
+    private PriorityQueue<RequestEvent> queue;
+
     public SocketService() {
         Log.i(TAG, "SocketService");
+        queue = new PriorityQueue<RequestEvent>();
     }
 
     @Override
@@ -82,8 +88,9 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.AUTHORIZED, eventAuthorized);
         socket.on(Constants.SocketEvents.UNAUTHORIZED, eventUnauthorized);
         //Thirdparty athentication
-        socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthorizedGithub);
-        socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthorizedBitbucket);
+        socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
+        socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
+        socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthenticatedBitbucket);
     }
 
     @Override
@@ -102,9 +109,8 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventConnected");
-            //testing only
-            //JSONObject query = Queries.add(Queries.query("username", ""),"password", "");
-            //socket.emit(Constants.SocketEvents.AUTHENTICATE_GITHUB, query);
+            emitQueue();
+            isConnected = true;
         }
     };
 
@@ -113,6 +119,8 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventReconnected");
+            emitQueue();
+            isConnected = true;
         }
     };
 
@@ -120,6 +128,7 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventDisconnected");
+            isConnected = false;
             socket.emit(Socket.EVENT_RECONNECT_ATTEMPT);
         }
     };
@@ -145,19 +154,30 @@ public class SocketService extends Service {
             Log.i(TAG, "eventUnauthorized");
         }
     };
-    private Emitter.Listener eventAuthorizedGithub = new Emitter.Listener() {
+
+    private Emitter.Listener eventAuthenticatedAutoLogin = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventAuthorizedGithub");
+            Log.i(TAG, "eventAuthenticatedAutoLogin");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
             EventBus.getDefault().post(new LoginEvent(args));
         }
     };
-    private Emitter.Listener eventAuthorizedBitbucket = new Emitter.Listener() {
+
+    private Emitter.Listener eventAuthenticatedGithub = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventAuthorizedBitbucket");
+            Log.i(TAG, "eventAuthenticatedGithub");
+            for(int i = 0; i<args.length; i++)
+                Log.i(TAG,  args[i].toString());
+            EventBus.getDefault().post(new LoginEvent(args));
+        }
+    };
+    private Emitter.Listener eventAuthenticatedBitbucket = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventAuthenticatedBitbucket");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
         }
@@ -166,11 +186,23 @@ public class SocketService extends Service {
 
 
     //Eventbus events
-    @Subscribe
+    @Subscribe(sticky = true)
     public void emit(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent)");
-        socket.emit(event.getEventName(),event.getData());
+        Log.i(TAG, event.getEventName());
+        if(isConnected)
+            socket.emit(event.getEventName(),event.getData());
+        else
+            queue.add(event);
+
     }
+    private void emitQueue(){
+        while(queue.size()>0){
+            RequestEvent event = queue.poll();
+            socket.emit(event.getEventName(),event.getData());
+        }
+    }
+
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override
         public boolean verify(String hostname, SSLSession session) {

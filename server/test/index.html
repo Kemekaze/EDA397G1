@@ -58,9 +58,10 @@
     <script>
       var socket = io('https://localhost:9000', { query: "token=42ig3Psps3oGbQ6H" });
       socket.on('connect',function(data){
-        socket.emit('game.create',{info:'wefwef'});
+        socket.emit('authenticate.autologin');
       });
-      socket.on('game.create',function(data){
+      socket.on('authenticate.autologin',function(data){
+        console.log("wefwef");
         console.log(data);
       });
 

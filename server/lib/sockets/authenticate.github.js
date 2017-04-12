@@ -1,22 +1,24 @@
+var response = require('../responses');
 var github = require('octonode');
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
 
 module.exports = function (socket,data,callback){
-  var dev = getDev();
-  if(dev!= null){
-    data.auth.username = dev.username;
-    data.auth.password = dev.password;
-  }
+  // if username or password is null and no autologin
+  if(data.phone_id  == null || data.auth == null)
+    return callback(response.BAD_REQUEST('Invalid request'));
+  // if username or password is null and no autologin
+  if((data.auth.username == null || data.auth.password == null))
+    return callback(response.BAD_REQUEST('Invalid request'));
+  // if username and password length is 0 and no  auto login
+  if((0 === data.auth.username.length || 0 === data.auth.password.length ))
+    return callback(response.UNAUTHORIZED('Invalid email or password'));
+
   var client = github.client(data.auth);
   client.me().info(function(err,client_data,headers){
     if(err){
-      console.log(data)
-      callback(401,{},[{
-        error:'Invalid',
-        message:'Invalid username/password'
-      }]);
+      callback(response.UNAUTHORIZED('Invalid username or password'));
     }else{
       socket.git.auth = true;
       socket.git.github = client;
@@ -35,21 +37,12 @@ module.exports = function (socket,data,callback){
           });
         }
         c.save(function(err,new_client){
-          callback(200,{
+          callback(response.OK({
             login: client_data.login,
             avatar_url: client_data.avatar_url
-          },[]);
+          }));
         });
       });
     }
   });
 };
-
-function getDev(){
-  var fs = require('fs');
-  var path = __dirname + "/../../config/dev.js";
-  if (fs.existsSync(path)) {
-      return require(path);
-  }
-  return null;
-}

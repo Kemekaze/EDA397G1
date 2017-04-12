@@ -5,7 +5,6 @@ const server = require('https').createServer(config.credentials, app);
 const io = require('socket.io')(server);
 var socket = new lib.sockets(io,config);
 const mongoose = require("mongoose");
-const ip = require("ip");
 
 socket.setup();
 
