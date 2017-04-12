@@ -1,7 +1,7 @@
 var exports = module.exports = {};
 var response = exports.response = function (status, payload, errors) {
   if(typeof status != "number" && isNaN(status)) throw ('Status is not an Integer');
-  if(!((!!payload) && (payload.constructor === Object))) throw ('Payload is not an Object');
+  if(!((!!payload) && (payload.constructor === Object)) && !Array.isArray(payload)) throw ('Payload is not an Object');
   if(!Array.isArray(errors)) throw new Error('Errors is not an Array');
   return {
     status: status,

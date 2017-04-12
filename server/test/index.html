@@ -58,10 +58,19 @@
     <script>
       var socket = io('https://localhost:9000', { query: "token=42ig3Psps3oGbQ6H" });
       socket.on('connect',function(data){
-        socket.emit('authenticate.autologin');
+        socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
       });
       socket.on('authenticate.autologin',function(data){
-        console.log("wefwef");
+        socket.emit('user.repositories');
+      });
+      socket.on('user.repositories',function(data){
+        console.log(data);
+        socket.emit('user.repository.projects',{
+          full_name: data.data[7].full_name,
+          id: data.data[7].id
+        });
+      });
+      socket.on('user.repository.projects',function(data){
         console.log(data);
       });
 
