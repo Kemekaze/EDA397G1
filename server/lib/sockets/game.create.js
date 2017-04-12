@@ -1,5 +1,6 @@
-var conn = module.exports = function(socket) {
-  var self = this;
-  self.socket = socket;
+var Client = mongoose.model('Client');
+module.exports = function (socket,data,callback){
+
+  console.log(data);
+
 };
-var method = Handler.prototype;

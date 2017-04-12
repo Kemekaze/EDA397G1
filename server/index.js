@@ -31,7 +31,9 @@ client.save(function (err) {
     console.log('--> client registered');
   }
 });*/
-
+app.get('/', function (req, res) {
+  res.sendFile(__dirname+'/test/index.html');
+})
 server.listen(config.config.PORT, function(){
-  console.log("[Server] Up");
+  console.log("[Server]",require('ip').address()+':'+config.config.PORT);
 });
