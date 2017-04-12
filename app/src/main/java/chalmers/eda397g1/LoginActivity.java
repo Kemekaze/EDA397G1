@@ -41,6 +41,8 @@ import chalmers.eda397g1.Services.SocketService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
+import android.provider.Settings.Secure;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -240,9 +242,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             //showProgress(true);
 
+
+            String android_id = Secure.getString(getContext().getContentResolver(),Secure.ANDROID_ID);
+            JSONObject obj = Queries.query("auth",
+                                Queries.add(
+                                Queries.query("username", email),"password", password)
+                              );
+            obj = Queries.add(obj, 'phone_id', android_id)
             RequestEvent requestEvent = new RequestEvent(
                     Constants.SocketEvents.AUTHENTICATE_GITHUB,
-                    Queries.add(Queries.query("username", email),"password", password)
+                    obj,
             );
             EventBus.getDefault().post(requestEvent);
 
@@ -396,4 +405,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 }
-
