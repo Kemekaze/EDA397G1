@@ -151,6 +151,7 @@ public class SocketService extends Service {
             Log.i(TAG, "eventAuthorizedGithub");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
+            EventBus.getDefault().post(new LoginEvent(args));
         }
     };
     private Emitter.Listener eventAuthorizedBitbucket = new Emitter.Listener() {
@@ -159,7 +160,6 @@ public class SocketService extends Service {
             Log.i(TAG, "eventAuthorizedBitbucket");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
-            EventBus.getDefault().post(new LoginEvent(args));
         }
     };
 

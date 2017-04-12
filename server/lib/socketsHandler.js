@@ -75,7 +75,7 @@ method.on = function(socket){
       socket.on(name,function(content){
         if(self.dev) console.log("[Socket]",name);
         require(path.join(dir, file))(socket, content,function(status, data, errors){
-          socket.emit(name,self.reponse(status, data, errors));
+          socket.emit(name,self.response(status, data, errors));
         });
       });
     }

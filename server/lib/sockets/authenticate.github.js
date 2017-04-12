@@ -6,17 +6,18 @@ module.exports = function (socket,data,callback){
   var client = github.client(data.auth);
   client.me().info(function(err,client_data,headers){
     if(err){
-      callback(401,{},{
+      console.log(data)
+      callback(401,{},[{
         error:'Invalid',
         message:'Invalid username/password'
-      });
+      }]);
     }else{
       socket.git.auth = true;
       socket.git.github = client;
       Client.getByGithubId(client_data.id,function(err,c){
         if(c){
-          c.username: data.auth.username;
-          c.password: data.auth.password;
+          c.username = data.auth.username;
+          c.password = data.auth.password;
         }else{
           c = new Client({
             phone_id: data.phone_id,
@@ -31,7 +32,7 @@ module.exports = function (socket,data,callback){
           callback(200,{
             login: client_data.login,
             avatar_url: client_data.avatar_url
-          },{});
+          },[]);
         });
       });
     }

@@ -40,10 +40,14 @@ import chalmers.eda397g1.Resources.Queries;
 import chalmers.eda397g1.Services.SocketService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 import android.provider.Settings.Secure;
 
+import org.json.JSONObject;
+
 import static android.Manifest.permission.READ_CONTACTS;
+import static java.security.AccessController.getContext;
 
 /**
  * A login screen that offers login via email/password.
@@ -243,15 +247,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //showProgress(true);
 
 
-            String android_id = Secure.getString(getContext().getContentResolver(),Secure.ANDROID_ID);
+            String android_id = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
             JSONObject obj = Queries.query("auth",
                                 Queries.add(
                                 Queries.query("username", email),"password", password)
                               );
-            obj = Queries.add(obj, 'phone_id', android_id)
+            obj = Queries.add(obj, "phone_id", android_id);
             RequestEvent requestEvent = new RequestEvent(
                     Constants.SocketEvents.AUTHENTICATE_GITHUB,
-                    obj,
+                    obj
             );
             EventBus.getDefault().post(requestEvent);
 
@@ -259,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //mAuthTask.execute((Void) null);
         }
     }
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void loginEvent(LoginEvent event)
     {
         Log.i(TAG, "loginEvent(LoginEvent)");
