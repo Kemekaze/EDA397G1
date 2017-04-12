@@ -59,28 +59,23 @@ method.gitAuthentication = function(socket){
   socket.on('authenticate.github', function (data) {
     console.log("authenticate.github");
     if (_this.dev) {
-      //data = _this.dev_credentials;
+      data = _this.dev_credentials;
     }
+    var client = github.client(data);
 
-    var client = github.client(data,function(err,data,headers){
-      console.log("error: " + err);
-      console.log("data: " + data);
-      console.log("headers:" + headers);
-    });
     client.me().info(function(err,data,headers){
-      console.log("error: " + err);
-      console.log("data: " + data);
-      console.log("headers:" + headers);
+      if(err){
+        socket.emit('authenticate.github',_this.response(401,{},{
+          error:'Invalid',
+          message:'Invalid username/password'}));
+      }else{
+        console.log(data);
+        socket.git.auth = true;
+        socket.git.github = client;
+        socket.emit('authenticate.github',_this.response(200,{},{}));
+      }
     });
-    //other validation for when user/pass is wrong needed. This will not be null
-    if(client != null || typeof client !== undefined){
-      socket.git.github = client;
-      socket.emit('authenticate.github',_this.response(200,{},{}));
-    }else{
-      socket.emit('authenticate.github',_this.response(401,{},{
-        error:'Invalid',
-        message:'Invalid username/password'}));
-    }
+
     //need to handle 2factor authentication?
   });
   socket.on('authenticate.bitbucket', function (data) {
@@ -90,6 +85,10 @@ method.gitAuthentication = function(socket){
 //any other socket event
 method.on = function(socket){
   socket.on('next.round', function (data) {
+
+  });
+  socket.on('votes', function (data) {
+    //db calls
 
   });
 }
