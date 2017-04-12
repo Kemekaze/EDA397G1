@@ -1,8 +1,10 @@
-// handler for game.create
-module.exports = function (socket,data,callback){
-  var client = github.client(data);
+var github = require('octonode');
+var mongoose = require('mongoose');
+var Client = mongoose.model('Client');
 
-  client.me().info(function(err,data,headers){
+module.exports = function (socket,data,callback){
+  var client = github.client(data.auth);
+  client.me().info(function(err,client_data,headers){
     if(err){
       callback(401,{},{
         error:'Invalid',
@@ -11,11 +13,27 @@ module.exports = function (socket,data,callback){
     }else{
       socket.git.auth = true;
       socket.git.github = client;
-      callback(200,{
-        login: data.login,
-        avatar_url: data.avatar_url
-      },{});
+      Client.getByGithubId(client_data.id,function(err,c){
+        if(c){
+          c.username: data.auth.username;
+          c.password: data.auth.password;
+        }else{
+          c = new Client({
+            phone_id: data.phone_id,
+            github_id: client_data.id,
+            github: {
+              username: data.auth.username,
+              password: data.auth.password
+            }
+          });
+        }
+        c.save(function(err,new_client){
+          callback(200,{
+            login: client_data.login,
+            avatar_url: client_data.avatar_url
+          },{});
+        });
+      });
     }
   });
-
 };

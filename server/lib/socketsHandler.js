@@ -1,4 +1,3 @@
-var github = require('octonode');
 var mongoose = require('mongoose');
 var path = require('path');
 var Handler = module.exports = function(io,config) {
