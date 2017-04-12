@@ -48,7 +48,6 @@ module.exports = function (socket,data,callback){
 function getDev(){
   var fs = require('fs');
   var path = __dirname + "/../../config/dev.js";
-  console.log(path)
   if (fs.existsSync(path)) {
       return require(path);
   }
