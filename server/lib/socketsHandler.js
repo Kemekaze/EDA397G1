@@ -1,4 +1,5 @@
 var github = require('octonode');
+var mongoose = require('mongoose');
 var Handler = module.exports = function(io,config) {
   if (config.hasOwnProperty('dev')) {
     this.dev_credentials = config.dev;
@@ -10,6 +11,11 @@ var Handler = module.exports = function(io,config) {
   this.clients = [];
   this.sessions = [];
   this.io = io;
+
+  //db
+  this.db.Client = mongoose.model('Client');
+
+
 };
 var method = Handler.prototype;
 method.setup = function(){
@@ -72,7 +78,12 @@ method.gitAuthentication = function(socket){
         console.log(data);
         socket.git.auth = true;
         socket.git.github = client;
-        socket.emit('authenticate.github',_this.response(200,{},{}));
+
+
+        socket.emit('authenticate.github',_this.response(200,{
+          login: data.login,
+          avatar_url: data.avatar_url
+        },{}));
       }
     });
 
@@ -84,6 +95,13 @@ method.gitAuthentication = function(socket){
 }
 //any other socket event
 method.on = function(socket){
+  require("fs").readdirSync(__dirname).forEach(function(file) {
+    if(file != 'index.js'){
+      var f = file.split('.');
+      if(f[f.length-1] == 'js')
+        module.exports[f[0]] = require("./" + file);
+    }
+  });
   socket.on('next.round', function (data) {
 
   });
