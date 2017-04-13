@@ -13,14 +13,11 @@ const ClientSchema = mongoose.Schema({
     unique: true
   },
   github: {
-    access_token: {
+    username: {
       type: String
     },
-    refresh_token: {
+    password: {
       type: String
-    },
-    expires_in: {
-      type: String // Should be Date?
     }
   }
 })
@@ -43,6 +40,9 @@ module.exports.getAll = function(callback){
 module.exports.getById = function(id, callback){
   Client.findById(id, callback)
 }
+module.exports.find = function(query, callback){
+  Client.findOne(query, callback);
+}
 
 module.exports.getByPhoneId = function(phoneId, callback){
   const query = {phone_id: phoneId}
@@ -62,4 +62,5 @@ module.exports.updateByGithubId = function(githubId, update, callback){
   const query = {github_id: githubId}
   const options = {new: true}
   Client.findOneAndUpdate(query, update, options, callback)
+
 }

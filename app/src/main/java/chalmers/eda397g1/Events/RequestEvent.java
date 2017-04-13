@@ -1,14 +1,13 @@
 package chalmers.eda397g1.Events;
 
-/**
- * Created by elias on 2017-04-05.
- */
+import org.json.JSONObject;
 
-public class RequestEvent {
+
+public class RequestEvent{
 
     private String eventName;
-    private Object data = null;
-    public RequestEvent(String eventName, Object data) {
+    private JSONObject data = null;
+    public RequestEvent(String eventName, JSONObject data) {
         this.eventName = eventName;
         this.data = data;
     }
@@ -20,7 +19,8 @@ public class RequestEvent {
         return eventName;
     }
 
-    public Object getData() {
+    public JSONObject getData() {
         return data;
     }
+
 }

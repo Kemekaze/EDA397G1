@@ -1,0 +1,23 @@
+language: android
+android:
+  components:
+    - build-tools-25.0.1
+    - android-24
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - sys-img-armeabi-v7a-android-24
+before_install:
+  - chmod -R ugo+x travis-script/
+  - source ./travis-script/install-dep.sh
+services: mongodb
+branches:
+  only:
+  - master
+  - develop
+script:
+  - ./travis-script/server.sh

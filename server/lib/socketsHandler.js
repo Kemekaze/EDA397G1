@@ -1,34 +1,43 @@
-var github = require('octonode');
+var mongoose = require('mongoose');
+var path = require('path');
 var Handler = module.exports = function(io,config) {
-  this.timeout = config.timeout;
-  this.token = config.token;
-  this.clients = [];
-  this.sessions = [];
-  this.io = io;
+  var self = this;
+  self.dev = true;
+  self.token = config.socketIO.token;
+  self.clients = [];
+  self.io = io;
+  self.sockets = {
+    on:{}
+  };
+
+
 };
 var method = Handler.prototype;
 method.setup = function(){
-  var _this = this;
+  var self = this;
   this.io.on('connection', function (socket) {
-    _this.authenticate(socket);
-    _this.gitAuthentication(socket);
-    _this.on(socket);
+    self.authenticate(socket, function(){
+      if(!socket.auth) return;
+      self.on(socket);
+    });
+    self.clientDisconnected(socket);
   });
 }
 
 //client connected
 method.clientConnected = function(socket){
-  console.log('[Socket] connected:',socket.id);
+  if(this.dev) console.log('[Socket] connected:',socket.id);
   socket.git ={};
   socket.git.auth = false;
   this.clients.push(socket);
 }
 //client disconnected
 method.clientDisconnected = function(socket){
+  var self = this;
   socket.on('disconnect', function (data) {
-    console.log("[Socket] disconnected:", socket.id);
+    if(this.dev) console.log("[Socket] disconnected:", socket.id);
     if(socket.auth)
-	    clients.splice(clients.indexOf(socket),1);
+	    self.clients.splice(self.clients.indexOf(socket),1);
   });
 }
 //validate token
@@ -36,51 +45,38 @@ method.validateToken = function(token){
     return (this.token == token);
 }
 //socket events for client authentication
-method.authenticate = function(socket) {
+method.authenticate = function(socket, cb) {
   if(this.validateToken(socket.handshake.query.token)){
-    console.log("[Socket] authorized:", socket.id);
+    if(this.dev)console.log("[Socket] authorized:", socket.id);
     socket.auth = true;
     this.clientConnected(socket);
   }else{
     socket.auth = false;
-    console.log("[Socket] unauthorized:", socket.id);
+    if(this.dev) console.log("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
-    this.clientDisconnected(socket);
   }
-};
-//socket events for git authentication
-method.gitAuthentication = function(socket){
-  var _this = this;
-  socket.on('authenticate.github', function (data) {
-    var client = github.client({
-      username: data.username,
-      password: data.password
-    });
-    //other validation for when user/pass is wrong needed. This will not be null
-    if(client != null || typeof client !== undefined){
-      socket.git.github = client;
-      socket.emit('authenticate.github',_this.response(200,{},{}));
-    }else{
-      socket.emit('authenticate.github',_this.response(404,{},{
-        error:'Invalid',
-        message:'Invalid username/password'}));
-    }
-    //need to handle 2factor authentication?
-  });
-  socket.on('authenticate.bitbucket', function (data) {
 
-  });
-}
+  cb();
+};
 //any other socket event
 method.on = function(socket){
-  socket.on('next.round', function (data) {
-
+  var self = this;
+  var dir = path.join(__dirname, 'sockets');
+  require("fs").readdirSync(dir).forEach(function(file) {
+    var f = file.split('.');
+    if(f[f.length-1] == 'js'){
+      var name = "";
+      for(var i = 0 ;i < f.length-1;i++){
+        if(i != 0) name += '.';
+        name += f[i];
+      }
+      socket.on(name,function(content){
+        if(self.dev) console.log("[Socket]",name);
+        require(path.join(dir, file))(socket, content,function(payload){
+          socket.emit(name,payload);
+        });
+      });
+    }
   });
+
 }
-method.response = function (status,payload,errors) {
-  return {
-    status:status,
-    data: payload,
-    errors: errors
-  };
-};
