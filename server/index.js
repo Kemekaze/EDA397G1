@@ -1,15 +1,10 @@
 const config = require("./config");
 const lib = require("./lib");
-var gulp = require('gulp');
 const app = require('express')();
 const server = require('https').createServer(config.credentials, app);
 const io = require('socket.io')(server);
 var socket = new lib.sockets(io,config);
 const mongoose = require("mongoose");
-
-gulp.start('auto_git', function (data) {
-  console.log(data);
-})
 
 socket.setup();
 
@@ -30,3 +25,4 @@ app.get('/', function (req, res) {
 server.listen(config.config.PORT, function(){
   console.log("[Server]",require('ip').address()+':'+config.config.PORT);
 });
+*/
