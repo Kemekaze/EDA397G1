@@ -22,7 +22,8 @@ module.exports = function (socket,data,callback){
         full_name: data[r].full_name,
         private: data[r].private
       });*/
-    //gives errors. need to invesitgate further..  
+    //gives errors. need to invesitgate further..
+    console.log(data);
     callback(response.OK(err));
   });
 };

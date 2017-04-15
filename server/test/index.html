@@ -61,6 +61,7 @@
         socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
       });
       socket.on('authenticate.autologin',function(data){
+        console.log(data);
         socket.emit('user.repositories');
       });
       socket.on('user.repositories',function(data){
