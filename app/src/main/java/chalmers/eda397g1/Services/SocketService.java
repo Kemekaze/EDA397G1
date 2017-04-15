@@ -17,6 +17,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.LoginEvent;
+import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.Resources.Constants;
@@ -91,11 +92,11 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.UNAUTHORIZED, eventUnauthorized);
         //Thirdparty athentication
         socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
+        socket.on(Constants.SocketEvents.REQUEST_PROJECTS, eventRequestProjects);
 
         socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
         socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthenticatedBitbucket);
-
     }
 
     @Override
@@ -197,18 +198,38 @@ public class SocketService extends Service {
         }
     };
 
+    private Emitter.Listener eventRequestProjects = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventRequestProjects");
+            for(int i = 0; i < args.length; i++){
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new ReposProjectsEvent(args));
+        }
+    };
+/*
 
-
-    //Eventbus events
-    //TODO remove this method
     @Subscribe
     public void onRequestEvent(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
-        EventBus.getDefault().post(new VoteOnLowestEffortEvent(
-                Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS,
-                new String[]{"item1", "item2", "item3"})); // TODO: remove when server is up
         socket.emit(event.getEventName(),event.getData());
+
+
+        // Mocked server responses // TODO: remove when server is up
+
+        if(event.getEventName().equals(Constants.SocketEvents.REQUEST_PROJECTS)){
+            Log.d("","Sending dummy response to ChooserepoActivity.");
+            EventBus.getDefault().post(new ReposProjectsEvent());
+        }
+
+        if(event.getEventName().equals(Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS)) {
+            EventBus.getDefault().post(new VoteOnLowestEffortEvent(
+                    Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS,
+                    new String[]{"item1", "item2", "item3"}));
+        }
     }
+*/
 
     @Subscribe(sticky = true)
     public void emit(RequestEvent event){

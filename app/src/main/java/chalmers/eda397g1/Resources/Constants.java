@@ -6,9 +6,8 @@ package chalmers.eda397g1.Resources;
 
 public class Constants {
     //localhost only on dev
-
-    public static final String SERVER_IP = "192.168.1.2";
-    public static final String SERVER_PORT = "9000";
+    public static final String SERVER_IP = "192.168.1.77";
+    public static final String SERVER_PORT = "8443";
     public static final String SERVER_TOKEN = "42ig3Psps3oGbQ6H";
 
     public class StatusCodes{

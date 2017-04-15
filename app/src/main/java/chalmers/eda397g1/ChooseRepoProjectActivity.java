@@ -1,7 +1,9 @@
 package chalmers.eda397g1;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.EventLog;
 import android.util.Log;
@@ -11,22 +13,34 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import java.util.HashMap;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Resources.Constants;
+import chalmers.eda397g1.Resources.Queries;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
+
+    public static final String TAG = "chooserepo";
 
     private Spinner repoSpinner;
     private Spinner projectSpinner;
     private Button chooseButton;
 
-    //Hardcoded repo names and project names. Must find way to get them from git
-    private static final String[]repos = {"Repo 1", "Repo 2", "Repo 3"};
-    private static final String[]projects = {"Project 1", "Project 2", "Project 3"};
+    private HashMap<String, List<String>> repositoriesMap;
+
+    private List<String> repos = new ArrayList<>();
+    private List<String> projects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +57,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, repos);
         repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
+        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
                         android.R.layout.simple_spinner_item, projects);
         projectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
@@ -53,6 +67,11 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.v("item", (String) adapterView.getItemAtPosition(i));
+                String repoName = repos.get(i);
+                projects.clear();
+                projects.addAll(repositoriesMap.get(repoName));
+                projectAdapter.notifyDataSetChanged();
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -66,6 +85,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.v("item", (String) adapterView.getItemAtPosition(i));
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -85,7 +105,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         });
 
-        requestRepositoryData();
     }
 
     /**
@@ -99,21 +118,34 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     /**
      * Callback method to receive repository and project data from the server
-     * @param data The keys are the repository names, the values the projects
+     * @param event The keys are the repository names, the values the projects
      */
-    public void onReceiveRepositoryData(HashMap<String,String> data){
-        // TODO: receive and display data
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onReceiveRepositoryData(ReposProjectsEvent event){
+        repositoriesMap = event.getRepos();
+        repos.clear();
+        repos.addAll(repositoriesMap.keySet());
+        projects.clear();
+        ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        //EventBus.getDefault().register(this);
+        Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        //EventBus.getDefault().unregister(this);
+        Log.d(TAG,"onStop()");
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        requestRepositoryData();
     }
 }
