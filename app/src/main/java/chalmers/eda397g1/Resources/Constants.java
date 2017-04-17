@@ -1,7 +1,7 @@
 package chalmers.eda397g1.Resources;
 
 /**
- * Created by elias on 2017-04-05.
+ * Created by elias on 2017-04-05
  */
 
 public class Constants {
@@ -32,7 +32,9 @@ public class Constants {
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
 
         public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
-        public static final String REQUEST_PROJECTS = "request.projects";
+        public static final String USER_REPOSITORIES = "user.repositories";
+        public static final String USER_REPOSITORY_PROJECTS = "user.repository.projects";
+
 
         public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";
 

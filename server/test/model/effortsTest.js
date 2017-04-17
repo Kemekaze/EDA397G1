@@ -4,6 +4,7 @@ const expect = require('chai').expect
 //const config = require("../config/database")
 
 // Calling "skip" function makes the block "pending", kind of like a TODO.
+/*
 describe.skip('Efforts-model:', function() {
 
   describe('#methodNameE()', function() {
@@ -29,3 +30,4 @@ describe.skip('Efforts-model:', function() {
     })
   })
 })
+*/

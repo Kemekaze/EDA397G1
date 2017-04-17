@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 // User Schema
 const SessionSchema = mongoose.Schema({
   leader: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
-    //required: true  // TODO: should be required
+    ref: 'Client',
+    required: true
   },
   clients:[{
     type: mongoose.Schema.Types.ObjectId,
@@ -35,7 +35,19 @@ const SessionSchema = mongoose.Schema({
         }]
     }]
   }
-});
+})
 
 // Export the model
-const Session = module.exports = mongoose.model('Session', SessionSchema);
+const Session = module.exports = mongoose.model('Session', SessionSchema)
+
+module.exports.createSession = function(leaderClient, repo, project, column, callback){
+  let newSession = new Session({
+    leader: leaderClient,
+    github: {
+      repo_id: repo,
+      project_id: project,
+      column_id: column
+    }
+  })
+  newSession.save(callback)
+}

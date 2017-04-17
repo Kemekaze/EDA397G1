@@ -34,14 +34,11 @@ module.exports.removeById = function(id, callback){
 }
 
 module.exports.getAll = function(callback){
-  Client.find(callback)
+  Client.find({}, callback)
 }
 
 module.exports.getById = function(id, callback){
   Client.findById(id, callback)
-}
-module.exports.find = function(query, callback){
-  Client.findOne(query, callback);
 }
 
 module.exports.getByPhoneId = function(phoneId, callback){
