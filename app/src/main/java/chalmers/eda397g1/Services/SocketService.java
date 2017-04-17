@@ -5,21 +5,28 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.PriorityQueue;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
-import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
+import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -66,7 +73,26 @@ public class SocketService extends Service {
     private void setupIO() throws Exception{
         String host = "https://" + Constants.SERVER_IP+":"+Constants.SERVER_PORT;
         Log.i(TAG, "Connecting to: " + host);
+
+        InputStream in = getApplicationContext().getResources().openRawResource(R.raw.my_ca);
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(in);
+        String alias = cert.getSubjectX500Principal().getName();
+        // Create keystore and add to ssl context
+        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        trustStore.load(null);
+        trustStore.setCertificateEntry(alias, cert);
+
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+        kmf.init(trustStore, null);
+        KeyManager[] keyManagers = kmf.getKeyManagers();
+
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
+        tmf.init(trustStore);
+
+        TrustManager[] managers  = tmf.getTrustManagers();
         SSLContext sc = SSLContext.getInstance("TLS");
+        // should use managers above, not working atm
         sc.init(null, trustAllCerts, new SecureRandom());
         IO.setDefaultSSLContext(sc);
         IO.setDefaultHostnameVerifier(mHostnameVerifier);
@@ -252,23 +278,23 @@ public class SocketService extends Service {
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override
         public boolean verify(String hostname, SSLSession session) {
-            Log.i(TAG, "Verifying host name ::: " + hostname);
-            return true;
+            HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+            return hv.verify("xr-plan.se", session);
         }
     };
-    private TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-            return new java.security.cert.X509Certificate[]{};
-        }
+    private TrustManager[] trustAllCerts = new TrustManager[]{
+        new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[]{};
+            }
 
-        public void checkClientTrusted(X509Certificate[] chain,
-                                       String authType) throws CertificateException {
-        }
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
 
-        public void checkServerTrusted(X509Certificate[] chain,
-                                       String authType) throws CertificateException {
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
         }
-    }};
+    };
 
 
 
