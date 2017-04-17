@@ -5,13 +5,13 @@ package chalmers.eda397g1.Objects;
  */
 
 public class Project {
-    private String id;
+    private int id;
     private String name;
     private String body;
     private int number;
     private String state;
 
-    public Project(String id, String name, String body, int number, String state) {
+    public Project(int id, String name, String body, int number, String state) {
         this.id = id;
         this.name = name;
         this.body = body;
@@ -19,7 +19,7 @@ public class Project {
         this.state = state;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

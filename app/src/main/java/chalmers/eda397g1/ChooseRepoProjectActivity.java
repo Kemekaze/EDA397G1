@@ -1,11 +1,8 @@
 package chalmers.eda397g1;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import chalmers.eda397g1.Events.ReposProjectsEvent;
@@ -27,7 +23,6 @@ import chalmers.eda397g1.Events.UserProjectsEvent;
 import chalmers.eda397g1.Objects.Project;
 import chalmers.eda397g1.Objects.Repository;
 import chalmers.eda397g1.Resources.Constants;
-import chalmers.eda397g1.Resources.Queries;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
@@ -129,7 +124,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
      * Results will later be provided by call-back method receiveRepositoryData(...)
      */
     private void requestRepositoryData() {
-        RequestEvent event = new RequestEvent(Constants.SocketEvents.USER_REPOSITORIES);
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.REPOSITORIES);
         EventBus.getDefault().post(event);
     }
 
@@ -145,7 +140,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestEvent event = new RequestEvent(Constants.SocketEvents.USER_REPOSITORY_PROJECTS, query);
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.REPOSITORY_PROJECTS, query);
         EventBus.getDefault().post(event);
     }
 

@@ -37,7 +37,7 @@ public class UserProjectsEvent extends Event {
             try {
                 JSONObject obj = arr.getJSONObject(i);
                 list.add(new Project(
-                        obj.getString("id"),
+                        obj.getInt("id"),
                         obj.getString("name"),
                         obj.getString("body"),
                         obj.getInt("number"),

@@ -32,8 +32,10 @@ public class Constants {
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
 
         public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
-        public static final String USER_REPOSITORIES = "user.repositories";
-        public static final String USER_REPOSITORY_PROJECTS = "user.repository.projects";
+        public static final String REPOSITORIES = "repositories";
+        public static final String REPOSITORY_PROJECTS = "repository.projects";
+        public static final String COLUMN_CARDS = "column.cards";
+        public static final String PROJECT_COLUMNS = "project.columns";
 
 
         public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";

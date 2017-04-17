@@ -6,6 +6,10 @@ const io = require('socket.io')(server);
 var socket = new lib.sockets(io,config);
 const mongoose = require("mongoose");
 
+
+
+
+
 socket.setup();
 
 mongoose.connect(config.database.database,function(err){

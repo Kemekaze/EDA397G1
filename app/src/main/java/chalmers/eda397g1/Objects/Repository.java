@@ -6,19 +6,19 @@ package chalmers.eda397g1.Objects;
 
 public class Repository {
 
-    private String id;
+    private int id;
     private String name;
     private String fullName;
     private boolean privat;
 
-    public Repository(String id, String name, String fullName, boolean privat){
+    public Repository(int id, String name, String fullName, boolean privat){
         this.id = id;
         this.name = name;
         this.fullName = fullName;
         this.privat = privat;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

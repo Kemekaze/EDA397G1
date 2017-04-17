@@ -23,14 +23,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.LoginEvent;
+import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
-import chalmers.eda397g1.R;
-
 import chalmers.eda397g1.Events.UserProjectsEvent;
-import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
-
+import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -119,13 +118,16 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.AUTHORIZED, eventAuthorized);
         socket.on(Constants.SocketEvents.UNAUTHORIZED, eventUnauthorized);
         //Thirdparty athentication
-        socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
-        socket.on(Constants.SocketEvents.USER_REPOSITORIES, eventUserRepositories);
-        socket.on(Constants.SocketEvents.USER_REPOSITORY_PROJECTS, eventUserRepositoryProjects);
-
         socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
         socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthenticatedBitbucket);
+        //custom
+        socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
+        socket.on(Constants.SocketEvents.REPOSITORIES, eventRepositories);
+        socket.on(Constants.SocketEvents.REPOSITORY_PROJECTS, eventRepositoryProjects);
+        socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
+        socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
+
     }
 
     @Override
@@ -227,10 +229,10 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventUserRepositories = new Emitter.Listener() {
+    private Emitter.Listener eventRepositories = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventUserRepositories");
+            Log.i(TAG, "eventRepositories");
             for(int i = 0; i < args.length; i++){
                 Log.i(TAG,  args[i].toString());
             }
@@ -238,14 +240,34 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventUserRepositoryProjects = new Emitter.Listener() {
+    private Emitter.Listener eventRepositoryProjects = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventUserRepositoryProjects()");
+            Log.i(TAG, "eventRepositoryProjects()");
             for(int i = 0; i < args.length; i++){
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new UserProjectsEvent(args));
+        }
+    };
+    private Emitter.Listener eventProjectColumns = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventProjectColumns()");
+            for(int i = 0; i < args.length; i++){
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new ProjectColumnsEvent(args));
+        }
+    };
+    private Emitter.Listener eventColumnCards = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventColumnCards()");
+            for(int i = 0; i < args.length; i++){
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new CardsEvent(args));
         }
     };
 

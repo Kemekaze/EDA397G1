@@ -280,7 +280,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(event.getStatus() == Constants.StatusCodes.OK){
             startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
         }
-        else
+        else if(event.getStatus() != Constants.StatusCodes.NOT_FOUND)
         {
             final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), event.getErrors()[0].getMessage(), Snackbar.LENGTH_SHORT);
             snackBar.setAction("close", new View.OnClickListener(){

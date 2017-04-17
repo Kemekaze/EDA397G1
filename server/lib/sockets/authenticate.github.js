@@ -1,5 +1,5 @@
 var response = require('../responses');
-var github = require('octonode');
+var github = require('../api/github.js');
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
@@ -15,8 +15,8 @@ module.exports = function (socket,data,callback){
   if((0 === data.auth.username.length || 0 === data.auth.password.length ))
     return callback(response.UNAUTHORIZED('Invalid email or password'));
 
-  var client = github.client(data.auth);
-  client.me().info(function(err,client_data,headers){
+  var client = new github(data.auth);
+  client.info(function(err, resp, client_data){
     if(err){
       callback(response.UNAUTHORIZED('Invalid username or password'));
     }else{

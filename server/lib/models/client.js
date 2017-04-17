@@ -19,6 +19,10 @@ const ClientSchema = mongoose.Schema({
     password: {
       type: String
     }
+  },
+  auto_login: {
+    type: Boolean,
+    default: true
   }
 })
 

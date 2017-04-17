@@ -21,22 +21,10 @@ module.exports = function (socket, data, callback){
   if(data.full_name  == null)
     return callback(response.BAD_REQUEST('Invalid request'));
 
-  var client = socket.git.github;
-  var token = new Buffer(client.token.username + ":" + client.token.password).toString('base64');
-
-  var options = {
-    url: "https://api.github.com/repos/" + data.full_name + "/projects",
-    headers: {
-      'User-Agent': 'request',
-      "Accept": "application/vnd.github.inertia-preview+json",
-      "Authorization": "Basic " + token
-    }
-  }
-
-  request(options, function(err, resp, data){
+ socket.git.github.projects(data.full_name, function(error, resp, data){
+   if(resp.statusCode == 200 && !error){
       var rtn = [];
-      var projects = JSON.parse(data);
-      for (var p of projects){
+      for (var p of data){
           rtn.push({
             id: p.id,
             name: p.name,
@@ -45,6 +33,10 @@ module.exports = function (socket, data, callback){
             state: p.state
           });
       }
-    callback(response.OK(rtn));
+      callback(response.OK(rtn));
+    }else{
+      callback(response.FORBIDDEN('Something went wrong'));
+    }
+
   })
 }
