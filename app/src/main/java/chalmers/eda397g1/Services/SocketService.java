@@ -19,6 +19,7 @@ import javax.net.ssl.X509TrustManager;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Events.UserProjectsEvent;
 import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -47,8 +48,6 @@ public class SocketService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-
 
     @Override
     public void onCreate() {
@@ -92,7 +91,8 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.UNAUTHORIZED, eventUnauthorized);
         //Thirdparty athentication
         socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
-        socket.on(Constants.SocketEvents.REQUEST_PROJECTS, eventRequestProjects);
+        socket.on(Constants.SocketEvents.USER_REPOSITORIES, eventUserRepositories);
+        socket.on(Constants.SocketEvents.USER_REPOSITORY_PROJECTS, eventUserRepositoryProjects);
 
         socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
@@ -198,16 +198,29 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventRequestProjects = new Emitter.Listener() {
+    private Emitter.Listener eventUserRepositories = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventRequestProjects");
+            Log.i(TAG, "eventUserRepositories");
             for(int i = 0; i < args.length; i++){
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new ReposProjectsEvent(args));
         }
     };
+
+    private Emitter.Listener eventUserRepositoryProjects = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventUserRepositoryProjects()");
+            for(int i = 0; i < args.length; i++){
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new UserProjectsEvent(args));
+        }
+    };
+
+
 /*
 
     @Subscribe
@@ -217,11 +230,6 @@ public class SocketService extends Service {
 
 
         // Mocked server responses // TODO: remove when server is up
-
-        if(event.getEventName().equals(Constants.SocketEvents.REQUEST_PROJECTS)){
-            Log.d("","Sending dummy response to ChooserepoActivity.");
-            EventBus.getDefault().post(new ReposProjectsEvent());
-        }
 
         if(event.getEventName().equals(Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS)) {
             EventBus.getDefault().post(new VoteOnLowestEffortEvent(

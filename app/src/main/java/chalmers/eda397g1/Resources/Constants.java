@@ -1,12 +1,12 @@
 package chalmers.eda397g1.Resources;
 
 /**
- * Created by elias on 2017-04-05.
+ * Created by elias on 2017-04-05
  */
 
 public class Constants {
     //localhost only on dev
-    public static final String SERVER_IP = "192.168.1.77";
+    public static final String SERVER_IP = "192.168.1.131";
     public static final String SERVER_PORT = "8443";
     public static final String SERVER_TOKEN = "42ig3Psps3oGbQ6H";
 
@@ -32,7 +32,9 @@ public class Constants {
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
 
         public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
-        public static final String REQUEST_PROJECTS = "request.projects";
+        public static final String USER_REPOSITORIES = "user.repositories";
+        public static final String USER_REPOSITORY_PROJECTS = "user.repository.projects";
+
 
         public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";
 
