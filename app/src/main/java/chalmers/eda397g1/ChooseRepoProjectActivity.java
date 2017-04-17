@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +90,11 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         projectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedProject = projectList.get(i);
+                if(i < projectList.size()){
+                    selectedProject = projectList.get(i);
+                } else {
+                    selectedProject = null;
+                }
                 //TODO: This project spinner is unnecessary, it should together with the "choose" button be replaced with a listview where you can choose a project directly.
             }
             @Override
@@ -101,15 +106,19 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start lobby as hostgit
-                Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("isHost", true);
-                b.putCharSequence("repoName", selectedRepo.getName());
-                b.putCharSequence("projectName", selectedProject.getName());
-                intent.putExtras(b);
-                startActivity(intent);
-                //TODO send relevant data to Lobby activity. Added repo and project name as example.
+                if(selectedProject != null ){
+                    // Start lobby as hostgit
+                    Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+                    Bundle b = new Bundle();
+                    b.putBoolean("isHost", true);
+                    b.putCharSequence("repoName", selectedRepo.getName());
+                    b.putCharSequence("projectName", selectedProject.getName());
+                    intent.putExtras(b);
+                    startActivity(intent);
+                    //TODO send relevant data to Lobby activity. Added repo and project name as example.
+                }else{
+                    Toast.makeText(getApplicationContext(), "No project selected!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
