@@ -17,7 +17,7 @@ module.exports = function (socket,data,callback){
 
   var client = new github(data.auth);
   client.info(function(err, resp, client_data){
-    if(err){
+    if(resp.statusCode != 200 || err){
       callback(response.UNAUTHORIZED('Invalid username or password'));
     }else{
       socket.git.auth = true;
