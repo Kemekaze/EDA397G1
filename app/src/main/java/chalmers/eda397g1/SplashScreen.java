@@ -5,7 +5,7 @@ package chalmers.eda397g1;
         import android.os.Bundle;
 
 /**
- * Created by Jeppe on 2017-04-18.
+ * Created by Jesper Kjellqvist on 2017-04-18.
  */
 
 public class SplashScreen extends Activity {
