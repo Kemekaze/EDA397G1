@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="70dp"
-        android:text="Available games"
+        android:text="Click the game you want to join"
         android:textSize="20sp"/>
 
     <ListView
@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Host game"
+        android:textSize="30sp"
         android:layout_gravity="bottom|right"
         />
 
