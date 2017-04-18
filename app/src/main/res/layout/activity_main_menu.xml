@@ -22,32 +22,11 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
+        android:id="@+id/include2"
         layout="@layout/content_main_menu"
         android:layout_width="match_parent"
-        android:layout_height="840dp"
-        android:id="@+id/include2"/>
+        android:layout_height="840dp" />
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end">
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_input_add"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Host game"
-            android:elevation="7dp"/>
-
-    </FrameLayout>
 
     <TextView
         android:id="@+id/textView"
@@ -63,5 +42,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="110dp" />
+
+    <Button
+        android:id="@+id/hostGameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host game"
+        android:layout_gravity="bottom|right"
+        />
+
 
 </android.support.design.widget.CoordinatorLayout>
