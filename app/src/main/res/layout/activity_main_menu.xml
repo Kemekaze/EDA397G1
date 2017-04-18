@@ -7,20 +7,6 @@
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.MainMenuActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-    </android.support.design.widget.AppBarLayout>
-
     <include
         layout="@layout/content_main_menu"
         android:layout_width="match_parent"
@@ -33,23 +19,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="7dp"
-        app:srcCompat="@android:drawable/ic_input_add"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="70dp"
-        android:text="Available games"
-        android:textSize="20sp"/>
+        app:backgroundTint="@color/Accent"
+        app:borderWidth="0dp"
+        app:elevation="12dp"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>
 
     <ListView
         android:id="@+id/availabe_games"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="110dp"/>
+        android:layout_marginTop="0dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingBottom="5dp"
+        android:scrollbarThumbVertical="@android:color/holo_orange_light"/>
 
 </android.support.design.widget.CoordinatorLayout>

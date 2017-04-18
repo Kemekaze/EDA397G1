@@ -12,7 +12,6 @@ import android.widget.ListView;
 import chalmers.eda397g1.adapter.RoundResultAdapter;
 
 public class DisplayRoundResultsActivity extends ListActivity {
-    ListView listView;
 
     String[] dummyPlayers = new String[]{
             "Player 1",

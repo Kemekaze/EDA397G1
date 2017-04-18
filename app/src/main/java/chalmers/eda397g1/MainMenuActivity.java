@@ -25,8 +25,6 @@ public class MainMenuActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_mainmenulist, array);
 

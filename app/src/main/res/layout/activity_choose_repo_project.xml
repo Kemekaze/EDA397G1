@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Select Repository"
+        android:textColor="@android:color/black"
         android:textSize="32sp"/>
 
     <Spinner
@@ -18,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:backgroundTint="@color/Accent"
+        android:spinnerMode="dropdown"/>
 
     <TextView
         android:id="@+id/textViewChooseProject"
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Select Project"
+        android:textColor="@android:color/black"
         android:textSize="32sp"/>
 
     <Spinner
@@ -33,12 +36,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:backgroundTint="@color/Accent"
+        android:spinnerMode="dropdown"/>
 
     <Button
         android:id="@+id/chooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose" />
+        android:backgroundTint="@color/Accent"
+        android:elevation="12dp"
+        android:text="Choose"/>
 
 </LinearLayout>
