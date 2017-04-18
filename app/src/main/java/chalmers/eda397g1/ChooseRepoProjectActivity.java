@@ -55,7 +55,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         chooseButton = (Button) findViewById(R.id.chooseButton);
 
         //creates the adpters used by the spinners
-        ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
+        final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
                 android.R.layout.simple_spinner_item, repoNames);
         repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
@@ -68,11 +68,17 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         repoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedRepo = repoList.get(i);
-                projectList.clear();
-                projectNames.clear();
-                requestProjectsData(selectedRepo.getFullName());
-                projectAdapter.notifyDataSetChanged();
+
+                if(i < repoList.size()){
+                    selectedRepo = repoList.get(i);
+                    projectList.clear();
+                    projectNames.clear();
+                    requestProjectsData(selectedRepo.getFullName());
+                    projectAdapter.notifyDataSetChanged();
+                } else {
+                    selectedRepo = null;
+                }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
