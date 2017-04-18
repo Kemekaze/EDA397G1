@@ -19,7 +19,7 @@ var request = require('request');
  *    title: "As a user i would like to leave a game so that i can take a break",
  *  }]
  */
-module.exports = function (socket, data, callback){
+module.exports = function (handler, socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.column_id  == null && data.full_name  == null)
@@ -62,6 +62,5 @@ module.exports = function (socket, data, callback){
     }else{
       callback(response.FORBIDDEN('Something went wrong'));
     }
-
   })
 }

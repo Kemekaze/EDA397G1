@@ -12,7 +12,7 @@ var request = require('request');
  *	 "name": "Backlog"
  *  }]
  */
-module.exports = function (socket, data, callback){
+module.exports = function (handler, socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.project_id  == null)

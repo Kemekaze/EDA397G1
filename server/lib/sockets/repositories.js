@@ -4,7 +4,7 @@ var github = require('octonode');
  * Gets the users repositories
  * @return {Array} [{id, name, full_name, private}]
  */
-module.exports = function (socket,data,callback){
+module.exports = function (handler, socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   socket.git.github.repositories(function(error, resp, data){
