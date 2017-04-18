@@ -8,10 +8,10 @@
     tools:context="chalmers.eda397g1.MainMenuActivity">
 
     <include
+        android:id="@+id/include2"
         layout="@layout/content_main_menu"
         android:layout_width="match_parent"
-        android:layout_height="840dp"
-        android:id="@+id/include2"/>
+        android:layout_height="840dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
