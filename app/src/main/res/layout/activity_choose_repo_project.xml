@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Select Repository"
+        android:text="@string/select_repository"
         android:textSize="32sp"/>
 
     <Spinner
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Select Project"
+        android:text="@string/select_project"
         android:textSize="32sp"/>
 
     <Spinner
@@ -35,10 +35,24 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
+    <TextView
+        android:id="@+id/textViewChooseColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="@string/chooseColumn"
+        android:textSize="32sp"/>
+
+    <Spinner
+        android:id="@+id/columnSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
     <Button
         android:id="@+id/chooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose" />
+        android:text="@string/choose_button_string" />
 
 </LinearLayout>
