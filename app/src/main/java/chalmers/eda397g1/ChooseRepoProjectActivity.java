@@ -15,11 +15,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.UserProjectsEvent;
+import chalmers.eda397g1.Objects.Column;
 import chalmers.eda397g1.Objects.Project;
 import chalmers.eda397g1.Objects.Repository;
 import chalmers.eda397g1.Resources.Constants;
@@ -34,6 +37,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     private Spinner repoSpinner;
     private Spinner projectSpinner;
+    private Spinner columnSpinner;
     private Button chooseButton;
 
     private List<Repository> repoList = new ArrayList<>();
@@ -44,17 +48,24 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     private List<String> projectNames = new ArrayList<>();
     private Project selectedProject = null;
 
+    private List<Column> columnList  = new ArrayList<>();
+    private List<String> columnNames = new ArrayList<>();
+    private Column selectedColumn = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_repo_project);
 
-        // Find Views
+        // Find Spinners
         repoSpinner = (Spinner) findViewById(R.id.repoSpinner);
         projectSpinner = (Spinner) findViewById(R.id.projectSpinner);
+        columnSpinner = (Spinner) findViewById(R.id.columnSpinner);
+
+        // Find Button
         chooseButton = (Button) findViewById(R.id.chooseButton);
 
-        //creates the adpters used by the spinners
+        // Create the adpters used by the spinners and set layout
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
                 android.R.layout.simple_spinner_item, repoNames);
         repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -63,20 +74,25 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item, projectNames);
         projectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        // Initialize Repository Spinner
+        final ArrayAdapter<String> columnAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
+                android.R.layout.simple_spinner_item, columnNames);
+        columnAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        // Initialize Repository Spinner.
         repoSpinner.setAdapter(repoAdapter);
         repoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                // There may be no repositories.
                 if(i < repoList.size()){
                     selectedRepo = repoList.get(i);
                     projectList.clear();
                     projectNames.clear();
                     requestProjectsData(selectedRepo.getFullName());
-                    projectAdapter.notifyDataSetChanged();
+                    //projectAdapter.notifyDataSetChanged();
                 } else {
                     selectedRepo = null;
+                    // TODO: Show Snackbar when no repositories are available
                 }
 
             }
@@ -93,13 +109,35 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i < projectList.size()){
                     selectedProject = projectList.get(i);
+                    columnList.clear();
+                    columnNames.clear();
+                    requestColumnsData(selectedProject.getId());
+                    //columnAdapter.notifyDataSetChanged();
                 } else {
                     selectedProject = null;
+                    // TODO: Show SnackBar that tells the user that no project is selected.
                 }
-                //TODO: This project spinner is unnecessary, it should together with the "choose" button be replaced with a listview where you can choose a project directly.
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        // Initialize Column Adapter
+        columnSpinner.setAdapter(columnAdapter);
+        columnSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i < columnList.size()){
+                    selectedColumn = columnList.get(i);
+                } else {
+                    selectedColumn = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -108,21 +146,49 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(selectedProject != null ){
+                    // TODO: Test if other things are selected and show snackbar if not
                     // Start lobby as hostgit
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
+                    // Put selected repo
                     b.putCharSequence("repoName", selectedRepo.getName());
+                    b.putInt("repoID", selectedRepo.getId());
+                    // Put selected project
                     b.putCharSequence("projectName", selectedProject.getName());
+                    b.putInt("projectID", selectedProject.getId());
+                    // Put selected Column
+                    b.putCharSequence("columnName", selectedColumn.getName());
+                    b.putInt("columnID", selectedColumn.getId());
+
                     intent.putExtras(b);
                     startActivity(intent);
-                    //TODO send relevant data to Lobby activity. Added repo and project name as example.
                 }else{
                     Toast.makeText(getApplicationContext(), "No project selected!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        requestRepositoryData();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(TAG,"onStop()");
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -151,6 +217,22 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     }
 
     /**
+     * Initiates request for the projects data of the selected repo.
+     * Results will later be provided by call-back method onReceiveProjectsData(...)
+     * @param projectID Full name of repochooserepository ex: username/reponame
+     */
+    private void requestColumnsData(int projectID) {
+        JSONObject query = new JSONObject();
+        try {
+            query.put("project_id", projectID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.PROJECT_COLUMNS, query);
+        EventBus.getDefault().post(event);
+    }
+
+    /**
      * Callback method to receive response from requestRepositoryData() call.
      * @param event from eventbus containing list of repositories.
      */
@@ -159,6 +241,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         repoList = event.getRepositories();
         repoNames.clear();
         projectNames.clear();
+        columnNames.clear();
+
         if (repoList.isEmpty()) {
             repoNames.add("No repositories available.");
         } else {
@@ -167,6 +251,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         }
         ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
+        ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
+        ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
     /**
@@ -177,6 +263,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     public void onReceiveProjectsData(UserProjectsEvent event){
         projectList = event.getProjects();
         projectNames.clear();
+        columnNames.clear();
         if (projectList.isEmpty()) {
             projectNames.add("No projects available.");
         } else {
@@ -185,25 +272,28 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         }
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
+        ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "onStart()");
-        EventBus.getDefault().register(this);
+    /**
+     * Callback method to receive response from requestColumnsData() call.
+     * @param event from eventbus containing list of repositories.
+     */
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onReceiveColumnsData(ProjectColumnsEvent event){
+        Log.d(TAG, event.getColumns().toString());
+        columnList = event.getColumns();
+        columnNames.clear();
+        if (columnList.isEmpty()) {
+            columnNames.add("No columns available.");
+        } else {
+            for(Column col : columnList){
+                Log.d(TAG, col.getName());
+                columnNames.add(col.getName());
+            }
+        }
+        ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
-    @Override
-    public void onStop(){
-        super.onStop();
-        Log.d(TAG,"onStop()");
-        EventBus.getDefault().unregister(this);
-    }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        requestRepositoryData();
-    }
 }

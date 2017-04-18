@@ -17,4 +17,8 @@
     <string name="title_activity_main_menu">Join or Host a Planning Game</string>
     <string name="title_activity_lobby">Lobby</string>
     <string name="title_activity_choose_project">Choose repository and project</string>
+    <string name="chooseColumn">Select Column</string>
+    <string name="select_project">Select Project</string>
+    <string name="select_repository">Select Repository</string>
+    <string name="choose_button_string">Choose</string>
 </resources>

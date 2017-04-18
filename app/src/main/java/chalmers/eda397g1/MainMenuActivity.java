@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 
@@ -47,8 +48,8 @@ public class MainMenuActivity extends AppCompatActivity
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+        Button hostGameButton = (Button) findViewById(R.id.hostGameButton);
+        hostGameButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)

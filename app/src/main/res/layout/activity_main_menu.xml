@@ -22,19 +22,11 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
+        android:id="@+id/include2"
         layout="@layout/content_main_menu"
         android:layout_width="match_parent"
-        android:layout_height="840dp"
-        android:id="@+id/include2"/>
+        android:layout_height="840dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_input_add"/>
 
     <TextView
         android:id="@+id/textView"
@@ -42,13 +34,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="70dp"
-        android:text="Available games"
+        android:text="Click the game you want to join"
         android:textSize="20sp"/>
 
     <ListView
         android:id="@+id/availabe_games"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="110dp"/>
+        android:layout_marginTop="110dp" />
+
+    <Button
+        android:id="@+id/hostGameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host game"
+        android:textSize="30sp"
+        android:layout_gravity="bottom|right"
+        />
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,6 +3,9 @@ package chalmers.eda397g1.Events;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import chalmers.eda397g1.Objects.Column;
 
 /**
@@ -10,24 +13,24 @@ import chalmers.eda397g1.Objects.Column;
  */
 
 public class ProjectColumnsEvent extends Event {
-    private Column[] columns = null;
+    private List<Column> columns = new ArrayList<>();
     public ProjectColumnsEvent(Object... args) {
         super(args);
         JSONArray columns = (JSONArray) getData();
-        if(columns.length() > 0)
-        {
-            this.columns = new Column[columns.length()];
-            for(int i = 0; i < columns.length(); i++) {
+        if(columns.length() > 0) {
+            for (int i = 0; i < columns.length(); i++) {
                 JSONObject column = columns.optJSONObject(i);
-                this.columns[i] = new Column(
-                    column.optInt("id"),
-                    column.optString("title")
+                this.columns.add(
+                        new Column(
+                                column.optInt("id"),
+                                column.optString("name")
+                        )
                 );
             }
-
-
-        }else{
-            this.columns = new Column[0];
         }
+    }
+
+    public List<Column> getColumns(){
+        return columns;
     }
 }
