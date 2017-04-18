@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:backgroundTint="@color/Accent"
+        android:popupBackground="@color/Accent"
         android:spinnerMode="dropdown"/>
 
     <TextView
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:backgroundTint="@color/Accent"
+        android:popupBackground="@color/Accent"
         android:spinnerMode="dropdown"/>
 
     <Button
