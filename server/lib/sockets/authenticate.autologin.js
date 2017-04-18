@@ -15,6 +15,7 @@ module.exports = function (socket,data,callback){
       // found a client
       else{
         var client = new github(auth);
+        console.log(auth);
         client.info(function(err, resp, client_data){
           if(err){
             callback(response.UNAUTHORIZED('Could not auto login'));
