@@ -72,7 +72,7 @@
         android:id="@+id/chooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/Accent"
         android:elevation="12dp"
         android:text="@string/choose_button_string"/>
