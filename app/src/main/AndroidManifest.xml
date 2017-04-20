@@ -63,7 +63,7 @@
         </activity>
         <activity
             android:name=".VoteOnLowestEffortActivity"
-            android:label="Vote On Items">
+            android:label="Vote on item with lowest overall effort">
         </activity>
 
         <service android:name=".Services.SocketService" />
