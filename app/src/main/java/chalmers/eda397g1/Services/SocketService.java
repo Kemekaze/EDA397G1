@@ -25,6 +25,7 @@ import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.CardsEvent;
+import chalmers.eda397g1.Events.CreateGameEvent;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
@@ -128,6 +129,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
+        socket.on(Constants.SocketEvents.CREATE_GAME, eventCreateGame);
     }
 
     @Override
@@ -269,6 +271,16 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new AvailableGamesEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventCreateGame = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new CreateGameEvent(args));
         }
     };
 

@@ -30,6 +30,7 @@ import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+import io.socket.emitter.Emitter;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";

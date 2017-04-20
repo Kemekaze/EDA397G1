@@ -3,16 +3,24 @@ package chalmers.eda397g1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import chalmers.eda397g1.Events.CreateGameEvent;
 import chalmers.eda397g1.Events.PlayerJoinedLobbyEvent;
+import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
+import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class LobbyActivity extends AppCompatActivity {
     private ListView playerListView;
@@ -21,6 +29,7 @@ public class LobbyActivity extends AppCompatActivity {
     private String fullName;
     private int projectID;
     private int columnID;
+    private final String TAG = "Lobby";
 
     // Dummy Players
     String[] players = new String[] {"Player 1",
@@ -87,7 +96,18 @@ public class LobbyActivity extends AppCompatActivity {
                 b.putInt("projectID", projectID);
                 b.putInt("columnID", columnID);
                 intent.putExtras(b);
-
+                
+                JSONObject query = new JSONObject();
+                try {
+                    query.put("full_name", fullName);
+                    query.put("project_id", projectID);
+                    query.put("column_id", columnID);
+                    RequestEvent event = new RequestEvent(Constants.SocketEvents.CREATE_GAME, query);
+                    EventBus.getDefault().post(event);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                
                 startActivity(intent);
             }
         });
@@ -110,6 +130,12 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onCreateGame(CreateGameEvent event) {
+        Log.i(TAG, "onCreateGame");
+        // TODO: 2017-04-20 Implement to start game for non-leaders 
+    }
 
 
 }
