@@ -17,7 +17,7 @@ var response = lib.helpers.response;
  *    title: "As a user i would like to leave a game so that i can take a break",
  *  }]
  */
-module.exports = function (handler, socket, data, callback){
+module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.column_id  == null && data.full_name  == null)

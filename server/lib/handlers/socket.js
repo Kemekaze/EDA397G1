@@ -58,21 +58,31 @@ method.authenticate = function(socket, cb) {
 //any other socket event
 method.on = function(socket){
   var self = this;
-  var dir = path.join(__dirname, 'sockets');
-  require("fs").readdirSync(dir).forEach(function(file) {
-    var f = file.split('.');
-    if(f[f.length-1] == 'js'){
-      var name = "";
-      for(var i = 0 ;i < f.length-1;i++){
-        if(i != 0) name += '.';
-        name += f[i];
-      }
-      socket.on(name,function(content){
-        if(self.dev) console.log("[Socket]",name);
-        require(path.join(dir, file))(self, socket, content,function(payload){
-          socket.emit(name,payload);
-        });
+  var sockets = require('../sockets/');
+  Object.keys(sockets).forEach(function(name){
+    socket.on(name,function(content){
+      if(self.dev) console.log("[Socket]",name);
+      sockets[name](socket, content,function(payload){
+        socket.emit(name,payload);
       });
-    }
+    });
   });
+}
+method.roomExists = function(room){
+  return (this.io.sockets.adapter.rooms[room] != null);
+}
+//handler functions
+method.getRoom = function(socket){
+  return Object.keys( this.io.sockets.adapter.sids[socket.id] );
+}
+method.joinRoom = function(socket, room){
+  var current_rooms = this.getRoom(socket);
+  if(current_rooms.length > 1)
+    socket.leave(current_rooms[1]);
+  socket.join(room);
+}
+method.createRoom = function(room, socket, cb){
+  if(this.roomExists()) return cb(false);
+  this.joinRoom(socket,room);
+  return cb(true);
 }

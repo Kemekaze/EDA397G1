@@ -2,7 +2,7 @@ var response = lib.helpers.response;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 var Session = mongoose.model('Session');
-module.exports = function (handler, socket, data, callback){
+module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.column_id  == null ||
@@ -10,7 +10,6 @@ module.exports = function (handler, socket, data, callback){
      data.project_id  == null ||
      data.full_name  == null )
     return callback(response.BAD_REQUEST('Invalid request'));
-
     socket.git.github.cards(data.column_id, function(c_error, c_resp, cards){
       if(c_resp.statusCode == 200 && !c_error){
         socket.git.github.issues(data.full_name,function(i_error, i_resp, issues){
@@ -44,8 +43,7 @@ module.exports = function (handler, socket, data, callback){
             }
             Client.findOne({phone_id: socket.phone_id},function(e,c){
               var session = new Session({
-                  leader: c._id,
-                  clients:[],
+                  leader: c.phone_id,
                   github:{
                     repo_id: data.repo_id,
                     column_id: data.column_id,
@@ -55,7 +53,12 @@ module.exports = function (handler, socket, data, callback){
                   }
               });
               session.save(function(e,newSession){
-                socket.join(newSession._id)
+                handler.socket.createRoom(newSession._id,socket, function(created){
+                  if(created)
+                    callback(response.OK(newSession.toObject()));
+                  else
+                    callback(response.BAD_REQUEST('There is already a session with that name'));
+                });
               });
             });
          }else{
