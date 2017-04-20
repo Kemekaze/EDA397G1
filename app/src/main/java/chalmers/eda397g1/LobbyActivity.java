@@ -2,6 +2,7 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +12,6 @@ import android.widget.ListView;
 
 public class LobbyActivity extends AppCompatActivity {
     ListView playerListView;
-    Button startGameButton;
     Boolean isHost;
 
     // Dummy Players
@@ -41,11 +41,11 @@ public class LobbyActivity extends AppCompatActivity {
             isHost = b.getBoolean("isHost");
 
         playerListView = (ListView) findViewById(R.id.playerList);
-        startGameButton = (Button) findViewById(R.id.startGameButton);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
 
         // If this is not a host make the startGame button invisible
         if( !isHost )
-            startGameButton.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -62,7 +62,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         });
 
-        startGameButton.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
