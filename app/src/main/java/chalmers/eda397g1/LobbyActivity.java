@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import chalmers.eda397g1.Events.PlayerJoinedEvent;
+import chalmers.eda397g1.Events.PlayerJoinedLobbyEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -79,7 +79,7 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onPlayerJoinedEvent(PlayerJoinedEvent event){
+    public void onPlayerJoinedEvent(PlayerJoinedLobbyEvent event){
         // TODO: Add player
     }
 
