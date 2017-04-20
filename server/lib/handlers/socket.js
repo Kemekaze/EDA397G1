@@ -1,17 +1,13 @@
 var mongoose = require('mongoose');
 var path = require('path');
-var Handler = module.exports = function(io,config) {
+var SocketHandler = module.exports = function(io,config) {
   var self = this;
   self.dev = true;
   self.token = config.socketIO.token;
   self.clients = [];
-  self.sessions = [];
   self.io = io;
-  self.sockets = {
-    on:{}
-  };
 };
-var method = Handler.prototype;
+var method = SocketHandler.prototype;
 method.setup = function(){
   var self = this;
   this.io.on('connection', function (socket) {
@@ -79,24 +75,4 @@ method.on = function(socket){
       });
     }
   });
-}
-method.newSession = function(session_id){
-  this.sessions[session_id] = {
-    clients: [],
-    current_card: -1
-  };
-}
-method.removeSession = function(session_id){
-  if(this.sessions[session_id].clients.indexOf(socket) != -1){
-    for (client of this.sessions[session_id].clients) {
-      client.session_id = null;
-    }
-    this.sessions.splice(this.sessions.indexOf(session_id),1);
-  }
-}
-method.addSocketToSession = function(session_id,socket){
-  if(this.sessions[session_id].clients.indexOf(socket) == -1){
-    this.sessions[session_id].clients.push(socket);
-    //socket.session_id = session_id;
-  }
 }

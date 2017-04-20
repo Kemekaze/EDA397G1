@@ -74,7 +74,6 @@ public class SocketService extends Service {
     private void setupIO() throws Exception{
         String host = "https://" + Constants.SERVER_IP+":"+Constants.SERVER_PORT;
         Log.i(TAG, "Connecting to: " + host);
-
         InputStream in = getApplicationContext().getResources().openRawResource(R.raw.my_ca);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(in);
