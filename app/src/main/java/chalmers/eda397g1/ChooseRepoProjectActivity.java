@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
@@ -29,15 +27,16 @@ import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     public static final String TAG = "chooserepo";
 
-    private Spinner repoSpinner;
-    private Spinner projectSpinner;
-    private Spinner columnSpinner;
+    private MaterialBetterSpinner repoSpinner;
+    private MaterialBetterSpinner  projectSpinner;
+    private MaterialBetterSpinner  columnSpinner;
     private Button chooseButton;
 
     private List<Repository> repoList = new ArrayList<>();
@@ -58,24 +57,24 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_repo_project);
 
         // Find Spinners
-        repoSpinner = (Spinner) findViewById(R.id.repoSpinner);
-        projectSpinner = (Spinner) findViewById(R.id.projectSpinner);
-        columnSpinner = (Spinner) findViewById(R.id.columnSpinner);
+        repoSpinner = (MaterialBetterSpinner) findViewById(R.id.repoSpinner);
+        projectSpinner = (MaterialBetterSpinner) findViewById(R.id.projectSpinner);
+        columnSpinner = (MaterialBetterSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
         chooseButton = (Button) findViewById(R.id.chooseButton);
 
-        // Create the adpters used by the spinners and set layout
+        // Create the adapters used by the spinners and set layout
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                android.R.layout.simple_spinner_item, repoNames);
+                android.R.layout.simple_dropdown_item_1line, repoNames);
         repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                        android.R.layout.simple_spinner_item, projectNames);
+                        android.R.layout.simple_dropdown_item_1line, projectNames);
         projectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         final ArrayAdapter<String> columnAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                android.R.layout.simple_spinner_item, columnNames);
+                android.R.layout.simple_dropdown_item_1line, columnNames);
         columnAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         // Initialize Repository Spinner.

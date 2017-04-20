@@ -1,72 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewChooseRepo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:text="@string/select_repository"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"/>
-
-    <Spinner
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/repoSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:backgroundTint="@color/Accent"
-        android:popupBackground="@color/Accent"
-        android:elevation="4dp"
-        android:spinnerMode="dropdown"/>
-
-    <TextView
-        android:id="@+id/textViewChooseProject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:ems="10"
-        android:text="@string/select_project"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"/>
+        android:hint="Select Repository"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal"/>
 
-    <Spinner
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/projectSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:backgroundTint="@color/Accent"
-        android:popupBackground="@color/Accent"
-        android:elevation="4dp"
-        android:spinnerMode="dropdown"/>
-
-    <TextView
-        android:id="@+id/textViewChooseColumn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:ems="10"
-        android:text="@string/chooseColumn"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"/>
+        android:hint="Select Project"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal"/>
 
-    <Spinner
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/columnSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:backgroundTint="@color/Accent"
-        android:popupBackground="@color/Accent"
-        android:elevation="4dp"
-        android:spinnerMode="dropdown"/>
+        android:layout_marginTop="10dp"
+        android:hint="Select Column"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal"/>
 
     <Button
         android:id="@+id/chooseButton"
