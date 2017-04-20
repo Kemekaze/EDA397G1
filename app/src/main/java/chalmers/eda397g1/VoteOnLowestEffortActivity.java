@@ -56,8 +56,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             throw new RuntimeException("No bundle!");
         }
 
-        EventBus.getDefault().register(this);
-        requestColumnCardsData();
+
 
         // Temporary vote button
         voteButton = (Button) findViewById(R.id.button1);
@@ -103,6 +102,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
         Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
+        requestColumnCardsData();
     }
 
     @Override
