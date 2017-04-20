@@ -10,7 +10,7 @@ var response = lib.helpers.response;
  *	 "name": "Backlog"
  *  }]
  */
-module.exports = function (handler, socket, data, callback){
+module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.project_id  == null)

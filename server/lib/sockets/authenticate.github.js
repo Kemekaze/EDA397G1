@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
 
-module.exports = function (handler, socket, data, callback){
+module.exports = function (socket, data, callback){
   // if username or password is null and no autologin
   if(data.phone_id  == null || data.auth == null)
     return callback(response.BAD_REQUEST('Invalid request'));

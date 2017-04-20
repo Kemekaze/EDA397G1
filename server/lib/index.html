@@ -56,37 +56,51 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script>
-      var socket = io('https://localhost:8443', { query: "token=42ig3Psps3oGbQ6H" });
+      var socket = io('https://10.0.52.67:8443', { query: "token=42ig3Psps3oGbQ6H" });
       socket.on('connect',function(data){
         socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        /*socket.emit('authenticate.github',{
+          auth:{
+            username: '',
+            password: ''
+          },
+          phone_id:'f41f204d91922767'
+        });*/
       });
       socket.on('authenticate.autologin',function(data){
-        console.log(data);
-        socket.emit('user.repositories');
+        socket.emit('repositories');
       });
-      var full_name = ""
-      socket.on('user.repositories',function(data){
+      var full_name  = "";
+      var project_id = 0;
+      var column_id  = 0;
+      var repo_id    = 0;
+      socket.on('repositories',function(data){
         console.log(data);
         full_name = data.data[7].full_name;
-        socket.emit('user.repository.projects',{
+        repo_id = data.data[7].id;
+        socket.emit('repository.projects',{
           full_name: data.data[7].full_name,
           id: data.data[7].id
         });
       });
-      socket.on('user.repository.projects',function(data){
+      socket.on('repository.projects',function(data){
         console.log(data);
+        project_id = data.data[0].id;
         socket.emit('project.columns',{
           project_id: data.data[0].id
         });
       });
       socket.on('project.columns',function(data){
         console.log(data);
-        socket.emit('column.cards',{
-          column_id: data.data[0].id,
-          full_name: full_name
+        column_id = data.data[0].id;
+        socket.emit('game.create',{
+          repo_id: repo_id,
+          full_name: full_name,
+          project_id: project_id,
+          column_id: column_id
         });
       });
-      socket.on('column.cards',function(data){
+      socket.on('game.create',function(data){
         console.log(data);
       });
     </script>
