@@ -1,6 +1,7 @@
 package chalmers.eda397g1;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,6 +64,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
         //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
+        issueListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
@@ -84,6 +86,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         issueListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //adapterView.setSelection(i);
+                //view.setBackgroundColor(Color.parseColor("#FF0000"));
                 Log.v("item", (String) adapterView.getItemAtPosition(i));
             }
             @Override

@@ -37,6 +37,8 @@ public class Constants {
         public static final String COLUMN_CARDS = "column.cards";
         public static final String PROJECT_COLUMNS = "project.columns";
 
+        public static final String AVAILABLE_GAMES = "available.games";
+
 
         public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";
 

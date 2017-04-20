@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.LobbyActivity">
-
-        <ListView
+    
+    <ListView
             android:id="@+id/playerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,4 +22,17 @@
         android:text="Start Game"
         android:textSize="32dp"
         />
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 </LinearLayout>
+
+

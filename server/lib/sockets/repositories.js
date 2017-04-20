@@ -1,5 +1,4 @@
-var response = require('../responses');
-var github = require('octonode');
+var response = lib.helpers.response;
 /**
  * Gets the users repositories
  * @return {Array} [{id, name, full_name, private}]

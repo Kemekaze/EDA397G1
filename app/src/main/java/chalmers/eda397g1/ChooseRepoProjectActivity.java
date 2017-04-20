@@ -2,6 +2,7 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -65,17 +66,25 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         // Find Button
         chooseButton = (Button) findViewById(R.id.chooseButton);
 
-        // Create the adpters used by the spinners and set layout
-        final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                android.R.layout.simple_spinner_item, repoNames);
-        repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        // Create the adapters
+        final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(
+                ChooseRepoProjectActivity.this,
+                android.R.layout.simple_spinner_item,
+                repoNames);
 
-        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                        android.R.layout.simple_spinner_item, projectNames);
+        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(
+                ChooseRepoProjectActivity.this,
+                android.R.layout.simple_spinner_item,
+                projectNames);
+
+        final ArrayAdapter<String> columnAdapter = new ArrayAdapter<String>(
+                ChooseRepoProjectActivity.this,
+                android.R.layout.simple_spinner_item,
+                columnNames);
+
+        // Set adapter layouts
         projectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-        final ArrayAdapter<String> columnAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-                android.R.layout.simple_spinner_item, columnNames);
+        repoAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         columnAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         // Initialize Repository Spinner.
@@ -83,13 +92,14 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         repoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "onItemSelected repositorySpinner");
                 // There may be no repositories.
                 if(i < repoList.size()){
                     selectedRepo = repoList.get(i);
                     projectList.clear();
                     projectNames.clear();
                     requestProjectsData(selectedRepo.getFullName());
-                    //projectAdapter.notifyDataSetChanged();
+                    projectAdapter.notifyDataSetChanged();
                 } else {
                     selectedRepo = null;
                     // TODO: Show Snackbar when no repositories are available
@@ -112,7 +122,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     columnList.clear();
                     columnNames.clear();
                     requestColumnsData(selectedProject.getId());
-                    //columnAdapter.notifyDataSetChanged();
+                    columnAdapter.notifyDataSetChanged();
                 } else {
                     selectedProject = null;
                     // TODO: Show SnackBar that tells the user that no project is selected.
@@ -141,13 +151,36 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize choose Button
+        /**
+         * On a press to the choose button it is checked if all necessary selections have been made,
+         * and then a new lobby is started
+         */
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(selectedProject != null ){
-                    // TODO: Test if other things are selected and show snackbar if not
-                    // Start lobby as hostgit
+                if(selectedRepo == null ) {
+                    Snackbar snackbar = Snackbar.make(
+                            findViewById(R.id.repoSpinner),
+                            "No repository selected!",
+                            Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    //Toast.makeText(getApplicationContext(), "No repository selected!", Toast.LENGTH_SHORT).show();
+                } else if(selectedProject == null) {
+                    Snackbar snackbar = Snackbar.make(
+                            findViewById(R.id.projectSpinner),
+                            "No project selected!",
+                            Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    //Toast.makeText(getApplicationContext(), "No project selected!", Toast.LENGTH_SHORT).show();
+                } else if(selectedColumn == null) {
+                    Snackbar snackbar = Snackbar.make(
+                            findViewById(R.id.columnSpinner),
+                            "No column selected!",
+                            Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
@@ -160,11 +193,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     // Put selected Column
                     b.putCharSequence("columnName", selectedColumn.getName());
                     b.putInt("columnID", selectedColumn.getId());
-
                     intent.putExtras(b);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(), "No project selected!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -245,10 +275,13 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
         if (repoList.isEmpty()) {
             repoNames.add("No repositories available.");
+
         } else {
             for(Repository r : repoList){
                 repoNames.add(r.getName());
             }
+            Log.v(TAG, "Call request projects");
+            requestProjectsData(repoNames.get(0));
         }
         ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
@@ -267,11 +300,13 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         if (projectList.isEmpty()) {
             projectNames.add("No projects available.");
         } else {
+            requestColumnsData(projectList.get(0).getId());
             for(Project p : projectList){
                 projectNames.add(p.getName());
             }
         }
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
+        selectedProject = projectList.get(projectSpinner.getSelectedItemPosition());
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 

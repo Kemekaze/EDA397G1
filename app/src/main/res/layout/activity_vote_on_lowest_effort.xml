@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.VoteOnLowestEffortActivity">
@@ -9,16 +10,18 @@
     <ListView
         android:id="@+id/issueList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp" />
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/colorSelected"
+        android:layout_weight="1.0"
+        />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="115dp"
-        android:layout_marginTop="375dp"
-        android:text="Vote" />
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:text="Vote"
+        android:textSize="32dp"/>
 
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

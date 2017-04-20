@@ -1,3 +1,4 @@
+var response = lib.helpers.response;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 var Session = mongoose.model('Session');
@@ -54,11 +55,7 @@ module.exports = function (handler, socket, data, callback){
                   }
               });
               session.save(function(e,newSession){
-                handler.newSession(newSession._id);
-                handler.addSocketToSession(newSession._id,socket);
-                Client.updateSession(c.phone_id,newSession._id,function(e,newClient){
-                    callback(response.OK(newSession))
-                });
+                socket.join(newSession._id)
               });
             });
          }else{
