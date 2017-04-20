@@ -7,7 +7,14 @@
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.LobbyActivity">
 
-        <ListView
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Waiting for other players to join"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="14dp"/>
+    <ListView
             android:id="@+id/playerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,3 +30,5 @@
         android:textSize="32dp"
         />
 </LinearLayout>
+
+
