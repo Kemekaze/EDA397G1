@@ -9,6 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import chalmers.eda397g1.Events.PlayerJoinedEvent;
+import chalmers.eda397g1.Events.StartGameEvent;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+
 public class LobbyActivity extends AppCompatActivity {
     ListView playerListView;
     Button startGameButton;
@@ -33,6 +38,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_lobby);
 
         // Find out if this is a lobby started by a host
@@ -71,5 +77,24 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Subscribe
+    public void onPlayerJoinedEvent(PlayerJoinedEvent event){
+        // TODO: Add player
+    }
+
+    @Subscribe
+    public void onStartGameEvent(StartGameEvent event){
+        Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
 
 }
