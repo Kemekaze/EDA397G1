@@ -12,15 +12,38 @@ const SessionSchema = mongoose.Schema({
     ref: 'Client'
   }],
   github:{
-    repo_id: String,
-    project_id: String,
-    column_id: String,
+    repo_id:{
+      type: String,
+      required: true
+    },
+    project_id:{
+      type: String,
+      required: true
+    },
+    column_id:{
+      type: String,
+      required: true
+    },
+    full_name:{
+      type: String,
+      required: true
+    },
     backlog_items:[{
-        item_id:{
+        issue_id:{
           type: Number,
           required: true
         },
-        name: String,
+        card_id:{
+          type: Number,
+          required: true
+        },
+        number:{
+          type: Number,
+          required: true
+        },
+        title: String,
+        body: String,
+        state: String,
         business_value: Number,
         effort_value: Number,
         votes: [{

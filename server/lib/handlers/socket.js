@@ -1,18 +1,13 @@
 var mongoose = require('mongoose');
 var path = require('path');
-var Handler = module.exports = function(io,config) {
+var SocketHandler = module.exports = function(io,config) {
   var self = this;
   self.dev = true;
   self.token = config.socketIO.token;
   self.clients = [];
   self.io = io;
-  self.sockets = {
-    on:{}
-  };
-
-
 };
-var method = Handler.prototype;
+var method = SocketHandler.prototype;
 method.setup = function(){
   var self = this;
   this.io.on('connection', function (socket) {
@@ -29,6 +24,8 @@ method.clientConnected = function(socket){
   if(this.dev) console.log('[Socket] connected:',socket.id);
   socket.git ={};
   socket.git.auth = false;
+  socket.session_id = null;
+  socket.phone_id = null;
   this.clients.push(socket);
 }
 //client disconnected
@@ -72,11 +69,10 @@ method.on = function(socket){
       }
       socket.on(name,function(content){
         if(self.dev) console.log("[Socket]",name);
-        require(path.join(dir, file))(socket, content,function(payload){
+        require(path.join(dir, file))(self, socket, content,function(payload){
           socket.emit(name,payload);
         });
       });
     }
   });
-
 }

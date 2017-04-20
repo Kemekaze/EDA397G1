@@ -63,5 +63,7 @@ module.exports.updateByGithubId = function(githubId, update, callback){
   const query = {github_id: githubId}
   const options = {new: true}
   Client.findOneAndUpdate(query, update, options, callback)
-
+}
+module.exports.updateSession = function(phone_id, session_id, callback){
+  Client.findOneAndUpdate({phone_id: phone_id}, {current_session:session_id},{new: true}, callback)
 }

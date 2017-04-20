@@ -23,6 +23,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
@@ -74,7 +75,6 @@ public class SocketService extends Service {
     private void setupIO() throws Exception{
         String host = "https://" + Constants.SERVER_IP+":"+Constants.SERVER_PORT;
         Log.i(TAG, "Connecting to: " + host);
-
         InputStream in = getApplicationContext().getResources().openRawResource(R.raw.my_ca);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(in);
@@ -127,7 +127,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.REPOSITORY_PROJECTS, eventRepositoryProjects);
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
-
+        socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
     }
 
     @Override
@@ -270,25 +270,16 @@ public class SocketService extends Service {
             EventBus.getDefault().post(new CardsEvent(args));
         }
     };
-
-
-/*
-
-    @Subscribe
-    public void onRequestEvent(RequestEvent event){
-        Log.i(TAG, "emit(RequestEvent " + event.getEventName() + " )");
-        socket.emit(event.getEventName(),event.getData());
-
-
-        // Mocked server responses // TODO: remove when server is up
-
-        if(event.getEventName().equals(Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS)) {
-            EventBus.getDefault().post(new VoteOnLowestEffortEvent(
-                    Constants.SocketEvents.RESPONSE_BACKLOG_ITEMS,
-                    new String[]{"item1", "item2", "item3"}));
+    private Emitter.Listener eventAvailableGames = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventAvailableGames()");
+            for(int i = 0; i < args.length; i++){
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new AvailableGamesEvent(args));
         }
-    }
-*/
+    };
 
     @Subscribe(sticky = true)
     public void emit(RequestEvent event){
@@ -306,7 +297,6 @@ public class SocketService extends Service {
             socket.emit(event.getEventName(),event.getData());
         }
     }
-
 
     private HostnameVerifier mHostnameVerifier = new HostnameVerifier() {
         @Override

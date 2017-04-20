@@ -1,10 +1,10 @@
-var response = require('../responses');
-var github = require('../api/github.js');
+var response = lib.helpers.response;
+var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
 
-module.exports = function (socket,data,callback){
+module.exports = function (handler, socket, data, callback){
   // if username or password is null and no autologin
   if(data.phone_id  == null || data.auth == null)
     return callback(response.BAD_REQUEST('Invalid request'));
@@ -37,6 +37,7 @@ module.exports = function (socket,data,callback){
           });
         }
         c.save(function(err,new_client){
+          socket.phone_id = data.phone_id;
           callback(response.OK({
             login: client_data.login,
             avatar_url: client_data.avatar_url

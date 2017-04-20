@@ -1,6 +1,4 @@
-var response = require('../responses');
-var github = require('octonode');
-var request = require('request');
+var response = lib.helpers.response;
 
 /**
  * Gets the projects for the repo
@@ -15,7 +13,7 @@ var request = require('request');
  *	 "state": "open"
  *  }]
  */
-module.exports = function (socket, data, callback){
+module.exports = function (handler, socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.full_name  == null)
