@@ -29,10 +29,12 @@ module.exports = function (socket, data, callback){
         }else{
           c = new Client({
             phone_id: data.phone_id,
-            github_id: client_data.id,
             github: {
+              github_id: client_data.id,
               username: data.auth.username,
-              password: data.auth.password
+              password: data.auth.password,
+              login: client_data.login,
+              avatar: client_data.avatar_url
             }
           });
         }

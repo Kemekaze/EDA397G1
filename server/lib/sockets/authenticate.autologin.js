@@ -14,7 +14,10 @@ module.exports = function (socket, data, callback){
       else if(auth == false) callback(response.NOT_FOUND('No matching user'));
       // found a client
       else{
-        var client = new github(auth);
+        var client = new github({
+          username: auth.github.username,
+          password: auth.github.password
+        });
         client.info(function(err, resp, client_data){
           if(resp.statusCode != 200 || err){
             callback(response.UNAUTHORIZED('Could not auto login'));
@@ -22,10 +25,15 @@ module.exports = function (socket, data, callback){
             socket.git.auth = true;
             socket.git.github = client;
             socket.phone_id = data.phone_id;
-            callback(response.OK({
-              login: client_data.login,
-              avatar_url: client_data.avatar_url
-            }));
+            auth.github.github_id = client_data.id;
+            auth.github.login = client_data.login
+            auth.github.avatar = client_data.avatar_url
+            auth.save(function(err,new_client){
+              callback(response.OK({
+                login: client_data.login,
+                avatar_url: client_data.avatar_url
+              }));
+            });
           }
         });
       }
@@ -37,10 +45,7 @@ function tryAutoLogin(phone_id,cb){
   Client.findOne({phone_id: phone_id}, function(err,c){
     if(c){
       if(c.auto_login){
-        cb({
-          username: c.github.username,
-          password: c.github.password
-        });
+        cb(c);
       }else{
         cb(false);
       }

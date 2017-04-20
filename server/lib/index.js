@@ -7,7 +7,8 @@ var io = require('socket.io')(server);
 
 global.handler={
   socket: new lib.handlers.socket(io,config),
-  session: new lib.handlers.session()
+  room: new lib.handlers.room(io),
+  ev: new lib.handlers.event(io)
 };
 var mongoose = require("mongoose");
 

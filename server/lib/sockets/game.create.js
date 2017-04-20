@@ -14,7 +14,7 @@ module.exports = function (socket, data, callback){
       if(c_resp.statusCode == 200 && !c_error){
         socket.git.github.issues(data.full_name,function(i_error, i_resp, issues){
           if(i_resp.statusCode == 200 && !i_error){
-            var cards = [];
+            var items = [];
             var bv = cards.length;
             for (var c of cards){
               for (var i of issues){
@@ -37,7 +37,7 @@ module.exports = function (socket, data, callback){
                      effort_value: -1,
                      votes:[]
                    };
-                   cards.push(obj)
+                   items.push(obj)
                  }
                }
             }
@@ -49,15 +49,19 @@ module.exports = function (socket, data, callback){
                     column_id: data.column_id,
                     project_id: data.project_id,
                     full_name: data.full_name,
-                    backlog_items: cards
+                    backlog_items: items
                   }
               });
               session.save(function(e,newSession){
-                handler.socket.createRoom(newSession._id,socket, function(created){
-                  if(created)
-                    callback(response.OK(newSession.toObject()));
-                  else
+                handler.room.create(socket, newSession._id, function(created){
+                  if(created){
+                    var obj = newSession.toObject();
+                    delete obj.__v;
+                    delete obj.leader;
+                    callback(response.OK(obj));
+                  }else{
                     callback(response.BAD_REQUEST('There is already a session with that name'));
+                  }
                 });
               });
             });

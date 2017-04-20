@@ -24,7 +24,6 @@ method.clientConnected = function(socket){
   if(this.dev) console.log('[Socket] connected:',socket.id);
   socket.git ={};
   socket.git.auth = false;
-  socket.session_id = null;
   socket.phone_id = null;
   this.clients.push(socket);
 }
@@ -52,7 +51,6 @@ method.authenticate = function(socket, cb) {
     if(this.dev) console.log("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
   }
-
   cb();
 };
 //any other socket event
@@ -67,22 +65,4 @@ method.on = function(socket){
       });
     });
   });
-}
-method.roomExists = function(room){
-  return (this.io.sockets.adapter.rooms[room] != null);
-}
-//handler functions
-method.getRoom = function(socket){
-  return Object.keys( this.io.sockets.adapter.sids[socket.id] );
-}
-method.joinRoom = function(socket, room){
-  var current_rooms = this.getRoom(socket);
-  if(current_rooms.length > 1)
-    socket.leave(current_rooms[1]);
-  socket.join(room);
-}
-method.createRoom = function(room, socket, cb){
-  if(this.roomExists()) return cb(false);
-  this.joinRoom(socket,room);
-  return cb(true);
 }

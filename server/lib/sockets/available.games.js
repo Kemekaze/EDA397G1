@@ -1,4 +1,4 @@
-var response = require('../responses');
+var response = lib.helpers.response;
 
 module.exports = function (handler, socket, data, callback){
 

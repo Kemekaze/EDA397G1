@@ -7,16 +7,23 @@ const ClientSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  github_id: {
-    type: String,
-    required: true,
-    unique: true
-  },
+
   github: {
+    github_id: {
+      type: String,
+      required: true,
+      unique: true
+    },
     username: {
       type: String
     },
     password: {
+      type: String
+    },
+    login: {
+      type: String
+    },
+    avatar: {
       type: String
     }
   },
