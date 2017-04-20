@@ -89,7 +89,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     projectList.clear();
                     projectNames.clear();
                     requestProjectsData(selectedRepo.getFullName());
-                    //projectAdapter.notifyDataSetChanged();
+                    projectAdapter.notifyDataSetChanged();
                 } else {
                     selectedRepo = null;
                     // TODO: Show Snackbar when no repositories are available
@@ -112,7 +112,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     columnList.clear();
                     columnNames.clear();
                     requestColumnsData(selectedProject.getId());
-                    //columnAdapter.notifyDataSetChanged();
+                    columnAdapter.notifyDataSetChanged();
                 } else {
                     selectedProject = null;
                     // TODO: Show SnackBar that tells the user that no project is selected.
