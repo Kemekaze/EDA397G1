@@ -23,11 +23,6 @@ const ClientSchema = mongoose.Schema({
   auto_login: {
     type: Boolean,
     default: true
-  },
-  current_session: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Session',
-    default: null
   }
 })
 

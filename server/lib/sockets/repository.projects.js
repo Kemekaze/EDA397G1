@@ -1,6 +1,4 @@
-var response = require('../responses');
-var github = require('octonode');
-var request = require('request');
+var response = lib.helpers.response;
 
 /**
  * Gets the projects for the repo
