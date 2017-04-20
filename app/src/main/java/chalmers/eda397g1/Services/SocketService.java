@@ -29,6 +29,7 @@ import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.UserProjectsEvent;
+import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -122,7 +123,6 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
         socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthenticatedBitbucket);
         //custom
-        socket.on(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS, eventRequestBacklogItems);
         socket.on(Constants.SocketEvents.REPOSITORIES, eventRepositories);
         socket.on(Constants.SocketEvents.REPOSITORY_PROJECTS, eventRepositoryProjects);
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
@@ -217,15 +217,6 @@ public class SocketService extends Service {
             Log.i(TAG, "eventAuthenticatedBitbucket");
             for(int i = 0; i<args.length; i++)
                 Log.i(TAG,  args[i].toString());
-        }
-    };
-
-    private Emitter.Listener eventRequestBacklogItems = new Emitter.Listener() {
-
-        @Override
-        public void call(Object... args) {
-            Log.i(TAG, "eventRequestBacklogItems");
-            EventBus.getDefault().post(new String[]{"item1", "item2", "item3"});
         }
     };
 

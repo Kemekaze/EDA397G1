@@ -152,8 +152,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
                     // Put selected repo
-                    b.putCharSequence("repoName", selectedRepo.getName());
-                    b.putInt("repoID", selectedRepo.getId());
+                    b.putCharSequence("fullName", selectedRepo.getFullName());
+                    // b.putInt("repoID", selectedRepo.getId());
                     // Put selected project
                     b.putCharSequence("projectName", selectedProject.getName());
                     b.putInt("projectID", selectedProject.getId());

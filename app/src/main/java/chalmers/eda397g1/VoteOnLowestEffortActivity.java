@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AndroidException;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,12 +13,22 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
-import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
+import chalmers.eda397g1.Objects.Card;
+import chalmers.eda397g1.Objects.Label;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
-import io.socket.emitter.Emitter;
+import de.greenrobot.event.ThreadMode;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
@@ -25,22 +36,27 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
     private Button voteButton;
     ListView issueListView;
-    String[] voteIssues = new String[]{
-            "value 10 issue1",
-            "value 9 issue2",
-            "value 8 issue3",
-            "value 7 issue4",
-            "value 6 issue5",
-    };
+    List<Card> cards;
+    private List<String> voteIssues = new ArrayList<>();
+    private String fullName;
+    private int projectID;
+    private int columnID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_vote_on_lowest_effort);
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            fullName = b.getString("fullName");
+            projectID = b.getInt("projectID");
+            columnID = b.getInt("columnID");
+        } else {
+            throw new RuntimeException("No bundle!");
+        }
 
-        EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.REQUEST_BACKLOG_ITEMS));
-
+        EventBus.getDefault().register(this);
+        requestColumnCardsData();
 
         // Temporary vote button
         voteButton = (Button) findViewById(R.id.button1);
@@ -48,9 +64,13 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
 
-        ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
         issueListView.setAdapter(voteListAdapter);
+        //new ArrayAdapter<String>(this, R.layout.)
+
+//        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
+//                android.R.layout.simple_spinner_item, projectNames);
 
         // Initialize voteButton
         voteButton.setOnClickListener(new View.OnClickListener() {
@@ -76,15 +96,81 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart()");
+    }
+
+    @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        Log.d(TAG, "onStop()");
         super.onStop();
     }
 
-    @Subscribe
-    public void onResponseEvent(VoteOnLowestEffortEvent event){
-        Log.i(TAG, "onResponseEvent" + event.getEventName());
-        voteIssues = (String[]) event.getData();
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onReceiveBacklogItemsData(CardsEvent event){
+        Log.i(TAG, String.valueOf(event.getStatus()));
+        Log.i(TAG, event.getData().toString());
+        JSONArray data = (JSONArray) event.getData();
+        cards = new ArrayList<>();
+        LinkedList<Label> labels = new LinkedList<Label>();
+        for (int i = 0; i < data.length(); i++) {
+            JSONObject jsonCard = data.optJSONObject(i);
+            labels.clear();
+            try {
+                JSONArray jsonLabels = jsonCard.getJSONArray("labels");
+                for (int j = 0; j < jsonLabels.length(); j++) {
+                    JSONObject jsonLabel = jsonLabels.optJSONObject(j);
+                    labels.addLast(new Label(jsonLabel.getInt("id"),
+                            jsonLabel.getString("name")));
+                }
+                Card card = new Card(jsonCard.getInt("card_id"),
+                        jsonCard.getInt("column_id"),
+                        jsonCard.getInt("issue_id"),
+                        jsonCard.getInt("number"),
+                        jsonCard.getString("title"),
+                        jsonCard.getString("body"),
+                        jsonCard.getString("state")
+                );
+                Label[] labelsArray = new Label[labels.size()];
+                labels.toArray(labelsArray);
+                card.setLabels(labelsArray);
+                cards.add(card);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        List<String> tmp = new ArrayList<String>(cards.size());
+        for (int i = 0; i < cards.size(); i++) {
+            int businessValue = cards.size() - i;
+            tmp.add(cards.get(i).getTitle() +
+                    "\n- " + getString(R.string.business_value) + ": " + businessValue +
+                    "\n- " + getString(R.string.comment) + ": "+ cards.get(i).getBody());
+        }
+
+        voteIssues.clear();
+        voteIssues.addAll(tmp);
+        ( (ArrayAdapter<String>) issueListView.getAdapter()).notifyDataSetChanged();
+
+    }
+
+    private void requestColumnCardsData() {
+        JSONObject query = new JSONObject();
+        try {
+            query.put("full_name", fullName);
+            query.put("project_id", projectID);
+            query.put("column_id", columnID);
+            Log.i(TAG, ""+fullName);
+            Log.i(TAG, ""+projectID);
+            Log.i(TAG, ""+columnID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.COLUMN_CARDS, query);
+        EventBus.getDefault().post(event);
     }
 
 }

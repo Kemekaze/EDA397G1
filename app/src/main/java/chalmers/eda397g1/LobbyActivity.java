@@ -10,9 +10,12 @@ import android.widget.Button;
 import android.widget.ListView;
 
 public class LobbyActivity extends AppCompatActivity {
-    ListView playerListView;
-    Button startGameButton;
-    Boolean isHost;
+    private ListView playerListView;
+    private Button startGameButton;
+    private Boolean isHost;
+    private String fullName;
+    private int projectID;
+    private int columnID;
 
     // Dummy Players
     String[] players = new String[] {"Player 1",
@@ -33,12 +36,19 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_lobby);
 
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
-        if(b != null)
+        if(b != null) {
             isHost = b.getBoolean("isHost");
+            fullName = b.getString("fullName");
+            projectID = b.getInt("projectID");
+            columnID = b.getInt("columnID");
+        } else {
+            throw new RuntimeException("No bundle!");
+        }
 
         playerListView = (ListView) findViewById(R.id.playerList);
         startGameButton = (Button) findViewById(R.id.startGameButton);
@@ -67,6 +77,12 @@ public class LobbyActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+                Bundle b = new Bundle();
+                b.putString("fullName", fullName);
+                b.putInt("projectID", projectID);
+                b.putInt("columnID", columnID);
+                intent.putExtras(b);
+
                 startActivity(intent);
             }
         });
