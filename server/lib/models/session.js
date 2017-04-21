@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 // User Schema
 const SessionSchema = mongoose.Schema({
-  leader: {
+  host: {
     type: String,
     required: true
   },

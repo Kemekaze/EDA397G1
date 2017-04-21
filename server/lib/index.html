@@ -204,6 +204,11 @@
         console.log('Socket1 - game.create');
         console.log(data);
         socket2.emit('game.join',{game_id:data.data._id});
+        socket2.emit('available.games');
+      });
+      socket2.on('available.games',function(data){
+        console.log('Socket2 - available.games');
+        console.log(data);
       });
       socket2.on('game.join',function(data){
         console.log('Socket2 - game.join');

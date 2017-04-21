@@ -3,6 +3,16 @@ var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
+/**
+ * Autologin, tries to auto login the user
+ * @param {Number} data.phone_id
+ * @return {Object} rtn
+ *  Example:
+ *  {
+ *	 "login": "Kemekaze",
+ *   "avatar_url": "https://avatars3.githubusercontent.com/u/5463135?v=3"
+ *  }
+ */
 
 module.exports = function (socket, data, callback){
   if(data == null)

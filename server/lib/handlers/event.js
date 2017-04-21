@@ -16,6 +16,10 @@ var method = EventHandler.prototype;
 method.emit = function(ev,data){
   this.ee.emit(ev,data);
 }
+method.JOIN = 'game.join';
+method.CREATE = 'game.create';
+
+
 method.room = function(){
   var self = this;
   self.ee.on(self.JOIN,function(room){
@@ -36,9 +40,12 @@ method.room = function(){
       }
       self.io.to(room).emit('game.clients',self.response.OK(d));
     });
+  });
+  self.ee.on(self.CREATE,function(room_id){
+
   })
 }
-method.JOIN = 'game.join';
+
 
 
 

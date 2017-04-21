@@ -1,4 +1,3 @@
-
 var RoomHandler = module.exports = function(io) {
   var self = this;
   self.io = io;
@@ -27,6 +26,7 @@ method.create = function(socket, room, cb){
   if(current_rooms.length > 1)
     socket.leave(current_rooms[1]);
   socket.join(room);
+  handler.ev.emit(handler.ev.CREATE,room);
   return cb(true);
 }
 method.end = function(room, cb){
@@ -42,4 +42,13 @@ method.clients = function(room){
     rtn.push(this.io.sockets.connected[id]);
   }
   return rtn;
+}
+method.all = function(){
+  return this.io.sockets.adapter.rooms;
+}
+method.availableFor = function(socket, cb){
+  var self = this;
+
+
+
 }

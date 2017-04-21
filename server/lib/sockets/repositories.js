@@ -1,8 +1,17 @@
 var response = lib.helpers.response;
 /**
  * Gets the users repositories
- * @return {Array} [{id, name, full_name, private}]
+ * @return {Array} rtn
+ *  Example:
+ *  [{
+ *	 "id": 540710,
+ *	 "name": "EDA397G1",
+ *	 "full_name": "Kemekaze/EDA397G1",
+ *	 "private": true,
+ *	 "state": "open"
+ *  }]
  */
+
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
