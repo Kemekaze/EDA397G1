@@ -26,12 +26,14 @@ import javax.net.ssl.X509TrustManager;
 import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.CreateGameEvent;
+import chalmers.eda397g1.Events.GameJoinEvent;
+import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Events.UserProjectsEvent;
-import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -130,6 +132,9 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
         socket.on(Constants.SocketEvents.CREATE_GAME, eventCreateGame);
+        socket.on(Constants.SocketEvents.START_GAME, eventStartGame);
+        socket.on(Constants.SocketEvents.GAME_JOIN, eventGameJoin);
+        socket.on(Constants.SocketEvents.GAMES_CLIENTS, eventGamesClientsEvent);
     }
 
     @Override
@@ -277,12 +282,47 @@ public class SocketService extends Service {
     private Emitter.Listener eventCreateGame = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+            Log.i(TAG, "eventCreateGames()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new CreateGameEvent(args));
         }
     };
+
+    private Emitter.Listener eventStartGame = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventStartGame()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new StartGameEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventGameJoin = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventGameJoin()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new GameJoinEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventGamesClientsEvent = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventGamesClientsEvent()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new LobbyUpdateEvent(args));
+        }
+    };
+
 
     @Subscribe(sticky = true)
     public void emit(RequestEvent event){

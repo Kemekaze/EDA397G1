@@ -10,14 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
-import chalmers.eda397g1.Events.CreateGameEvent;
-import chalmers.eda397g1.Events.PlayerJoinedLobbyEvent;
-import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Events.GameJoinEvent;
+import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
-import chalmers.eda397g1.Resources.Constants;
+import chalmers.eda397g1.Objects.User;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
@@ -27,37 +26,29 @@ public class LobbyActivity extends AppCompatActivity {
     private Button startGameButton;
     private Boolean isHost;
     private String fullName;
+    private int repoID;
     private int projectID;
     private int columnID;
     private final String TAG = "Lobby";
-
-    // Dummy Players
-    String[] players = new String[] {"Player 1",
-            "Player 2",
-            "Player 3",
-            "Player 4",
-            "Player 5",
-            "Player 6",
-            "Player 7",
-            "Player 8",
-            "Player 9",
-            "Player 10",
-            "Player 11",
-            "Player 12",
-            "Player 13",
-    };
+    private List<String> players;
+    private String joinedSessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_lobby);
+
+        players = new ArrayList<>();
+        players.add("Player 1");
+        players.add("Player 2");
+        players.add("Player 3");
 
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
         if(b != null) {
             isHost = b.getBoolean("isHost");
             fullName = b.getString("fullName");
+            repoID = b.getInt("repoID");
             projectID = b.getInt("projectID");
             columnID = b.getInt("columnID");
         } else {
@@ -89,53 +80,61 @@ public class LobbyActivity extends AppCompatActivity {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
                 Bundle b = new Bundle();
                 b.putString("fullName", fullName);
+                b.putInt("repoID", repoID);
                 b.putInt("projectID", projectID);
                 b.putInt("columnID", columnID);
                 intent.putExtras(b);
-                
-                JSONObject query = new JSONObject();
-                try {
-                    query.put("full_name", fullName);
-                    query.put("project_id", projectID);
-                    query.put("column_id", columnID);
-                    RequestEvent event = new RequestEvent(Constants.SocketEvents.CREATE_GAME, query);
-                    EventBus.getDefault().post(event);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                
+
                 startActivity(intent);
             }
         });
     }
 
-    @Subscribe
-    public void onPlayerJoinedEvent(PlayerJoinedLobbyEvent event){
-        // TODO: Add player
-    }
-
-    @Subscribe
-    public void onStartGameEvent(StartGameEvent event){
-        Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
-        startActivity(intent);
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
+        Log.d(TAG, "onStop()");
         EventBus.getDefault().unregister(this);
     }
 
-    
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onCreateGame(CreateGameEvent event) {
-        Log.i(TAG, "onCreateGame");
-        // TODO: 2017-04-20 Implement to start game for non-leaders 
+    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true) // TODO: not sure about sticky, just want to make sure it catches it
+    public void onGameJoinEvent(GameJoinEvent event) {
+        Log.i(TAG, "onGameJoinEvent");
+        joinedSessionId = event.getCurrentGame().getSessionId();
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
+        Log.i(TAG, "onLobbyUpdateEvent");
 
+        players.clear();
+        for (User user : event.getUsers()) {
+            players.add(user.getLogin());
+        }
+
+        ( (ArrayAdapter<String>) playerListView.getAdapter()).notifyDataSetChanged();
+    }
+
+    // Start game for people in the lobby when leader starts the game
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onStartGame(StartGameEvent event) {
+        Log.i(TAG, "onStartGame");
+        if (!isHost) {
+            // if game that was started is equal to the one of the lobby, then switch activity
+            if (event.getCurrentGame().getSessionId().equals(joinedSessionId)) {
+                Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }
