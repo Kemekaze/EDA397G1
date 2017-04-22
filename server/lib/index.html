@@ -165,6 +165,8 @@
         socket2.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
       });
       socket.on('authenticate.autologin',function(data){
+        console.log('Socket1 - authenticate.autologin');
+        console.log(data);
         socket.emit('repositories');
       });
       var full_name  = "";
