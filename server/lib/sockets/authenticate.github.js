@@ -51,6 +51,7 @@ module.exports = function (socket, data, callback){
               avatar: client_data.avatar_url
             }
           });
+          console.log(c..toObject());
         }
         c.save(function(err,new_client){
           console.log(err);
