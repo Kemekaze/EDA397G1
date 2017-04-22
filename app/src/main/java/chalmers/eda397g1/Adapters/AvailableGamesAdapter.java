@@ -1,6 +1,7 @@
 package chalmers.eda397g1.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,16 @@ import java.util.List;
 
 import chalmers.eda397g1.Objects.Game;
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.Resources.DownloadImageTask;
+
+
 
 /**
  * Created by elias on 2017-04-22.
  */
 
 public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAdapter.ViewHolder>{
-
+    private String TAG = "AvailableGamesAdapter";
     private List<Game> games = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,7 +42,7 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_game, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_game, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -48,6 +52,13 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
         final int pos = position;
         holder.view.setClickable(true);
         holder.view.setOnClickListener(clickListener);
+        Game game = games.get(pos);
+
+        holder.mName.setText(game.getName());
+        Log.d(TAG, "Name: "+game.getName());
+        holder.mHost.setText(game.getHost().getLogin());
+        new DownloadImageTask(holder.mAvatar,true)
+                .execute(game.getHost().getUri());
     }
 
     @Override

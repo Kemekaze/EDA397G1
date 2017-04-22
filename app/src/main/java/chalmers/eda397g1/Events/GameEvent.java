@@ -1,5 +1,7 @@
 package chalmers.eda397g1.Events;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import chalmers.eda397g1.Objects.Game;
@@ -14,20 +16,20 @@ public class GameEvent extends Event {
 
     public GameEvent(Object... args) {
         super(args);
-        Object obj = getData();
-        if (obj instanceof JSONObject) {
-            JSONObject game = (JSONObject) getData();
-            JSONObject host = game.optJSONObject("host");
-            currentGame = new Game(
-                    game.optString("session_id"),
-                    game.optString("name"),
-                    new User(
-                            host.optString("login"),
-                            host.optString("avatar")
-                    )
-            );
 
-        }
+        JSONObject game = (JSONObject) getData();
+        JSONObject host = game.optJSONObject("host");
+        Log.i("GameEvent", game.toString());
+        currentGame = new Game(
+                game.optString("session_id"),
+                game.optString("full_name"),
+                new User(
+                        host.optString("login"),
+                        host.optString("avatar")
+                )
+        );
+
+
     }
 
     public Game getCurrentGame() {
