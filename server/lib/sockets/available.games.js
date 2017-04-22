@@ -36,6 +36,8 @@ module.exports = function (socket, data, callback){
             room_object_ids.push(mongoose.Types.ObjectId(r));
           }
       }
+      if(room_object_ids.length == 0 ) callback(response.OK([]));
+
       Session.find({
         '_id': { $in: room_object_ids}
       },function(e,games){
@@ -53,6 +55,7 @@ module.exports = function (socket, data, callback){
           }
         }
         var clients_to_fetch = viewable_games.length;
+        if(clients_to_fetch == 0 ) callback(response.OK([]));
         for (var i = 0; i < clients_to_fetch; i++) {
           (function(i) {
             Client.findOne({phone_id: viewable_games[i].phone_id}, function(err,c){
@@ -61,7 +64,7 @@ module.exports = function (socket, data, callback){
               viewable_games[i].host.login = c.github.login;
               viewable_games[i].host.avatar = c.github.avatar;
               if(clients_to_fetch <= 0){
-                callback(response.OK(viewable_games))
+                callback(response.OK(viewable_games));
               }
             });
           })(i);

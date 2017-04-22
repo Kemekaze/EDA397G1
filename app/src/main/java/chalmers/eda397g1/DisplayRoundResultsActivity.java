@@ -4,12 +4,11 @@ package chalmers.eda397g1;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import chalmers.eda397g1.adapter.RoundResultAdapter;
+import chalmers.eda397g1.Adapters.RoundResultAdapter;
 
 public class DisplayRoundResultsActivity extends ListActivity {
     ListView listView;

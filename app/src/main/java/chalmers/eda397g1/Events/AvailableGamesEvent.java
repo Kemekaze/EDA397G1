@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.Objects.Game;
+import chalmers.eda397g1.Objects.User;
 
 /**
  * Created by nume on 2017-04-20
@@ -23,10 +24,15 @@ public class AvailableGamesEvent extends Event {
             JSONArray arr = (JSONArray) getData();
             for (int i = 0; i < arr.length(); i++) {
                 try {
-                    JSONObject obj2 = arr.getJSONObject(i);
+                    JSONObject game = arr.getJSONObject(i);
+                    JSONObject host = game.getJSONObject("host");
                     games.add(new Game(
-                            obj2.getString("session_id"),
-                            obj2.getString("name")
+                            game.optString("session_id"),
+                            game.optString("name"),
+                            new User(
+                                    host.optString("login"),
+                                    host.optString("avatar")
+                            )
                     ));
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -13,7 +13,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import chalmers.eda397g1.Events.GameJoinEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Objects.User;
@@ -107,11 +106,11 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true) // TODO: not sure about sticky, just want to make sure it catches it
+    /*@Subscribe (threadMode = ThreadMode.MainThread, sticky = true) // TODO: not sure about sticky, just want to make sure it catches it
     public void onGameJoinEvent(GameJoinEvent event) {
         Log.i(TAG, "onGameJoinEvent");
         joinedSessionId = event.getCurrentGame().getSessionId();
-    }
+    }*/
 
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {

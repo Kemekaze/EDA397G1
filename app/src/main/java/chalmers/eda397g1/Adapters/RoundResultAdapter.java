@@ -1,7 +1,6 @@
-package chalmers.eda397g1.adapter;
+package chalmers.eda397g1.Adapters;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;

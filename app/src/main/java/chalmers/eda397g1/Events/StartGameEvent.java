@@ -1,8 +1,5 @@
 package chalmers.eda397g1.Events;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import chalmers.eda397g1.Objects.Game;
 
 /**
@@ -15,7 +12,7 @@ public class StartGameEvent extends Event {
     public StartGameEvent(Object... args) {
         super(args);
         Object obj = getData();
-        if (obj instanceof JSONObject) {
+        /*if (obj instanceof JSONObject) {
             JSONObject jsonObject = (JSONObject) getData();
             try {
                 currentGame = new Game(jsonObject.getString("session_id"),
@@ -23,7 +20,7 @@ public class StartGameEvent extends Event {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     public Game getCurrentGame() {

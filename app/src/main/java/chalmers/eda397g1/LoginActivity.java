@@ -278,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Log.i(TAG, "loginEvent(LoginEvent)");
         showProgress(false);
         if(event.getStatus() == Constants.StatusCodes.OK){
-            startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         else if(event.getStatus() != Constants.StatusCodes.NOT_FOUND)
         {
