@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.availabe_games);
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -96,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
     public void onReceiveAvailableGames(AvailableGamesEvent event){
         Log.d("-->", "onReceiveAvailableGames:");
         List<Game> games = event.getAvailableGames();
+        if (games.isEmpty()) {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
         mAdapter.addGames(games);
     }
 }
