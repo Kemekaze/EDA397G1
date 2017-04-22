@@ -35,6 +35,8 @@ module.exports = function (socket, data, callback){
       socket.git.auth = true;
       socket.git.github = client;
       Client.getByGithubId(client_data.id,function(err,c){
+        console.log(err);
+        console.log(c);
         if(c){
           c.username = data.auth.username;
           c.password = data.auth.password;
@@ -51,6 +53,8 @@ module.exports = function (socket, data, callback){
           });
         }
         c.save(function(err,new_client){
+          console.log(err);
+          console.log(new_client);
           socket.phone_id = data.phone_id;
           callback(response.OK({
             login: client_data.login,
