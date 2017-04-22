@@ -56,6 +56,7 @@ module.exports = function (socket, data, callback){
 function tryAutoLogin(phone_id,cb){
   if(phone_id == null) cb(null);
   Client.findOne({phone_id: phone_id}, function(err,c){
+    console.log(c);
     if(c){
       if(c.auto_login){
         cb(c);
