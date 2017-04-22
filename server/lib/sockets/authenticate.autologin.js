@@ -24,6 +24,7 @@ module.exports = function (socket, data, callback){
       else if(auth == false) callback(response.NOT_FOUND('No matching user'));
       // found a client
       else{
+        console.log(auth);
         var client = new github({
           username: auth.github.username,
           password: auth.github.password
