@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.AVAILABLE_GAMES));
     }
 
     @Override
