@@ -9,7 +9,7 @@ const ClientSchema = mongoose.Schema({
   },
   github: {
     github_id: {
-      type: String,
+      type: Number,
       required: true,
       unique: true
     },
