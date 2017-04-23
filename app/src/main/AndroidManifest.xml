@@ -18,11 +18,13 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_main_menu">>
         </activity>
 
         <activity
-            android:name=".VoteResultsActivity">
+            android:name=".VoteResultsActivity"
+            android:label="Final Results">
         </activity>
 
         <activity
@@ -60,8 +62,6 @@
         </intent-filter>
 
         </activity>
-
-
 
         <activity
             android:name=".MainMenuActivity"
