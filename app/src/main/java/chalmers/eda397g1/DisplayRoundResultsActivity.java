@@ -1,17 +1,18 @@
 package chalmers.eda397g1;
 
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import chalmers.eda397g1.Adapters.RoundResultAdapter;
 
-public class DisplayRoundResultsActivity extends ListActivity {
+public class DisplayRoundResultsActivity extends AppCompatActivity
+{
 
     String[] dummyPlayers = new String[]{
             "Player 1",
@@ -31,7 +32,8 @@ public class DisplayRoundResultsActivity extends ListActivity {
 
         final RoundResultAdapter adapter = new RoundResultAdapter(this, dummyPlayers, dummyVotes);
 
-        setListAdapter(adapter);
+        ListView voteResult = (ListView) findViewById(R.id.list);
+        voteResult.setAdapter(adapter);
 
         /*
         ListView listView = getListView();
