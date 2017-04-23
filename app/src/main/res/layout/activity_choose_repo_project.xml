@@ -6,31 +6,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/repoSpinner"
+    <TextView
+        android:id="@+id/chooseRepoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
+        android:text="@string/select_repository"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/repoSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:hint="Select Repository"
         android:textColorHint="#05ab9a"
         app:met_floatingLabel="normal"/>
 
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/projectSpinner"
+    <TextView
+        android:id="@+id/chooseProjectText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
+        android:text="@string/select_project"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/projectSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:hint="Select Project"
         android:textColorHint="#05ab9a"
         app:met_floatingLabel="normal"/>
 
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/columnSpinner"
+    <TextView
+        android:id="@+id/chooseColumnText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
+        android:text="@string/select_column"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/columnSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:hint="Select Column"
         android:textColorHint="#05ab9a"
         app:met_floatingLabel="normal"/>
@@ -39,7 +58,6 @@
         android:id="@+id/chooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:backgroundTint="@color/Accent"
         android:elevation="12dp"
         android:text="@string/choose_button_string"/>

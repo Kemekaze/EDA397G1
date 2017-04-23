@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -35,9 +37,9 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     public static final String TAG = "chooserepo";
 
-    private MaterialBetterSpinner repoSpinner;
-    private MaterialBetterSpinner  projectSpinner;
-    private MaterialBetterSpinner  columnSpinner;
+    private AppCompatSpinner repoSpinner;
+    private AppCompatSpinner projectSpinner;
+    private AppCompatSpinner  columnSpinner;
     private Button chooseButton;
 
     private List<Repository> repoList = new ArrayList<>();
@@ -58,9 +60,9 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_repo_project);
 
         // Find Spinners
-        repoSpinner = (MaterialBetterSpinner) findViewById(R.id.repoSpinner);
-        projectSpinner = (MaterialBetterSpinner) findViewById(R.id.projectSpinner);
-        columnSpinner = (MaterialBetterSpinner) findViewById(R.id.columnSpinner);
+        repoSpinner = (AppCompatSpinner) findViewById(R.id.repoSpinner);
+        projectSpinner = (AppCompatSpinner) findViewById(R.id.projectSpinner);
+        columnSpinner = (AppCompatSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
         chooseButton = (Button) findViewById(R.id.chooseButton);
