@@ -25,5 +25,5 @@
     <string name="business_value">Business Value</string>
     <string name="comment">Comment</string>
     <string name="no_data_available">No games available</string>
-    <string name="choose_priority">Choose priority</string>
+    <string name="choose_priority">Pick effort</string>
 </resources>

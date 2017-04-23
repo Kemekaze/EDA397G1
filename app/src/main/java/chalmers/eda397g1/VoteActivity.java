@@ -1,6 +1,7 @@
 package chalmers.eda397g1;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,6 @@ import android.widget.NumberPicker;
 
 public class VoteActivity extends AppCompatActivity {
     final static String TAG = "VoteActivity";
-    private Button voteButton;
     private NumberPicker effortPicker;
     private int selectedEffort;
 
@@ -29,7 +29,6 @@ public class VoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote);
 
-        voteButton = (Button) findViewById(R.id.votebutton);
         effortPicker = (NumberPicker) findViewById(R.id.effort_picker);
 
         effortPicker.setMinValue(0);
@@ -51,6 +50,7 @@ public class VoteActivity extends AppCompatActivity {
 
 
         // Initialize voteButton
+        FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.votebutton);
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
