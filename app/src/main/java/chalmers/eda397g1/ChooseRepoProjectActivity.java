@@ -2,6 +2,7 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
@@ -65,7 +66,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         columnSpinner = (AppCompatSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
-        chooseButton = (Button) findViewById(R.id.chooseButton);
+        FloatingActionButton chooseButton = (FloatingActionButton) findViewById(R.id.fab3);
 
         // Create the adapters
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(
