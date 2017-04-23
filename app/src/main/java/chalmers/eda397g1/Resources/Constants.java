@@ -31,17 +31,16 @@ public class Constants {
         public static final String AUTHENTICATE_GITHUB = "authenticate.github";
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
 
-        public static final String REQUEST_BACKLOG_ITEMS = "requestBacklogItems";
         public static final String REPOSITORIES = "repositories";
         public static final String REPOSITORY_PROJECTS = "repository.projects";
         public static final String COLUMN_CARDS = "column.cards";
         public static final String PROJECT_COLUMNS = "project.columns";
 
+        public static final String CREATE_GAME = "create.game";
+        public static final String GAME_JOIN = "game.join";
+        public static final String START_GAME = "start.game";
         public static final String AVAILABLE_GAMES = "available.games";
 
-
-        public static final String RESPONSE_BACKLOG_ITEMS = "responseBacklogItems";
-
-
+        public static final String GAMES_CLIENTS = "games.clients";
     }
 }

@@ -5,19 +5,25 @@ package chalmers.eda397g1.Objects;
  */
 
 public class Game {
-    private String sessionId;
-    private String name;
+    private String session_id;
+    private String full_name;
+    private User host;
 
-    public Game(String sessionId, String name) {
-        this.sessionId = sessionId;
-        this.name = name;
+    public Game(String session_id, String full_name, User host) {
+        this.session_id = session_id;
+        this.full_name = full_name;
+        this.host = host;
     }
 
     public String getSessionId() {
-        return sessionId;
+        return session_id;
     }
 
     public String getName() {
-        return name;
+        return full_name;
+    }
+
+    public User getHost() {
+        return host;
     }
 }

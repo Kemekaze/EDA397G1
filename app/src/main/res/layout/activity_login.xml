@@ -11,7 +11,7 @@
               android:id="@+id/login_linear_layout"
               tools:context="chalmers.eda397g1.LoginActivity">
 
-    <!-- Login progress -->
+    <!-- User progress -->
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"

@@ -99,7 +99,7 @@ describe('Session-model:', function() {
         Session.findOne({leader: leaderClient._id})
         .populate('leader')
         .exec(function (err, session) {
-          if (err) return handleError(err)
+          expect(err).to.not.exist
           assert.equal(session.leader.github_id, "GITHUB-ID-1")
           done()
         })

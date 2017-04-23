@@ -7,7 +7,8 @@ var io = require('socket.io')(server);
 
 global.handler={
   socket: new lib.handlers.socket(io,config),
-  session: new lib.handlers.session()
+  room: new lib.handlers.room(io),
+  ev: new lib.handlers.event(io)
 };
 var mongoose = require("mongoose");
 
@@ -26,7 +27,7 @@ mongoose.connection.on('error', function (err) {
 });
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname+'/test/index.html');
+  res.sendFile(serverRoot+'/index.html');
 });
 server.listen(config.config.PORT, function(){
   console.log("[Server]",require('ip').address()+':'+config.config.PORT);

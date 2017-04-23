@@ -24,7 +24,6 @@ method.clientConnected = function(socket){
   if(this.dev) console.log('[Socket] connected:',socket.id);
   socket.git ={};
   socket.git.auth = false;
-  socket.session_id = null;
   socket.phone_id = null;
   this.clients.push(socket);
 }
@@ -52,27 +51,18 @@ method.authenticate = function(socket, cb) {
     if(this.dev) console.log("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
   }
-
   cb();
 };
 //any other socket event
 method.on = function(socket){
   var self = this;
-  var dir = path.join(__dirname, 'sockets');
-  require("fs").readdirSync(dir).forEach(function(file) {
-    var f = file.split('.');
-    if(f[f.length-1] == 'js'){
-      var name = "";
-      for(var i = 0 ;i < f.length-1;i++){
-        if(i != 0) name += '.';
-        name += f[i];
-      }
-      socket.on(name,function(content){
-        if(self.dev) console.log("[Socket]",name);
-        require(path.join(dir, file))(self, socket, content,function(payload){
-          socket.emit(name,payload);
-        });
+  var sockets = require('../sockets/');
+  Object.keys(sockets).forEach(function(name){
+    socket.on(name,function(content){
+      if(self.dev) console.log("[Socket]",name);
+      sockets[name](socket, content,function(payload){
+        socket.emit(name,payload);
       });
-    }
+    });
   });
 }

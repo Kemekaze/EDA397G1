@@ -3,8 +3,20 @@ var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
+/**
+ * Signs in the user
+ * @param {Number} data.phone_id
+ * @param {Number} data.auth.username
+ * @param {Number} data.auth.password
+ * @return {Object} rtn
+ *  Example:
+ *  {
+ *	 "login": "Kemekaze",
+ *   "avatar_url": "https://avatars3.githubusercontent.com/u/5463135?v=3"
+ *  }
+ */
 
-module.exports = function (handler, socket, data, callback){
+module.exports = function (socket, data, callback){
   // if username or password is null and no autologin
   if(data.phone_id  == null || data.auth == null)
     return callback(response.BAD_REQUEST('Invalid request'));
@@ -29,10 +41,12 @@ module.exports = function (handler, socket, data, callback){
         }else{
           c = new Client({
             phone_id: data.phone_id,
-            github_id: client_data.id,
             github: {
+              github_id: client_data.id,
               username: data.auth.username,
-              password: data.auth.password
+              password: data.auth.password,
+              login: client_data.login,
+              avatar: client_data.avatar_url
             }
           });
         }

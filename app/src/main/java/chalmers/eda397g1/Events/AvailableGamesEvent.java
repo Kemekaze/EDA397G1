@@ -1,13 +1,13 @@
 package chalmers.eda397g1.Events;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.Objects.Game;
+import chalmers.eda397g1.Objects.User;
 
 /**
  * Created by nume on 2017-04-20
@@ -22,15 +22,17 @@ public class AvailableGamesEvent extends Event {
         if (obj instanceof JSONArray) {
             JSONArray arr = (JSONArray) getData();
             for (int i = 0; i < arr.length(); i++) {
-                try {
-                    JSONObject obj2 = arr.getJSONObject(i);
-                    games.add(new Game(
-                            obj2.getString("session_id"),
-                            obj2.getString("name")
-                    ));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                JSONObject game = arr.optJSONObject(i);
+                JSONObject host = game.optJSONObject("host");
+                games.add(new Game(
+                        game.optString("session_id"),
+                        game.optString("full_name"),
+                        new User(
+                                host.optString("login"),
+                                host.optString("avatar")
+                        )
+                ));
+
             }
         }
     }

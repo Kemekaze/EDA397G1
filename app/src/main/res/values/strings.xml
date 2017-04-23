@@ -2,6 +2,7 @@
     <string name="app_name">XPlan</string>
     <string name="title_activity_login">Sign in to GitHub</string>
     <string name="title_activity_vote">Vote on Effort</string>
+    <string name="title_activity_vote_on_lowest_effort">Vote on Lowest Effort</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -20,5 +21,9 @@
     <string name="chooseColumn">Select Column</string>
     <string name="select_project">Select Project</string>
     <string name="select_repository">Select Repository</string>
-    <string name="choose_button_string">Create</string>
+    <string name="choose_button_string">Choose</string>
+    <string name="business_value">Business Value</string>
+    <string name="comment">Comment</string>
+    <string name="no_data_available">No games available</string>
+    <string name="choose_priority">Choose priority</string>
 </resources>

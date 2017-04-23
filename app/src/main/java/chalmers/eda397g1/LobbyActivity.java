@@ -4,41 +4,56 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class LobbyActivity extends AppCompatActivity {
-    ListView playerListView;
-    Boolean isHost;
+import java.util.ArrayList;
+import java.util.List;
 
-    // Dummy Players
-    String[] players = new String[] {"Player 1",
-            "Player 2",
-            "Player 3",
-            "Player 4",
-            "Player 5",
-            "Player 6",
-            "Player 7",
-            "Player 8",
-            "Player 9",
-            "Player 10",
-            "Player 11",
-            "Player 12",
-            "Player 13",
-    };
+import chalmers.eda397g1.Events.LobbyUpdateEvent;
+import chalmers.eda397g1.Events.StartGameEvent;
+import chalmers.eda397g1.Objects.User;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+
+public class LobbyActivity extends AppCompatActivity {
+    private ListView playerListView;
+    private Button startGameButton;
+    private Boolean isHost;
+    private String fullName;
+    private int repoID;
+    private int projectID;
+    private int columnID;
+    private final String TAG = "Lobby";
+    private List<String> players;
+    private String joinedSessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        players = new ArrayList<>();
+        players.add("Player 1");
+        players.add("Player 2");
+        players.add("Player 3");
+
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
-        if(b != null)
+        if(b != null) {
             isHost = b.getBoolean("isHost");
+            fullName = b.getString("fullName");
+            repoID = b.getInt("repoID");
+            projectID = b.getInt("projectID");
+            columnID = b.getInt("columnID");
+        } else {
+            throw new RuntimeException("No bundle!");
+        }
 
         playerListView = (ListView) findViewById(R.id.playerList);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
@@ -65,11 +80,61 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+                Bundle b = new Bundle();
+                b.putString("fullName", fullName);
+                b.putInt("repoID", repoID);
+                b.putInt("projectID", projectID);
+                b.putInt("columnID", columnID);
+                intent.putExtras(b);
+
                 startActivity(intent);
             }
         });
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(TAG, "onStop()");
+        EventBus.getDefault().unregister(this);
+    }
+
+    /*@Subscribe (threadMode = ThreadMode.MainThread, sticky = true) // TODO: not sure about sticky, just want to make sure it catches it
+    public void onGameJoinEvent(GameJoinEvent event) {
+        Log.i(TAG, "onGameJoinEvent");
+        joinedSessionId = event.getCurrentGame().getSessionId();
+    }*/
+
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
+        Log.i(TAG, "onLobbyUpdateEvent");
+
+        players.clear();
+        for (User user : event.getUsers()) {
+            players.add(user.getLogin());
+        }
+
+        ( (ArrayAdapter<String>) playerListView.getAdapter()).notifyDataSetChanged();
+    }
+
+    // Start game for people in the lobby when leader starts the game
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onStartGame(StartGameEvent event) {
+        Log.i(TAG, "onStartGame");
+        if (!isHost) {
+            // if game that was started is equal to the one of the lobby, then switch activity
+            if (event.getCurrentGame().getSessionId().equals(joinedSessionId)) {
+                Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }

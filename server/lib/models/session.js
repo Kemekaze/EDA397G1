@@ -2,15 +2,10 @@ const mongoose = require('mongoose')
 
 // User Schema
 const SessionSchema = mongoose.Schema({
-  leader: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client',
+  host: {
+    type: String,
     required: true
   },
-  clients:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
-  }],
   github:{
     repo_id:{
       type: String,

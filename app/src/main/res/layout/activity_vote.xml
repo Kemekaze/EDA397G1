@@ -34,22 +34,23 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/priorities"
-        android:layout_alignStart="@+id/priorities"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        android:text="Choose priority"
-        android:textSize="20sp"/>
+        android:text="@string/choose_priority"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/effort_picker"
+        android:layout_marginBottom="15dp"/>
 
-    <ListView
-        android:id="@+id/priorities"
+
+    <NumberPicker
+        android:id="@+id/effort_picker"
         android:layout_width="175dp"
         android:layout_height="193dp"
         android:layout_above="@+id/votebutton"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="22dp"
-        android:scrollbars="horizontal"/>
+        android:layout_marginBottom="22dp">
+    </NumberPicker>
 
     <Button
         android:id="@+id/votebutton"
