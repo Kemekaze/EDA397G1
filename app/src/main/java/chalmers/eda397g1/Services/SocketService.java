@@ -130,9 +130,9 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
-        socket.on(Constants.SocketEvents.CREATE_GAME, eventCreateGame);
-        socket.on(Constants.SocketEvents.START_GAME, eventStartGame);
+        socket.on(Constants.SocketEvents.GAME_CREATE, eventGameCreate);
         socket.on(Constants.SocketEvents.GAME_JOIN, eventGameJoin);
+        socket.on(Constants.SocketEvents.START_GAME, eventStartGame);
         socket.on(Constants.SocketEvents.GAMES_CLIENTS, eventGamesClientsEvent);
     }
 
@@ -278,25 +278,14 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventCreateGame = new Emitter.Listener() {
+    private Emitter.Listener eventGameCreate = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventCreateGames()");
+            Log.i(TAG, "eventGameCreate()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new GameEvent(args));
-        }
-    };
-
-    private Emitter.Listener eventStartGame = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            Log.i(TAG, "eventStartGame()");
-            for(int i = 0; i < args.length; i++) {
-                Log.i(TAG,  args[i].toString());
-            }
-            EventBus.getDefault().post(new StartGameEvent(args));
         }
     };
 
@@ -308,6 +297,17 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             //EventBus.getDefault().post(new GameJoinEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventStartGame = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventStartGame()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new StartGameEvent(args));
         }
     };
 

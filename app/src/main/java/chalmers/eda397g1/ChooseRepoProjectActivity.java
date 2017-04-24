@@ -10,13 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
@@ -187,7 +185,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         query.put("repo_id", selectedRepo.getId());
                         query.put("project_id", selectedProject.getName());
                         query.put("column_id", selectedColumn.getName());
-                        RequestEvent event = new RequestEvent(Constants.SocketEvents.CREATE_GAME, query);
+                        RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
                         EventBus.getDefault().post(event);
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -36,7 +36,7 @@ public class Constants {
         public static final String COLUMN_CARDS = "column.cards";
         public static final String PROJECT_COLUMNS = "project.columns";
 
-        public static final String CREATE_GAME = "create.game";
+        public static final String GAME_CREATE = "game.create";
         public static final String GAME_JOIN = "game.join";
         public static final String START_GAME = "start.game";
         public static final String AVAILABLE_GAMES = "available.games";
