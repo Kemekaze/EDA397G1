@@ -64,7 +64,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:scrollbarThumbVertical="@android:color/holo_orange_light">
         </NumberPicker>
 
     </LinearLayout>

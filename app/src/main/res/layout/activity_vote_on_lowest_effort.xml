@@ -15,6 +15,7 @@
         android:choiceMode="singleChoice"
         android:listSelector="@color/colorSelected"
         android:layout_weight="1.0"
+        android:scrollbarThumbVertical="@android:color/holo_orange_light"
         />
 
     <android.support.design.widget.FloatingActionButton
