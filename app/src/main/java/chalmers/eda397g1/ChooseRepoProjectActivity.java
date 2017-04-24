@@ -181,12 +181,13 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     // Tell server to create a game
                     JSONObject query = new JSONObject();
                     try {
-                        query.put("full_name", selectedRepo.getFullName());
+
                         query.put("repo_id", selectedRepo.getId());
-                        query.put("project_id", selectedProject.getName());
-                        query.put("column_id", selectedColumn.getName());
+                        query.put("column_id", selectedColumn.getId());
+                        query.put("project_id", selectedProject.getId());
+                        query.put("full_name", selectedRepo.getFullName());
                         RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
-                        EventBus.getDefault().post(event);
+                        //EventBus.getDefault().post(event);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
