@@ -11,15 +11,15 @@ import chalmers.eda397g1.Objects.User;
  * Created by Martin on 2017-04-20.
  */
 
-public class GameEvent extends Event {
+public class GameCreateEvent extends Event {
     private Game currentGame;
 
-    public GameEvent(Object... args) {
+    public GameCreateEvent(Object... args) {
         super(args);
 
         JSONObject game = (JSONObject) getData();
         JSONObject host = game.optJSONObject("host");
-        Log.i("GameEvent", game.toString());
+        Log.i("GameCreateEvent", game.toString());
         currentGame = new Game(
                 game.optString("session_id"),
                 game.optString("full_name"),
