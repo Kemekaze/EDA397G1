@@ -80,34 +80,39 @@ module.exports = function (socket, data, callback){
                }
             }
             Client.findOne({phone_id: socket.phone_id},function(e,c){
-              var session = new Session({
-                  host: c.phone_id,
-                  github:{
-                    repo_id: data.repo_id,
-                    column_id: data.column_id,
-                    project_id: data.project_id,
-                    full_name: data.full_name,
-                    backlog_items: items
-                  }
-              });
-              session.save(function(e,newSession){
-                handler.room.create(socket, newSession._id, function(created){
-                  if(created){
-                    var obj = newSession.toObject();
-                    delete obj.__v;
-                    delete obj.leader;
-                    Client.findOne({phone_id: obj.host}, function(err,c){
-                      obj.host = {
-                        login: c.github.login,
-                        avatar: c.github.avatar
-                      }
-                      callback(response.OK(obj));
-                    });
-                  }else{
-                    callback(response.BAD_REQUEST('There is already a session with that name'));
-                  }
+              if(e){
+                callback(response.SERVER_ERROR('Something went wrong'));
+
+              }else{
+                var session = new Session({
+                    host: c.phone_id,
+                    github:{
+                      repo_id: data.repo_id,
+                      column_id: data.column_id,
+                      project_id: data.project_id,
+                      full_name: data.full_name,
+                      backlog_items: items
+                    }
                 });
-              });
+                session.save(function(e,newSession){
+                  handler.room.create(socket, newSession._id, function(created){
+                    if(created){
+                      var obj = newSession.toObject();
+                      delete obj.__v;
+                      delete obj.leader;
+                      Client.findOne({phone_id: obj.host}, function(err,c){
+                        obj.host = {
+                          login: c.github.login,
+                          avatar: c.github.avatar
+                        }
+                        callback(response.OK(obj));
+                      });
+                    }else{
+                      callback(response.BAD_REQUEST('There is already a session with that name'));
+                    }
+                  });
+                });
+              }
             });
          }else{
             callback(response.FORBIDDEN('Something went wrong'));

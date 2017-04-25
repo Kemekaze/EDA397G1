@@ -40,15 +40,18 @@ const SessionSchema = mongoose.Schema({
         body: String,
         state: String,
         business_value: Number,
-        effort_value: Number,
+        effort_value: Number,        
         votes: [{
             round_index: Number,
             rounds: [{
-                 client_id: {
-                   type: mongoose.Schema.Types.ObjectId,
-                   ref: 'Client'
+                 phone_id: {
+                   type: String,
+                   required: true
                  },
-                 vote: Number
+                 vote:{
+                   type: Number,
+                   required: true
+                 }
             }]
         }]
     }]

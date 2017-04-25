@@ -329,6 +329,7 @@ public class SocketService extends Service {
     public void emit(RequestEvent event){
         Log.i(TAG, "emit(RequestEvent)");
         Log.i(TAG, event.getEventName());
+
         if(isConnected)
             socket.emit(event.getEventName(),event.getData());
         else
