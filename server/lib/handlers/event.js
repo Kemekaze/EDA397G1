@@ -39,7 +39,7 @@ method.room = function(){
             avatar: client_s[client].github.avatar
           });
       }
-
+      console.log('[game] game.clients');
       self.io.in(room).emit('game.clients',self.response.OK(d));
     });
   });
