@@ -65,19 +65,6 @@ public class LobbyActivity extends AppCompatActivity {
         // If this is not a host make the startGame button invisible
         if( !isHost ) {
             startGameButton.setVisibility(View.GONE);
-        } else {
-            // Tell server to create a game
-            JSONObject query = new JSONObject();
-            try {
-                query.put("repo_id", repoID);
-                query.put("column_id", columnID);
-                query.put("project_id", projectID);
-                query.put("full_name", fullName);
-                RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
-                EventBus.getDefault().post(event);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
 
 
