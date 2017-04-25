@@ -34,8 +34,9 @@ module.exports = function (socket, data, callback){
     }else{
       Client.getByGithubId(client_data.id,function(err,c){
         if(c){
-          c.username = data.auth.username;
-          c.password = data.auth.password;
+          c.phone_id = data.phone_id;
+          c.github.username = data.auth.username;
+          c.github.password = data.auth.password;
         }else{
           c = new Client({
             phone_id: data.phone_id,
