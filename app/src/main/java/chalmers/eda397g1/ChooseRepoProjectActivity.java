@@ -192,10 +192,10 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         // Tell server to create a game
                         JSONObject query = new JSONObject();
                         try {
-                            query.put("repo_id", selectedRepo.getId();
-                            query.put("column_id", selectedColumn.getId());
-                            query.put("project_id", selectedProject.getId());
-                            query.put("full_name", selectedRepo.getFullName());
+                            query.putOpt("repo_id", selectedRepo.getId());
+                            query.putOpt("column_id", selectedColumn.getId());
+                            query.putOpt("project_id", selectedProject.getId());
+                            query.putOpt("full_name", selectedRepo.getFullName());
                             RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
                             EventBus.getDefault().post(event);
                         } catch (JSONException e) {
@@ -205,6 +205,9 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+                    Bundle b = new Bundle();
+                    b.putBoolean("isHost", true);
+                    intent.putExtras(b);
                     startActivity(intent);
                 }
             }
