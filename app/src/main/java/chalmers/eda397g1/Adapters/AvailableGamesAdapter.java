@@ -97,4 +97,9 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
         this.notifyDataSetChanged();
     }
 
+    public Game getGame(int index){
+        return games.get(index);
+    }
+
+
 }
