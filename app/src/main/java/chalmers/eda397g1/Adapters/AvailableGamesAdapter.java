@@ -47,12 +47,16 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
             this.mHost = (TextView) v.findViewById(R.id.host);
             this.mAvatar = (ImageView) v.findViewById(R.id.avatar);
             this.view = v;
+            this.view.setClickable(true);
             v.setOnClickListener(this);
+            Log.i("AvailableGamesAdapter", "ViewName: " + v.toString());
         }
 
         @Override
         public void onClick(View v) {
+            Log.i("AvailableGamesAdapter", "komden hit: " );
             itemListener.recycleViewListClicked(v, this.getAdapterPosition());
+
         }
     }
 
@@ -69,8 +73,6 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final int pos = position;
-        holder.view.setClickable(true);
-        holder.view.setOnClickListener(clickListener);
         Game game = games.get(pos);
 
         holder.mName.setText(game.getName());
@@ -85,12 +87,6 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
         return games.size();
     }
 
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 
     public void addGames(List<Game> games){
         this.games = games;

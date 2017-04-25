@@ -27,13 +27,14 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
+public class MainActivity extends AppCompatActivity{
 
 
     private RecyclerView mRecyclerView;
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView mEmptyView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,31 +49,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AvailableGamesAdapter(this, this);
+        mAdapter = new AvailableGamesAdapter(listener, this);
         mRecyclerView.setAdapter(mAdapter);
-
-
-/*
-        mRecyclerView.setOnClickListener(new AdapterView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Start a lobby as a client
-                Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("isHost", false);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });*/
 
         FloatingActionButton hostGameButton = (FloatingActionButton) findViewById(R.id.hostGameButton);
         hostGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ChooseRepoProjectActivity.class));
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }
@@ -115,14 +99,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         mAdapter.addGames(games);
     }
 
+    private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+        @Override
+        public void recycleViewListClicked(View v, int position) {
+            Log.i("RecycleViewListClicked", "position: " + position);
+            Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+            Bundle b = new Bundle();
+            b.putBoolean("isHost", false);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+    };
 
-    @Override
-    public void recycleViewListClicked(View v, int position) {
-        Log.i("RecycleViewListClicked", "position: " + position);
-        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-        Bundle b = new Bundle();
-        b.putBoolean("isHost", false);
-        intent.putExtras(b);
-        startActivity(intent);
-    }
 }
