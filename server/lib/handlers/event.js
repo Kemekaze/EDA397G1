@@ -41,7 +41,7 @@ method.room = function(){
       }
       console.log('[game] game.clients');
       for (var id in clients) {
-          clients[id].emit('game.start',self.response.OK(d));
+          clients[id].emit('game.clients',self.response.OK(d));
       }
       //self.io.in(room).emit('game.clients',self.response.OK(d));
     });
