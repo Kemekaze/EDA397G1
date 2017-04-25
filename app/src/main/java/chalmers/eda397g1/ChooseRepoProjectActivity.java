@@ -188,6 +188,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     snackbar.show();
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
+
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
@@ -310,6 +311,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             for(Project p : projectList){
                 projectNames.add(p.getName());
             }
+            selectedProject = projectList.get(0);
         }
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();

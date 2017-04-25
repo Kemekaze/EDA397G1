@@ -10,12 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
+import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Objects.User;
+import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
@@ -58,8 +63,22 @@ public class LobbyActivity extends AppCompatActivity {
         startGameButton = (Button) findViewById(R.id.startGameButton);
 
         // If this is not a host make the startGame button invisible
-        if( !isHost )
+        if( !isHost ) {
             startGameButton.setVisibility(View.GONE);
+        } else {
+            // Tell server to create a game
+            JSONObject query = new JSONObject();
+            try {
+                query.put("repo_id", repoID);
+                query.put("column_id", columnID);
+                query.put("project_id", projectID);
+                query.put("full_name", fullName);
+                RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                EventBus.getDefault().post(event);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
