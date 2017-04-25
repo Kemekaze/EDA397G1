@@ -306,6 +306,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             for(Project p : projectList){
                 projectNames.add(p.getName());
             }
+            selectedProject = projectList.get(0);
         }
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
