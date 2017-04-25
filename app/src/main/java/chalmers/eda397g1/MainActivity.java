@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ChooseRepoProjectActivity.class));
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }

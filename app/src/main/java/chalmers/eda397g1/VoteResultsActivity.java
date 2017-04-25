@@ -19,8 +19,6 @@ public class VoteResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_results); // for now, a view with hard-coded text views
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
 
        /* ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, testArray);

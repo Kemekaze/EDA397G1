@@ -18,12 +18,13 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_main_menu">>
         </activity>
 
         <activity
             android:name=".VoteResultsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="Final Results">
         </activity>
 
         <activity
@@ -34,10 +35,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -55,10 +52,20 @@
             android:label="Round Results">
         </activity>
 
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+
+        </activity>
 
         <activity
             android:name=".VoteOnLowestEffortActivity"
-            android:label="Vote on item with lowest overall effort">
+            android:label="@string/title_activity_vote_on_lowest_effort">
         </activity>
 
         <service android:name=".Services.SocketService" />

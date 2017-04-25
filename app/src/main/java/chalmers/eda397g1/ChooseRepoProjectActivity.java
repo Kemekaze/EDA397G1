@@ -2,8 +2,10 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,15 +30,16 @@ import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     public static final String TAG = "chooserepo";
 
-    private Spinner repoSpinner;
-    private Spinner projectSpinner;
-    private Spinner columnSpinner;
+    private AppCompatSpinner repoSpinner;
+    private AppCompatSpinner projectSpinner;
+    private AppCompatSpinner  columnSpinner;
     private Button chooseButton;
 
     private List<Repository> repoList = new ArrayList<>();
@@ -57,12 +60,12 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_repo_project);
 
         // Find Spinners
-        repoSpinner = (Spinner) findViewById(R.id.repoSpinner);
-        projectSpinner = (Spinner) findViewById(R.id.projectSpinner);
-        columnSpinner = (Spinner) findViewById(R.id.columnSpinner);
+        repoSpinner = (AppCompatSpinner) findViewById(R.id.repoSpinner);
+        projectSpinner = (AppCompatSpinner) findViewById(R.id.projectSpinner);
+        columnSpinner = (AppCompatSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
-        chooseButton = (Button) findViewById(R.id.chooseButton);
+        FloatingActionButton chooseButton = (FloatingActionButton) findViewById(R.id.fab3);
 
         // Create the adapters
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(
