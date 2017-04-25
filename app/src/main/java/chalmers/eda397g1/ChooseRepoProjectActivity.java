@@ -190,36 +190,18 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     snackbar.show();
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
-                    {
-                        // Tell server to create a game
-                        JSONObject query = new JSONObject();
-                        try {
-                            query.putOpt("repo_id", selectedRepo.getId());
-                            query.putOpt("column_id", selectedColumn.getId());
-                            query.putOpt("project_id", selectedProject.getId());
-                            query.putOpt("full_name", selectedRepo.getFullName());
-                            RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
-                            EventBus.getDefault().post(event);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-
-
+                    // Tell server to create a game
                     JSONObject query = new JSONObject();
                     try {
-                        query.put("column_id", Integer.toString(selectedColumn.getId()));
-                        query.put("repo_id", Integer.toString(selectedRepo.getId()));
-                        query.put("project_id", Integer.toString(selectedProject.getId()));
-                        query.put("full_name", selectedRepo.getFullName());
+                        query.putOpt("repo_id", selectedRepo.getId());
+                        query.putOpt("column_id", selectedColumn.getId());
+                        query.putOpt("project_id", selectedProject.getId());
+                        query.putOpt("full_name", selectedRepo.getFullName());
+                        RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
+                        EventBus.getDefault().post(event);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    RequestEvent request = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
-                    EventBus.getDefault().post(request);
-
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();

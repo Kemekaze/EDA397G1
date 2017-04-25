@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import chalmers.eda397g1.Adapters.AvailableGamesAdapter;
@@ -103,6 +106,18 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void recycleViewListClicked(View v, int position) {
             Log.i("RecycleViewListClicked", "position: " + position);
+
+            Game game = mAdapter.getGame(position);
+
+            JSONObject query = new JSONObject();
+            try {
+                query.put("game_id", game.getSessionId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
+
             Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
             Bundle b = new Bundle();
             b.putBoolean("isHost", false);
