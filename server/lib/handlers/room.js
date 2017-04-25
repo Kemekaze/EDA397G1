@@ -11,6 +11,12 @@ method.exists = function(room){
 method.get = function(socket){
   return Object.keys( this.io.sockets.adapter.sids[socket.id] );
 }
+method.getCurrentRoom = function(){
+  var current_rooms = this.get(socket);
+  if(current_rooms.length > 1)
+    return current_rooms[1];
+  return null;
+}
 method.join = function(socket, room, cb){
   if(!this.exists(room)) return cb(false);
   var current_rooms = this.get(socket);

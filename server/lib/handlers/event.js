@@ -18,6 +18,7 @@ method.emit = function(ev,data){
 }
 method.JOIN = 'game.join';
 method.CREATE = 'game.create';
+method.START = 'game.start';
 
 
 method.room = function(){
@@ -38,12 +39,20 @@ method.room = function(){
             avatar: client_s[client].github.avatar
           });
       }
-      self.io.to(room).emit('game.clients',self.response.OK(d));
+
+      self.io.in(room).emit('game.clients',self.response.OK(d));
     });
   });
-  self.ee.on(self.CREATE,function(room_id){
+  self.ee.on(self.CREATE,function(room){
 
-  })
+  });
+  self.ee.on(self.START,function(room,host){
+    var clients = handler.room.clients(room);
+    for (var id in clients) {
+      if(clients[id].id != host)
+        clients[id].emit('game.start',self.response.OK({}));
+    }
+  });
 }
 
 

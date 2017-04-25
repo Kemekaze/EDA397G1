@@ -6,6 +6,10 @@ const SessionSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  started:{
+    type: Boolean,
+    default: false
+  },
   github:{
     repo_id:{
       type: String,
@@ -22,6 +26,22 @@ const SessionSchema = mongoose.Schema({
     full_name:{
       type: String,
       required: true
+    },
+    lowest_effort:{
+      loweset_item: Number,
+      votes: [{
+          round_index: Number,
+          rounds: [{
+               phone_id: {
+                 type: String,
+                 required: true
+               },
+               vote:{
+                 type: Number,
+                 required: true
+               }
+          }]
+      }]
     },
     backlog_items:[{
         issue_id:{
@@ -40,7 +60,7 @@ const SessionSchema = mongoose.Schema({
         body: String,
         state: String,
         business_value: Number,
-        effort_value: Number,        
+        effort_value: Number,
         votes: [{
             round_index: Number,
             rounds: [{

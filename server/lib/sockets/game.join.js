@@ -50,7 +50,6 @@ module.exports = function (socket, data, callback){
           var obj = session.toObject();
           obj.isHost = (obj.leader == socket.phone_id);
           delete obj.__v;
-
           delete obj.leader;
           Client.findOne({phone_id: obj.host}, function(err,c){
             obj.host = {
