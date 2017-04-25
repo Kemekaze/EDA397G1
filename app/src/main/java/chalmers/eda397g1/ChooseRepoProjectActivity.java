@@ -284,6 +284,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
             Log.v(TAG, "Call request projects");
             requestProjectsData(repoNames.get(0));
+            selectedRepo = repoList.get(0);
         }
         ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
@@ -327,6 +328,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             for(Column col : columnList){
                 columnNames.add(col.getName());
             }
+            selectedColumn = columnList.get(0);
         }
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
