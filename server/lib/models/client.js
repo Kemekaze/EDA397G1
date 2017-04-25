@@ -57,7 +57,7 @@ module.exports.getByPhoneId = function(phoneId, callback){
 }
 
 module.exports.getByGithubId = function(githubId, callback){
-  const query = {github_id: githubId}
+  const query = {github:{github_id: githubId}}
   Client.findOne(query, callback)
 }
 
