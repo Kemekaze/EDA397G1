@@ -32,8 +32,6 @@ module.exports = function (socket, data, callback){
     if(resp.statusCode != 200 || err){
       callback(response.UNAUTHORIZED('Invalid username or password'));
     }else{
-      socket.git.auth = true;
-      socket.git.github = client;
       Client.getByGithubId(client_data.id,function(err,c){
         if(c){
           c.username = data.auth.username;
@@ -51,11 +49,17 @@ module.exports = function (socket, data, callback){
           });
         }
         c.save(function(err,new_client){
-          socket.phone_id = data.phone_id;
-          callback(response.OK({
-            login: client_data.login,
-            avatar_url: client_data.avatar_url
-          }));
+          if(err){
+            console.log(err);
+          }else{
+            socket.git.auth = true;
+            socket.git.github = client;
+            socket.phone_id = new_client.phone_id;
+            callback(response.OK({
+              login: client_data.login,
+              avatar_url: client_data.avatar_url
+            }));
+          }
         });
       });
     }

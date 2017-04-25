@@ -2,12 +2,12 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import org.json.JSONException;
@@ -27,7 +27,6 @@ import de.greenrobot.event.ThreadMode;
 
 public class LobbyActivity extends AppCompatActivity {
     private ListView playerListView;
-    private Button startGameButton;
     private Boolean isHost;
     private String fullName;
     private int repoID;
@@ -60,12 +59,12 @@ public class LobbyActivity extends AppCompatActivity {
         }
 
         playerListView = (ListView) findViewById(R.id.playerList);
-        startGameButton = (Button) findViewById(R.id.startGameButton);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
 
         // If this is not a host make the startGame button invisible
-        if( !isHost ) {
-            startGameButton.setVisibility(View.GONE);
-        }
+
+        if( !isHost )
+            fab.setVisibility(View.GONE);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -82,7 +81,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         });
 
-        startGameButton.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);

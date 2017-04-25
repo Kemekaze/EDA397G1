@@ -3,6 +3,7 @@ package chalmers.eda397g1;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AndroidException;
@@ -36,7 +37,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
 
 
-    private Button voteButton;
     ListView issueListView;
     List<Card> cards;
     private List<String> voteIssues = new ArrayList<>();
@@ -60,7 +60,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
 
         // Temporary vote button
-        voteButton = (Button) findViewById(R.id.button1);
+        FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.fab4);
 
         //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
