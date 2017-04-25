@@ -188,19 +188,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     snackbar.show();
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Tell server to create a game
-                    JSONObject query = new JSONObject();
-                    try {
-
-                        query.put("repo_id", selectedRepo.getId());
-                        query.put("column_id", selectedColumn.getId());
-                        query.put("project_id", selectedProject.getId());
-                        query.put("full_name", selectedRepo.getFullName());
-                        RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
-                        //EventBus.getDefault().post(event);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
