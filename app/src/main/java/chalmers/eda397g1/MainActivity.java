@@ -27,13 +27,14 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
+public class MainActivity extends AppCompatActivity{
 
 
     private RecyclerView mRecyclerView;
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView mEmptyView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AvailableGamesAdapter(this, this);
+        mAdapter = new AvailableGamesAdapter(listener, this);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -115,14 +116,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         mAdapter.addGames(games);
     }
 
+    private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+        @Override
+        public void recycleViewListClicked(View v, int position) {
+            Log.i("RecycleViewListClicked", "position: " + position);
+            Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+            Bundle b = new Bundle();
+            b.putBoolean("isHost", false);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+    };
 
-    @Override
-    public void recycleViewListClicked(View v, int position) {
-        Log.i("RecycleViewListClicked", "position: " + position);
-        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-        Bundle b = new Bundle();
-        b.putBoolean("isHost", false);
-        intent.putExtras(b);
-        startActivity(intent);
-    }
 }
