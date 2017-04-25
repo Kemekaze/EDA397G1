@@ -98,6 +98,7 @@ module.exports = function (socket, data, callback){
                   handler.room.create(socket, newSession._id, function(created){
                     if(created){
                       var obj = newSession.toObject();
+                      obj.isHost = true;
                       delete obj.__v;
                       delete obj.leader;
                       Client.findOne({phone_id: obj.host}, function(err,c){
