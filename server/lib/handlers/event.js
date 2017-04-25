@@ -39,11 +39,7 @@ method.room = function(){
             avatar: client_s[client].github.avatar
           });
       }
-      console.log('[game] game.clients');
-      for (var id in clients) {
-          clients[id].emit('game.clients',self.response.OK(d));
-      }
-      //self.io.in(room).emit('game.clients',self.response.OK(d));
+      self.io.in(room).emit('session.clients',self.response.OK(d));
     });
   });
   self.ee.on(self.CREATE,function(room){
@@ -53,7 +49,7 @@ method.room = function(){
     var clients = handler.room.clients(room);
     for (var id in clients) {
       if(clients[id].id != host)
-        clients[id].emit('game.start',self.response.OK({}));
+        clients[id].emit('session.start',self.response.OK({}));
     }
   });
 }
