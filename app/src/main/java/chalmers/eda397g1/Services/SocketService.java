@@ -23,7 +23,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import chalmers.eda397g1.Events.AvailableGamesEvent;
+import chalmers.eda397g1.Events.AvailableSessionsEvent;
 import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.JoinSessionEvent;
@@ -130,11 +130,11 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.REPOSITORY_PROJECTS, eventRepositoryProjects);
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
-        socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
+        socket.on(Constants.SocketEvents.AVAILABLE_SESSIONS, eventAvailableGames);
         socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
-        socket.on(Constants.SocketEvents.START_GAME, eventStartGame);
-        socket.on(Constants.SocketEvents.GAMES_CLIENTS, eventGamesClientsEvent);
+        socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
+        socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventGamesClientsEvent);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++){
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new AvailableGamesEvent(args));
+            EventBus.getDefault().post(new AvailableSessionsEvent(args));
         }
     };
 

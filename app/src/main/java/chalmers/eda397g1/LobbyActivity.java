@@ -10,16 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import chalmers.eda397g1.Events.Event;
 import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
-import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Objects.User;
@@ -85,7 +80,7 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(Constants.SocketEvents.START_GAME);
+                EventBus.getDefault().post(Constants.SocketEvents.SESSION_START);
 
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
                 Bundle b = new Bundle();

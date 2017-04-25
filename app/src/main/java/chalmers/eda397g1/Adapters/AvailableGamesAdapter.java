@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.Interfaces.RecyclerViewClickListener;
-import chalmers.eda397g1.Objects.Game;
+import chalmers.eda397g1.Objects.AvailSession;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.DownloadImageTask;
 
@@ -25,7 +25,7 @@ import chalmers.eda397g1.Resources.DownloadImageTask;
 
 public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAdapter.ViewHolder>{
     private String TAG = "AvailableGamesAdapter";
-    private List<Game> games = new ArrayList<>();
+    private List<AvailSession> availSessions = new ArrayList<>();
     private Context context;
     private static RecyclerViewClickListener itemListener;
 
@@ -73,32 +73,32 @@ public class AvailableGamesAdapter extends RecyclerView.Adapter<AvailableGamesAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final int pos = position;
-        Game game = games.get(pos);
+        AvailSession availSession = availSessions.get(pos);
 
-        holder.mName.setText(game.getName());
-        Log.d(TAG, "Name: "+game.getName());
-        holder.mHost.setText(game.getHost().getLogin());
+        holder.mName.setText(availSession.getName());
+        Log.d(TAG, "Name: "+ availSession.getName());
+        holder.mHost.setText(availSession.getHost().getLogin());
         new DownloadImageTask(holder.mAvatar,true)
-                .execute(game.getHost().getUri());
+                .execute(availSession.getHost().getUri());
     }
 
     @Override
     public int getItemCount() {
-        return games.size();
+        return availSessions.size();
     }
 
 
-    public void addGames(List<Game> games){
-        this.games = games;
+    public void addGames(List<AvailSession> availSessions){
+        this.availSessions = availSessions;
         this.notifyDataSetChanged();
     }
-    public void addGame(Game game){
-        this.games.add(game);
+    public void addGame(AvailSession availSession){
+        this.availSessions.add(availSession);
         this.notifyDataSetChanged();
     }
 
-    public Game getGame(int index){
-        return games.get(index);
+    public AvailSession getGame(int index){
+        return availSessions.get(index);
     }
 
 

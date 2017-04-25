@@ -36,11 +36,11 @@ public class Constants {
         public static final String COLUMN_CARDS = "column.cards";
         public static final String PROJECT_COLUMNS = "project.columns";
 
-        public static final String SESSION_CREATE = "game.create";
-        public static final String SESSION_JOIN = "game.join";
-        public static final String START_GAME = "start.game";
-        public static final String AVAILABLE_GAMES = "available.games";
+        public static final String SESSION_CREATE = "session.create";
+        public static final String SESSION_JOIN = "session.join";
+        public static final String SESSION_START = "session.start";
+        public static final String AVAILABLE_SESSIONS = "available.sessions";
 
-        public static final String GAMES_CLIENTS = "games.clients";
+        public static final String SESSION_CLIENTS = "session.clients";
     }
 }

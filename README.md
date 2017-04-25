@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/Kemekaze/EDA397G1.svg?token=xwshWmggh1TkzihJDoDT&branch=master)](https://travis-ci.com/Kemekaze/EDA397G1)
 # EDA397G1 - The Planning Game
-The project is to do an Android application that works as a version of the XP Planning game which will be integrated with Github. Java will be used for this purpose. The goal is to make the process of the planning game easier for both customers and developers and also provide metrics over completed games which could be used for further evaluation.
+The project is to do an Android application that works as a version of the XP Planning availSession which will be integrated with Github. Java will be used for this purpose. The goal is to make the process of the planning availSession easier for both customers and developers and also provide metrics over completed availSessions which could be used for further evaluation.
 
 ## Dependencies
 

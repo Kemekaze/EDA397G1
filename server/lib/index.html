@@ -195,29 +195,29 @@
         console.log('Socket1 - project.columns');
         console.log(data);
         column_id = data.data[0].id;
-        socket.emit('game.create',{
+        socket.emit('availSession.create',{
           repo_id: repo_id,
           full_name: full_name,
           project_id: project_id,
           column_id: column_id
         });
       });
-      socket.on('game.create',function(data){
-        console.log('Socket1 - game.create');
+      socket.on('availSession.create',function(data){
+        console.log('Socket1 - availSession.create');
         console.log(data);
-        socket2.emit('game.join',{game_id:data.data._id});
-        socket2.emit('available.games');
+        socket2.emit('availSession.join',{game_id:data.data._id});
+        socket2.emit('available.availSessions');
       });
-      socket2.on('available.games',function(data){
-        console.log('Socket2 - available.games');
-        console.log(data);
-      });
-      socket2.on('game.join',function(data){
-        console.log('Socket2 - game.join');
+      socket2.on('available.availSessions',function(data){
+        console.log('Socket2 - available.availSessions');
         console.log(data);
       });
-      socket.on('game.clients',function(data){
-        console.log('Socket1 - game.clients');
+      socket2.on('availSession.join',function(data){
+        console.log('Socket2 - availSession.join');
+        console.log(data);
+      });
+      socket.on('availSession.clients',function(data){
+        console.log('Socket1 - availSession.clients');
         console.log(data);
       });
     </script>

@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.Objects.BacklogItem;
-import chalmers.eda397g1.Objects.Game;
 import chalmers.eda397g1.Objects.Github;
-import chalmers.eda397g1.Objects.Project;
 import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Objects.User;
 

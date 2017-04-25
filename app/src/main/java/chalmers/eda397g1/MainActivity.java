@@ -1,18 +1,14 @@
 package chalmers.eda397g1;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -21,10 +17,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 import chalmers.eda397g1.Adapters.AvailableGamesAdapter;
-import chalmers.eda397g1.Events.AvailableGamesEvent;
+import chalmers.eda397g1.Events.AvailableSessionsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Interfaces.RecyclerViewClickListener;
-import chalmers.eda397g1.Objects.Game;
+import chalmers.eda397g1.Objects.AvailSession;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -83,15 +79,15 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void requestAvailGames() {
-        RequestEvent event = new RequestEvent(Constants.SocketEvents.AVAILABLE_GAMES);
+        RequestEvent event = new RequestEvent(Constants.SocketEvents.AVAILABLE_SESSIONS);
         EventBus.getDefault().post(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onReceiveAvailableGames(AvailableGamesEvent event){
+    public void onReceiveAvailableGames(AvailableSessionsEvent event){
         Log.d("-->", "onReceiveAvailableGames:");
-        List<Game> games = event.getAvailableGames();
-        if (games.isEmpty()) {
+        List<AvailSession> availSessions = event.getAvailableGames();
+        if (availSessions.isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
@@ -99,7 +95,7 @@ public class MainActivity extends AppCompatActivity{
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         }
-        mAdapter.addGames(games);
+        mAdapter.addGames(availSessions);
     }
 
     private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
@@ -107,11 +103,11 @@ public class MainActivity extends AppCompatActivity{
         public void recycleViewListClicked(View v, int position) {
             Log.i("RecycleViewListClicked", "position: " + position);
 
-            Game game = mAdapter.getGame(position);
+            AvailSession availSession = mAdapter.getGame(position);
 
             JSONObject query = new JSONObject();
             try {
-                query.put("game_id", game.getSessionId());
+                query.put("game_id", availSession.getSessionId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
