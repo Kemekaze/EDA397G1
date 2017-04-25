@@ -25,7 +25,8 @@ import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.CardsEvent;
-import chalmers.eda397g1.Events.GameCreateEvent;
+import chalmers.eda397g1.Events.CreateSessionEvent;
+import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
@@ -130,8 +131,8 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_GAMES, eventAvailableGames);
-        socket.on(Constants.SocketEvents.GAME_CREATE, eventGameCreate);
-        socket.on(Constants.SocketEvents.GAME_JOIN, eventGameJoin);
+        socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
+        socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.START_GAME, eventStartGame);
         socket.on(Constants.SocketEvents.GAMES_CLIENTS, eventGamesClientsEvent);
     }
@@ -278,25 +279,25 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventGameCreate = new Emitter.Listener() {
+    private Emitter.Listener eventCreateSession = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventGameCreate()");
+            Log.i(TAG, "eventCreateSession()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new GameCreateEvent(args));
+            EventBus.getDefault().post(new CreateSessionEvent(args));
         }
     };
 
-    private Emitter.Listener eventGameJoin = new Emitter.Listener() {
+    private Emitter.Listener eventJoinSession = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventGameJoin()");
+            Log.i(TAG, "eventJoinSession()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            //EventBus.getDefault().post(new GameJoinEvent(args));
+            EventBus.getDefault().post(new JoinSessionEvent(args));
         }
     };
 

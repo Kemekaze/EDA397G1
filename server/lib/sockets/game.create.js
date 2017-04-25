@@ -34,7 +34,7 @@ var Session = mongoose.model('Session');
  *    },
  *    host:{
  *    	 "login": "Kemekaze",
- *       "avatar_url": "https://avatars3.githubusercontent.com/u/5463135?v=3"
+ *       "avatar": "https://avatars3.githubusercontent.com/u/5463135?v=3"
  *    }
  *  }
  */

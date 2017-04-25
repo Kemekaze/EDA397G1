@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
@@ -30,7 +30,6 @@ import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
@@ -199,12 +198,27 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                             query.putOpt("column_id", selectedColumn.getId());
                             query.putOpt("project_id", selectedProject.getId());
                             query.putOpt("full_name", selectedRepo.getFullName());
-                            RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                            RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
                             EventBus.getDefault().post(event);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+
+
+                    JSONObject query = new JSONObject();
+                    try {
+                        query.put("column_id", Integer.toString(selectedColumn.getId()));
+                        query.put("repo_id", Integer.toString(selectedRepo.getId()));
+                        query.put("project_id", Integer.toString(selectedProject.getId()));
+                        query.put("full_name", selectedRepo.getFullName());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    RequestEvent request = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
+                    EventBus.getDefault().post(request);
 
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
@@ -346,5 +360,10 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onCreateSession(CreateSessionEvent event){
+        Log.d(TAG, "################ new session");
+
+    }
 
 }
