@@ -232,8 +232,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         EventBus.getDefault().post(ev);
         // END DEBUG
 
-        RequestEvent event = new RequestEvent(Constants.SocketEvents.REPOSITORIES);
-        EventBus.getDefault().post(event);
+        //RequestEvent event = new RequestEvent(Constants.SocketEvents.REPOSITORIES);
+        //EventBus.getDefault().post(event);
     }
 
     /**
