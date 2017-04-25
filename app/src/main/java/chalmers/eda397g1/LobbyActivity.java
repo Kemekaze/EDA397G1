@@ -16,9 +16,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Events.Event;
+import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
+import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Objects.User;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -34,7 +37,7 @@ public class LobbyActivity extends AppCompatActivity {
     private int columnID;
     private final String TAG = "Lobby";
     private List<String> players;
-    private String joinedSessionId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventBus.getDefault().post(Constants.SocketEvents.START_GAME);
+
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
                 Bundle b = new Bundle();
                 b.putString("fullName", fullName);
@@ -89,7 +94,6 @@ public class LobbyActivity extends AppCompatActivity {
                 b.putInt("projectID", projectID);
                 b.putInt("columnID", columnID);
                 intent.putExtras(b);
-
                 startActivity(intent);
             }
         });
@@ -109,13 +113,13 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    /*@Subscribe (threadMode = ThreadMode.MainThread, sticky = true) // TODO: not sure about sticky, just want to make sure it catches it
-    public void onGameJoinEvent(GameJoinEvent event) {
-        Log.i(TAG, "onGameJoinEvent");
-        joinedSessionId = event.getCurrentGame().getSessionId();
-    }*/
+    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
+    public void onGameJoinEvent(JoinSessionEvent event) {
+        Log.i(TAG, "onJoinSessionEvent");
+        session = event.getSession();
+    }
 
-    @Subscribe (threadMode = ThreadMode.MainThread)
+    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
         Log.i(TAG, "onLobbyUpdateEvent");
 
@@ -131,13 +135,8 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onStartGame(StartGameEvent event) {
         Log.i(TAG, "onStartGame");
-        if (!isHost) {
-            // if game that was started is equal to the one of the lobby, then switch activity
-            if (event.getCurrentGame().getSessionId().equals(joinedSessionId)) {
-                Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
-                startActivity(intent);
-            }
-        }
+        Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+        startActivity(intent);
     }
 
 

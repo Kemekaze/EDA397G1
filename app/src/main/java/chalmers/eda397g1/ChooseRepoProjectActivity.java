@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +30,6 @@ import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
@@ -200,7 +198,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                             query.putOpt("column_id", selectedColumn.getId());
                             query.putOpt("project_id", selectedProject.getId());
                             query.putOpt("full_name", selectedRepo.getFullName());
-                            RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                            RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
                             EventBus.getDefault().post(event);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,7 +217,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    RequestEvent request = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                    RequestEvent request = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
                     EventBus.getDefault().post(request);
 
                     // Start lobby as host
