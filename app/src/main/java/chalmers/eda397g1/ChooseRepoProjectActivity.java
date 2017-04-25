@@ -188,15 +188,25 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     snackbar.show();
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
+                    {
+                        // Tell server to create a game
+                        JSONObject query = new JSONObject();
+                        try {
+                            query.putOpt("repo_id", selectedRepo.getId());
+                            query.putOpt("column_id", selectedColumn.getId());
+                            query.putOpt("project_id", selectedProject.getId());
+                            query.putOpt("full_name", selectedRepo.getFullName());
+                            RequestEvent event = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                            EventBus.getDefault().post(event);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
-                    b.putCharSequence("columnId", Integer.toString(selectedColumn.getId()));
-                    b.putCharSequence("repoId", Integer.toString(selectedRepo.getId()));
-                    b.putCharSequence("projectId",Integer.toString(selectedProject.getId()));
-                    b.putCharSequence("fullName", selectedRepo.getFullName());
                     intent.putExtras(b);
                     startActivity(intent);
                 }
@@ -284,6 +294,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
             Log.v(TAG, "Call request projects");
             requestProjectsData(repoNames.get(0));
+            selectedRepo = repoList.get(0);
         }
         ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
@@ -327,6 +338,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             for(Column col : columnList){
                 columnNames.add(col.getName());
             }
+            selectedColumn = columnList.get(0);
         }
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
