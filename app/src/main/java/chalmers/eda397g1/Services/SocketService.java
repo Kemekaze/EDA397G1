@@ -25,7 +25,9 @@ import javax.net.ssl.X509TrustManager;
 
 import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.CardsEvent;
+import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.GameCreateEvent;
+import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.LoginEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
@@ -285,7 +287,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new GameCreateEvent(args));
+            EventBus.getDefault().post(new CreateSessionEvent(args));
         }
     };
 
@@ -296,7 +298,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            //EventBus.getDefault().post(new GameJoinEvent(args));
+            //EventBus.getDefault().post(new JoinSessionEvent(args));
         }
     };
 

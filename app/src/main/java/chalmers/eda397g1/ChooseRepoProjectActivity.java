@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
@@ -189,14 +190,25 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
 
+
+
+                    JSONObject query = new JSONObject();
+                    try {
+                        query.put("column_id", Integer.toString(selectedColumn.getId()));
+                        query.put("repo_id", Integer.toString(selectedRepo.getId()));
+                        query.put("project_id", Integer.toString(selectedProject.getId()));
+                        query.put("full_name", selectedRepo.getFullName());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    RequestEvent request = new RequestEvent(Constants.SocketEvents.GAME_CREATE, query);
+                    EventBus.getDefault().post(request);
+
                     // Start lobby as host
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
-                    b.putCharSequence("columnId", Integer.toString(selectedColumn.getId()));
-                    b.putCharSequence("repoId", Integer.toString(selectedRepo.getId()));
-                    b.putCharSequence("projectId",Integer.toString(selectedProject.getId()));
-                    b.putCharSequence("fullName", selectedRepo.getFullName());
                     intent.putExtras(b);
                     startActivity(intent);
                 }
@@ -333,5 +345,10 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onCreateSession(CreateSessionEvent event){
+        Log.d(TAG, "################ new session");
+
+    }
 
 }

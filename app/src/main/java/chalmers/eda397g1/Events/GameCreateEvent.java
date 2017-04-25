@@ -31,7 +31,6 @@ public class GameCreateEvent extends Event {
 
 
     }
-
     public Game getCurrentGame() {
         return currentGame;
     }
