@@ -20,13 +20,14 @@ import java.util.List;
 import chalmers.eda397g1.Adapters.AvailableGamesAdapter;
 import chalmers.eda397g1.Events.AvailableGamesEvent;
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.Objects.Game;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
+public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
 
 
     private RecyclerView mRecyclerView;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AvailableGamesAdapter();
+        mAdapter = new AvailableGamesAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                 startActivity(intent);
             }
         });*/
+
         FloatingActionButton hostGameButton = (FloatingActionButton) findViewById(R.id.hostGameButton);
         hostGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,23 +117,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-       // e.getAction() MotionEvent.ACTION_BUTTON_PRESS
-                Log.i("Motion", MotionEvent.actionToString(e.getAction()));
-     /*   Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+    public void recycleViewListClicked(View v, int position) {
+        Log.i("RecycleViewListClicked", "position: " + position);
+        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
         Bundle b = new Bundle();
         b.putBoolean("isHost", false);
         intent.putExtras(b);
-        startActivity(intent);*/
-    }
-
-    @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
+        startActivity(intent);
     }
 }
