@@ -52,21 +52,6 @@ public class MainActivity extends AppCompatActivity{
         mAdapter = new AvailableGamesAdapter(listener, this);
         mRecyclerView.setAdapter(mAdapter);
 
-
-/*
-        mRecyclerView.setOnClickListener(new AdapterView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Start a lobby as a client
-                Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("isHost", false);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });*/
-
         FloatingActionButton hostGameButton = (FloatingActionButton) findViewById(R.id.hostGameButton);
         hostGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
