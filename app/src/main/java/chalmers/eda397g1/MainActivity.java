@@ -1,6 +1,7 @@
 package chalmers.eda397g1;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,7 +26,7 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
 
     private RecyclerView mRecyclerView;
@@ -48,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
-
-        /*gameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+/*
+        mRecyclerView.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onClick(View view) {
 
                 // Start a lobby as a client
                 Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
@@ -108,5 +111,27 @@ public class MainActivity extends AppCompatActivity {
             mEmptyView.setVisibility(View.GONE);
         }
         mAdapter.addGames(games);
+    }
+
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+       // e.getAction() MotionEvent.ACTION_BUTTON_PRESS
+                Log.i("Motion", MotionEvent.actionToString(e.getAction()));
+     /*   Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", false);
+        intent.putExtras(b);
+        startActivity(intent);*/
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
     }
 }
