@@ -156,6 +156,16 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(selectedRepo != null && selectedProject != null && selectedColumn != null){
+                    Log.d(TAG, "onClick: Repo:" + selectedRepo.getName());
+                    Log.d(TAG, "onClick: Proj:" + selectedProject.getName());
+                    Log.d(TAG, "onClick: Colu:" + selectedRepo.getName());
+                } else{
+                    Log.d(TAG, "onClick: isnull? Repo:" + (selectedRepo==null));
+                    Log.d(TAG, "onClick: isnull? Proj:" + (selectedProject==null));
+                    Log.d(TAG, "onClick: isnull? Colu:" + (selectedColumn==null));
+                }
+
                 if(selectedRepo == null ) {
                     Snackbar snackbar = Snackbar.make(
                             findViewById(R.id.repoSpinner),
@@ -196,15 +206,10 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
                     Bundle b = new Bundle();
                     b.putBoolean("isHost", true);
-                    // Put selected repo
+                    b.putCharSequence("columnId", Integer.toString(selectedColumn.getId()));
+                    b.putCharSequence("repoId", Integer.toString(selectedRepo.getId()));
+                    b.putCharSequence("projectId",Integer.toString(selectedProject.getId()));
                     b.putCharSequence("fullName", selectedRepo.getFullName());
-                    b.putInt("repoID", selectedRepo.getId());
-                    // Put selected project
-                    b.putCharSequence("projectName", selectedProject.getName());
-                    b.putInt("projectID", selectedProject.getId());
-                    // Put selected Column
-                    b.putCharSequence("columnName", selectedColumn.getName());
-                    b.putInt("columnID", selectedColumn.getId());
                     intent.putExtras(b);
                     startActivity(intent);
                 }
@@ -216,7 +221,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        Log.d(TAG, "onStart()");
         EventBus.getDefault().register(this);
     }
 
@@ -229,7 +233,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        Log.d(TAG,"onStop()");
         EventBus.getDefault().unregister(this);
     }
 
@@ -318,7 +321,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         }
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
-        selectedProject = projectList.get(projectSpinner.getSelectedItemPosition());
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
@@ -335,7 +337,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             columnNames.add("No columns available.");
         } else {
             for(Column col : columnList){
-                Log.d(TAG, col.getName());
                 columnNames.add(col.getName());
             }
         }
