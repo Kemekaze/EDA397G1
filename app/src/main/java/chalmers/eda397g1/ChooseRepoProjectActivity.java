@@ -227,6 +227,11 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
      * Results will later be provided by call-back method receiveRepositoryData(...)
      */
     private void requestRepositoryData() {
+        // DEBUG:
+        RequestEvent ev = new RequestEvent("userdata");
+        EventBus.getDefault().post(ev);
+        // END DEBUG
+
         RequestEvent event = new RequestEvent(Constants.SocketEvents.REPOSITORIES);
         EventBus.getDefault().post(event);
     }

@@ -64,6 +64,7 @@ module.exports = function (socket, data, callback){
       error = true;
     }
     if (!error){
+      Console.log(rtn);
       callback(response.OK(rtn));
     } else {
       callback(response.FORBIDDEN('Something went wrong'));
