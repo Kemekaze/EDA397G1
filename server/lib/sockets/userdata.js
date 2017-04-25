@@ -28,26 +28,27 @@ module.exports = function (socket, data, callback){
               console.log("p:" + p.number);
               console.log("arr:" + projectsArr);
               // Get columns
-              var columns = [];
+              var columnsArr = [];
               socket.git.github.columns(p.id, function(column_error, column_resp, column_data){
                 if(column_resp.statusCode == 200 && !column_error){
                   for(var c of column_data){
                     columns.push({
                       id: c.id,
                       name: c.name
-                    })
+                    });
                   }
                 } else {
                   error = true;
                 }
-              })
+              });
+
               projectsArr.push({
                 id: p.id,
                 name: p.name,
                 body: p.body,
                 number: p.number,
                 state: p.state,
-                columns: columns
+                columns: columnsArr
               });
             }
           } else {
