@@ -39,7 +39,7 @@ module.exports = function (socket, data, callback){
         }else{
           c = new Client({
             phone_id: data.phone_id,
-            github: { 
+            github: {
               github_id: client_data.id,
               username: data.auth.username,
               password: data.auth.password,
@@ -50,6 +50,7 @@ module.exports = function (socket, data, callback){
         }
         c.save(function(err,new_client){
           if(err){
+            callback(response.SERVER_ERROR('Something went wrong'));
             console.log(err);
           }else{
             socket.git.auth = true;
