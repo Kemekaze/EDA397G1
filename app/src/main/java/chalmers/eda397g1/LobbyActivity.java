@@ -33,6 +33,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_lobby);
 
         players = new ArrayList<>();
@@ -44,7 +45,7 @@ public class LobbyActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             isHost = b.getBoolean("isHost");
-            session = (Session) b.getSerializable("session");
+           // session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
         }
@@ -86,6 +87,14 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume()");
+        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS);
+    }
+
     @Override
     public void onStop(){
         super.onStop();
@@ -93,14 +102,16 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    // TODO: not needed anymore, is put in
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
     public void onGameJoinEvent(JoinSessionEvent event) {
         Log.i(TAG, "onJoinSessionEvent");
         session = event.getSession();
+        Log.i(TAG + " session", session.getId());
         EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS);
     }
 
-    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
+    @Subscribe (sticky = true, threadMode = ThreadMode.MainThread)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
         Log.i(TAG, "onLobbyUpdateEvent");
 

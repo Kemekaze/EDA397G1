@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity{
     public void onResume(){
         super.onResume();
         requestAvailGames();
+        mRecyclerView.setClickable(true);
     }
 
     @Override
@@ -101,12 +102,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Subscribe
     public void onJoinSession(JoinSessionEvent event){
-        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-        Bundle b = new Bundle();
-        b.putBoolean("isHost", false);
-        b.putSerializable("session", event.getSession());
-        intent.putExtras(b);
-        startActivity(intent);
+
 
     }
 
@@ -125,6 +121,13 @@ public class MainActivity extends AppCompatActivity{
             }
 
             EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
+            mRecyclerView.setClickable(false);
+            Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+            Bundle b = new Bundle();
+            b.putBoolean("isHost", false);
+           // b.putSerializable("session", event.getSession());
+            intent.putExtras(b);
+            startActivity(intent);
         }
     };
 

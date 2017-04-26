@@ -297,7 +297,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new JoinSessionEvent(args));
+            EventBus.getDefault().postSticky(new JoinSessionEvent(args));
         }
     };
 
@@ -319,7 +319,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new LobbyUpdateEvent(args));
+            EventBus.getDefault().postSticky(new LobbyUpdateEvent(args));
         }
     };
 
