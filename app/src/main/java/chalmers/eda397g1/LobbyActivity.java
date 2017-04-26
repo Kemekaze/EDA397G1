@@ -39,10 +39,7 @@ public class LobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby);
 
         players = new ArrayList<>();
-        players.add("Player 1");
-        players.add("Player 2");
-        players.add("Player 3");
-
+        
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
         if(b != null) {
