@@ -122,7 +122,8 @@ public class LobbyActivity extends AppCompatActivity {
         Log.i(TAG, "onStartGame");
         Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
         Bundle b = new Bundle();
-        // TODO Session for users
+        b.putSerializable("session", session);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
