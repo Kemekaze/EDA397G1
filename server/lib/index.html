@@ -156,18 +156,22 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script>
-      var socket = io('https://xr-plan.se:8443', { query: "token=42ig3Psps3oGbQ6H" });
-      var socket2 = io('https://xr-plan.se:8443', { query: "token=42ig3Psps3oGbQ6H" });
+      var socket = io('https://10.0.212.93:8443', { query: "token=42ig3Psps3oGbQ6H" });
+      var socket2 = io('https://10.0.212.93:8443', { query: "token=42ig3Psps3oGbQ6H" });
       socket.on('connect',function(data){
-        socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket.emit('authenticate.autologin',{phone_id:'27cd68cbb824a22e'});
       });
       socket2.on('connect',function(data){
-        socket2.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket2.emit('authenticate.autologin',{phone_id:'27cd68cbb824a22e'});
       });
       socket.on('authenticate.autologin',function(data){
         console.log('Socket1 - authenticate.autologin');
         console.log(data);
-        socket.emit('repositories');
+        //socket.emit('repositories');
+        console.log("Socket1 - userdata");
+        socket.emit('userdata', function(data){
+          console.log(data);
+        });
       });
       var full_name  = "";
       var project_id = 0;
@@ -176,11 +180,11 @@
       socket.on('repositories',function(data){
         console.log('Socket1 - repositories');
         console.log(data);
-        full_name = data.data[7].full_name;
-        repo_id = data.data[7].id;
+        full_name = data.data[0].full_name;
+        repo_id = data.data[0].id;
         socket.emit('repository.projects',{
-          full_name: data.data[7].full_name,
-          id: data.data[7].id
+          full_name: data.data[0].full_name,
+          id: data.data[0].id
         });
       });
       socket.on('repository.projects',function(data){

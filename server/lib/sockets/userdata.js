@@ -19,20 +19,48 @@ module.exports = function (socket, data, callback){
     var error = false;
     var rtn = [];
     if(repo_resp.statusCode == 200 && !repo_error){
+      /*
+      var clients_to_fetch = viewable_games.length;
+              if(clients_to_fetch == 0 ) return callback(response.OK([]));
+              for (var i = 0; i < clients_to_fetch; i++) {
+                (function(i) {
+                  Client.findOne({phone_id: viewable_games[i].phone_id}, function(err,c){
+                    clients_to_fetch-=1;
+                    delete viewable_games[i].phone_id;
+                    viewable_games[i].host.login = c.github.login;
+                    viewable_games[i].host.avatar = c.github.avatar;
+                    if(clients_to_fetch <= 0){
+                      callback(response.OK(viewable_games));
+                    }
+                  });
+                })(i);
+              }
+      */
+
+
+      repos_to_fetch = upper_bound = repo_data.length;
+      for( var i = 0; i < upper_bound; i++){
+        (function(i){
+          socket.git.github.projects(repo_data[i].full_name, function(project_error, project_resp, project_data){
+
+          });
+        })(i);
+      }
+
+
       for (var r of repo_data){
         // Get projects
         var projectsArr = [];
         socket.git.github.projects(r.full_name,  function(project_error, project_resp, project_data){
           if(project_resp.statusCode == 200 && !project_error){
             for (var p of project_data){
-              console.log("p:" + p.number);
-              console.log("arr:" + projectsArr);
+ 
               // Get columns
               var columnsArr = [];
               socket.git.github.columns(p.id, function(column_error, column_resp, column_data){
                 if(column_resp.statusCode == 200 && !column_error){
                   for(var c of column_data){
-                    columns.push({
+                    columnsArr.push({
                       id: c.id,
                       name: c.name
                     });
