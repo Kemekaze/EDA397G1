@@ -26,10 +26,6 @@ import de.greenrobot.event.ThreadMode;
 public class LobbyActivity extends AppCompatActivity {
     private ListView playerListView;
     private Boolean isHost;
-    private String fullName;
-    private int repoID;
-    private int projectID;
-    private int columnID;
     private final String TAG = "Lobby";
     private List<String> players;
     private Session session;
@@ -48,10 +44,6 @@ public class LobbyActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             isHost = b.getBoolean("isHost");
-            fullName = b.getString("fullName");
-            repoID = b.getInt("repoID");
-            projectID = b.getInt("projectID");
-            columnID = b.getInt("columnID");
             session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
@@ -85,10 +77,7 @@ public class LobbyActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
                 Bundle b = new Bundle();
-                b.putString("fullName", fullName);
-                b.putInt("repoID", repoID);
-                b.putInt("projectID", projectID);
-                b.putInt("columnID", columnID);
+                b.putSerializable("session", session);
                 intent.putExtras(b);
                 startActivity(intent);
             }
@@ -132,6 +121,8 @@ public class LobbyActivity extends AppCompatActivity {
     public void onStartGame(StartGameEvent event) {
         Log.i(TAG, "onStartGame");
         Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+        Bundle b = new Bundle();
+        // TODO Session for users
         startActivity(intent);
     }
 

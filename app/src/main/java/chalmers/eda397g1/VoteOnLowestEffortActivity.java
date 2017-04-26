@@ -25,8 +25,10 @@ import java.util.List;
 
 import chalmers.eda397g1.Events.CardsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
+import chalmers.eda397g1.Objects.BacklogItem;
 import chalmers.eda397g1.Objects.Card;
 import chalmers.eda397g1.Objects.Label;
+import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -38,11 +40,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
 
     ListView issueListView;
-    List<Card> cards;
     private List<String> voteIssues = new ArrayList<>();
-    private String fullName;
-    private int projectID;
-    private int columnID;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +49,12 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vote_on_lowest_effort);
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            fullName = b.getString("fullName");
-            projectID = b.getInt("projectID");
-            columnID = b.getInt("columnID");
+            session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
         }
 
-
+        setBacklogList();
 
         // Temporary vote button
         FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.fab4);
@@ -95,88 +92,32 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 //TODO
             }
         });
-
-
     }
 
     @Override
     public void onStart(){
         super.onStart();
         Log.d(TAG, "onStart()");
-        EventBus.getDefault().register(this);
-        requestColumnCardsData();
+        //EventBus.getDefault().register(this);
+        //requestColumnCardsData();
     }
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
         Log.d(TAG, "onStop()");
         super.onStop();
     }
+    
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onReceiveBacklogItemsData(CardsEvent event){
-        Log.i(TAG, String.valueOf(event.getStatus()));
-        Log.i(TAG, event.getData().toString());
-        JSONArray data = (JSONArray) event.getData();
-        cards = new ArrayList<>();
-        LinkedList<Label> labels = new LinkedList<Label>();
-        for (int i = 0; i < data.length(); i++) {
-            JSONObject jsonCard = data.optJSONObject(i);
-            labels.clear();
-            try {
-                JSONArray jsonLabels = jsonCard.getJSONArray("labels");
-                for (int j = 0; j < jsonLabels.length(); j++) {
-                    JSONObject jsonLabel = jsonLabels.optJSONObject(j);
-                    labels.addLast(new Label(jsonLabel.getInt("id"),
-                            jsonLabel.getString("name")));
-                }
-                Card card = new Card(jsonCard.getInt("card_id"),
-                        jsonCard.getInt("column_id"),
-                        jsonCard.getInt("issue_id"),
-                        jsonCard.getInt("number"),
-                        jsonCard.getString("title"),
-                        jsonCard.getString("body"),
-                        jsonCard.getString("state")
-                );
-                Label[] labelsArray = new Label[labels.size()];
-                labels.toArray(labelsArray);
-                card.setLabels(labelsArray);
-                cards.add(card);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        List<String> tmp = new ArrayList<String>(cards.size());
-        for (int i = 0; i < cards.size(); i++) {
-            int businessValue = cards.size() - i;
-            tmp.add(cards.get(i).getTitle() +
-                    "\n- " + getString(R.string.business_value) + ": " + businessValue +
-                    "\n- " + getString(R.string.comment) + ": "+ cards.get(i).getBody());
-        }
-
+    private void setBacklogList(){
+        List<BacklogItem> items = session.getGithub().getBacklogItems();
         voteIssues.clear();
-        voteIssues.addAll(tmp);
-        ( (ArrayAdapter<String>) issueListView.getAdapter()).notifyDataSetChanged();
-
-    }
-
-    private void requestColumnCardsData() {
-        JSONObject query = new JSONObject();
-        try {
-            query.put("full_name", fullName);
-            query.put("project_id", projectID);
-            query.put("column_id", columnID);
-            Log.i(TAG, ""+fullName);
-            Log.i(TAG, ""+projectID);
-            Log.i(TAG, ""+columnID);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        for(BacklogItem i : items){
+            voteIssues.add(
+                    i.getTitle() + "\nBusiness Value: " + i.getBusinessValue()
+            );
         }
-        RequestEvent event = new RequestEvent(Constants.SocketEvents.COLUMN_CARDS, query);
-        EventBus.getDefault().post(event);
     }
 
 }
