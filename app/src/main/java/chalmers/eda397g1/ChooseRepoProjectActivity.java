@@ -347,7 +347,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
         Bundle b = new Bundle();
         b.putBoolean("isHost", true);
-        // TODO pass session somehow.
+        b.putSerializable("session", session);
         intent.putExtras(b);
         startActivity(intent);
         finish();

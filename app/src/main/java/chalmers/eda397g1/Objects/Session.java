@@ -1,10 +1,12 @@
 package chalmers.eda397g1.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by nume on 2017-04-25
  */
 
-public class Session {
+public class Session implements Serializable{
     private String id;
     private Github github;
     private User host;

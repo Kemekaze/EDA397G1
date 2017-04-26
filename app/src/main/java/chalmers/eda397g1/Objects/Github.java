@@ -1,12 +1,13 @@
 package chalmers.eda397g1.Objects;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by nume on 2017-04-25
  */
 
-public class Github {
+public class Github implements Serializable {
     private List<BacklogItem> backlogItems;
     private String columnId;
     private String fullName;

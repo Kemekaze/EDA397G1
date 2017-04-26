@@ -1,10 +1,12 @@
 package chalmers.eda397g1.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by julius on 25.04.17.
  */
 
-public class BacklogItem {
+public class BacklogItem implements Serializable{
 
     private int businessValue;
     private String cardId;

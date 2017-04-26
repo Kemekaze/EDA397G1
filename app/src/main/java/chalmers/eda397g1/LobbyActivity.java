@@ -52,6 +52,7 @@ public class LobbyActivity extends AppCompatActivity {
             repoID = b.getInt("repoID");
             projectID = b.getInt("projectID");
             columnID = b.getInt("columnID");
+            session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
         }
