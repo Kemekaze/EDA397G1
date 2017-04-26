@@ -29,6 +29,7 @@ var Session = mongoose.model('Session');
  *      project_id:"482637"
  *      repo_id:"86072010"
  *    },
+      isHost : true,
  *    host:{
  *    	 "login": "Kemekaze",
  *       "avatar_url": "https://avatars3.githubusercontent.com/u/5463135?v=3"
@@ -47,6 +48,7 @@ module.exports = function (socket, data, callback){
       Session.findById(data.game_id,function(e,session){
         if(!e){
           var obj = session.toObject();
+          obj.isHost = (obj.leader == socket.phone_id);
           delete obj.__v;
           delete obj.leader;
           Client.findOne({phone_id: obj.host}, function(err,c){

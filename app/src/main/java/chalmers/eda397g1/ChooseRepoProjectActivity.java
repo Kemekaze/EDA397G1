@@ -2,14 +2,15 @@ package chalmers.eda397g1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
@@ -24,6 +26,7 @@ import chalmers.eda397g1.Events.UserProjectsEvent;
 import chalmers.eda397g1.Objects.Column;
 import chalmers.eda397g1.Objects.Project;
 import chalmers.eda397g1.Objects.Repository;
+import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -34,9 +37,9 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     public static final String TAG = "chooserepo";
 
-    private Spinner repoSpinner;
-    private Spinner projectSpinner;
-    private Spinner columnSpinner;
+    private AppCompatSpinner repoSpinner;
+    private AppCompatSpinner projectSpinner;
+    private AppCompatSpinner  columnSpinner;
     private Button chooseButton;
 
     private List<Repository> repoList = new ArrayList<>();
@@ -57,12 +60,12 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_repo_project);
 
         // Find Spinners
-        repoSpinner = (Spinner) findViewById(R.id.repoSpinner);
-        projectSpinner = (Spinner) findViewById(R.id.projectSpinner);
-        columnSpinner = (Spinner) findViewById(R.id.columnSpinner);
+        repoSpinner = (AppCompatSpinner) findViewById(R.id.repoSpinner);
+        projectSpinner = (AppCompatSpinner) findViewById(R.id.projectSpinner);
+        columnSpinner = (AppCompatSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
-        chooseButton = (Button) findViewById(R.id.chooseButton);
+        final FloatingActionButton chooseButton = (FloatingActionButton) findViewById(R.id.fab3);
 
         // Create the adapters
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(
@@ -188,17 +191,20 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     snackbar.show();
                     // Toast.makeText(getApplicationContext(), "No column selected!", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    // Start lobby as host
-                    Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
-                    Bundle b = new Bundle();
-                    b.putBoolean("isHost", true);
-                    b.putCharSequence("columnId", Integer.toString(selectedColumn.getId()));
-                    b.putCharSequence("repoId", Integer.toString(selectedRepo.getId()));
-                    b.putCharSequence("projectId",Integer.toString(selectedProject.getId()));
-                    b.putCharSequence("fullName", selectedRepo.getFullName());
-                    intent.putExtras(b);
-                    startActivity(intent);
+                    // Tell server to create a game
+                    JSONObject query = new JSONObject();
+                    try {
+                        query.putOpt("repo_id", selectedRepo.getId());
+                        query.putOpt("column_id", selectedColumn.getId());
+                        query.putOpt("project_id", selectedProject.getId());
+                        query.putOpt("full_name", selectedRepo.getFullName());
+                        RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
+                        EventBus.getDefault().post(event);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // Now wait for the server to create the session.
+                    chooseButton.setEnabled(false);
                 }
             }
         });
@@ -289,6 +295,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
             Log.v(TAG, "Call request projects");
             requestProjectsData(repoNames.get(0));
+            selectedRepo = repoList.get(0);
         }
         ( (ArrayAdapter<String>) repoSpinner.getAdapter()).notifyDataSetChanged();
         ( (ArrayAdapter<String>) projectSpinner.getAdapter()).notifyDataSetChanged();
@@ -332,9 +339,23 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             for(Column col : columnList){
                 columnNames.add(col.getName());
             }
+            selectedColumn = columnList.get(0);
         }
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onCreateSession(CreateSessionEvent event){
+        Log.d(TAG, "Created session");
+        Session session = event.getSession();
+        // Start lobby as host
+        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", true);
+        b.putSerializable("session", session);
+        intent.putExtras(b);
+        startActivity(intent);
+        finish();
+    }
 
 }

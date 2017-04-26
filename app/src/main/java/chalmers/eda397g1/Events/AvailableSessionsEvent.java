@@ -6,17 +6,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import chalmers.eda397g1.Objects.Game;
+import chalmers.eda397g1.Objects.AvailSession;
 import chalmers.eda397g1.Objects.User;
 
 /**
  * Created by nume on 2017-04-20
  */
 
-public class AvailableGamesEvent extends Event {
-    private List<Game> games = new ArrayList<>();
+public class AvailableSessionsEvent extends Event {
+    private List<AvailSession> availSessions = new ArrayList<>();
 
-    public AvailableGamesEvent(Object... args) {
+    public AvailableSessionsEvent(Object... args) {
         super(args);
         Object obj = getData();
         if (obj instanceof JSONArray) {
@@ -24,7 +24,7 @@ public class AvailableGamesEvent extends Event {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject game = arr.optJSONObject(i);
                 JSONObject host = game.optJSONObject("host");
-                games.add(new Game(
+                availSessions.add(new AvailSession(
                         game.optString("session_id"),
                         game.optString("full_name"),
                         new User(
@@ -37,8 +37,8 @@ public class AvailableGamesEvent extends Event {
         }
     }
 
-    public List<Game> getAvailableGames() {
-        return games;
+    public List<AvailSession> getAvailableGames() {
+        return availSessions;
     }
 
 }
