@@ -13,6 +13,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
@@ -26,7 +27,7 @@ import de.greenrobot.event.ThreadMode;
 public class LobbyActivity extends AppCompatActivity {
     private ListView playerListView;
     private Boolean isHost;
-    private final String TAG = "Lobby";
+    private final String TAG = "eda397.Lobby";
     private List<String> players;
     private Session session;
 
@@ -45,7 +46,6 @@ public class LobbyActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             isHost = b.getBoolean("isHost");
-           // session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
         }
@@ -92,7 +92,6 @@ public class LobbyActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         Log.d(TAG, "onResume()");
-        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS);
     }
 
     @Override
@@ -102,16 +101,20 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    // TODO: not needed anymore, is put in
-    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
-    public void onGameJoinEvent(JoinSessionEvent event) {
-        Log.i(TAG, "onJoinSessionEvent");
-        session = event.getSession();
-        Log.i(TAG + " session", session.getId());
-        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS);
+    @Subscribe (sticky = true)
+    public void onCreateSessionEvent(CreateSessionEvent event) {
+        Log.i(TAG, "onCreateSessionEvent");
+        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS); // TODO: remove when server is working correcly
     }
 
-    @Subscribe (sticky = true, threadMode = ThreadMode.MainThread)
+    @Subscribe (sticky = true)
+    public void onJoinSessionEvent(JoinSessionEvent event) {
+        Log.i(TAG, "onJoinSessionEvent");
+        session = event.getSession();
+        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS); // TODO: remove when server is working correcly
+    }
+
+    @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
         Log.i(TAG, "onLobbyUpdateEvent");
 

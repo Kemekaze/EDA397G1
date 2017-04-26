@@ -286,7 +286,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().post(new CreateSessionEvent(args));
+            EventBus.getDefault().postSticky(new CreateSessionEvent(args));
         }
     };
 

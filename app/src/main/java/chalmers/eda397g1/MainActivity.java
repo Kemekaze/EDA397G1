@@ -100,12 +100,6 @@ public class MainActivity extends AppCompatActivity{
         mAdapter.addGames(availSessions);
     }
 
-    @Subscribe
-    public void onJoinSession(JoinSessionEvent event){
-
-
-    }
-
     private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
         @Override
         public void recycleViewListClicked(View v, int position) {
@@ -125,7 +119,6 @@ public class MainActivity extends AppCompatActivity{
             Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
             Bundle b = new Bundle();
             b.putBoolean("isHost", false);
-           // b.putSerializable("session", event.getSession());
             intent.putExtras(b);
             startActivity(intent);
         }
