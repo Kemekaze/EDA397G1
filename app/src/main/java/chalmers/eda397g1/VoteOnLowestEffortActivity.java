@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AndroidException;
@@ -42,6 +43,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     ListView issueListView;
     private List<String> voteIssues = new ArrayList<>();
     private Session session;
+    private BacklogItem selectedBacklogItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         setBacklogList();
 
         // Temporary vote button
-        FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.fab4);
+        final FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.fab4);
 
         //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
@@ -75,21 +77,25 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+                // TODO: Send vote to server and wait for answer to go to next activity
+                if(selectedBacklogItem == null){
+                    Snackbar alert = Snackbar.make(
+                            voteButton,
+                            "No item selected!",
+                            Snackbar.LENGTH_LONG);
+                    alert.show();
+                } else {
+                    startActivity(new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+                }
             }
         });
 
 
-        issueListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        issueListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //adapterView.setSelection(i);
-                //view.setBackgroundColor(Color.parseColor("#FF0000"));
-                Log.v("item", (String) adapterView.getItemAtPosition(i));
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //TODO
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "Select BacklogItem: " + i);
+                selectedBacklogItem = session.getGithub().getBacklogItems().get(i);
             }
         });
     }
@@ -108,7 +114,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         Log.d(TAG, "onStop()");
         super.onStop();
     }
-    
+
 
     private void setBacklogList(){
         List<BacklogItem> items = session.getGithub().getBacklogItems();
