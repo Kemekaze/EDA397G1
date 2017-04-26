@@ -4,23 +4,33 @@ var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
 /**
- * Vote on lowest effort
- * @param {Number} data.auth.password
- * @return {Object} rtn
- *  Example:
- *  {
- *
- *  }
+ * start the game
  */
 
 module.exports = function (socket, data, callback){
-
-  if(data.phone_id  == null || data.auth == null)
-    return callback(response.BAD_REQUEST('Invalid request'));
+  if(!socket.git.auth)
+    return callback(response.UNAUTHORIZED('Unauthorized'));
 
   var room = handler.room.getCurrentRoom();
   if(room == null)
-    return callback(response.NOT_FOUND('Game does not exist'));
-  handler.ev.emit(handler.ev.START,room);
-  callback(response.OK({}));
+    return callback(response.NOT_FOUND('Session does not exist'));
+  Session.findById(room,function(e,session){
+    if(!e && session){
+      if(session.host == socket.phone_id){
+        session.started = true;
+        session.save(function(e,newSession){
+          if(!e){
+            handler.ev.emit(handler.ev.START,room);
+            callback(response.OK({}));
+          }else{
+            callback(response.SERVER_ERROR('Something went wrong'));
+          }
+        });
+      }else {
+        callback(response.UNAUTHORIZED('You are not the host of the game'));
+      }
+    }else{
+      callback(response.NOT_FOUND('Session could not be found'));
+    }
+  });
 };

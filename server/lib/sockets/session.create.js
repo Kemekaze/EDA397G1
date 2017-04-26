@@ -101,8 +101,7 @@ module.exports = function (socket, data, callback){
                       var obj = newSession.toObject();
                       obj.isHost = true;
                       delete obj.__v;
-                      delete obj.leader;
-                      Client.findOne({phone_id: obj.host}, function(err,c){
+                        Client.findOne({phone_id: obj.host}, function(err,c){
                         obj.host = {
                           login: c.github.login,
                           avatar: c.github.avatar

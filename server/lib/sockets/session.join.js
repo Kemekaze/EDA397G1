@@ -48,7 +48,7 @@ module.exports = function (socket, data, callback){
       Session.findById(data.game_id,function(e,session){
         if(!e){
           var obj = session.toObject();
-          obj.isHost = (obj.leader == socket.phone_id);
+          obj.isHost = (obj.host == socket.phone_id);
           delete obj.__v;
           delete obj.leader;
           Client.findOne({phone_id: obj.host}, function(err,c){
