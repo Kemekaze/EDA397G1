@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
 
-            EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
+            EventBus.getDefault().postSticky(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
 
             Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
             Bundle b = new Bundle();

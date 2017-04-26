@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by nume on 2017-04-25
  */
 
-public class Session implements Serializable{
+public class Session implements Serializable {
     private String id;
     private Github github;
     private User host;

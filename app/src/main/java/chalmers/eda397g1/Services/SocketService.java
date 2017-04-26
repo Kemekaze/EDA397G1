@@ -134,7 +134,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
-        socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventGamesClientsEvent);
+        socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
     }
 
     @Override
@@ -312,10 +312,10 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventGamesClientsEvent = new Emitter.Listener() {
+    private Emitter.Listener eventSessionClientsEvent = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventGamesClientsEvent()");
+            Log.i(TAG, "eventSessionClientsEvent()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }

@@ -74,12 +74,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(Constants.SocketEvents.SESSION_START);
-
-                Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("session", session);
-                intent.putExtras(b);
-                startActivity(intent);
+                startGame();
             }
         });
     }
@@ -102,6 +97,7 @@ public class LobbyActivity extends AppCompatActivity {
     public void onGameJoinEvent(JoinSessionEvent event) {
         Log.i(TAG, "onJoinSessionEvent");
         session = event.getSession();
+        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS);
     }
 
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
@@ -120,11 +116,15 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onStartGame(StartGameEvent event) {
         Log.i(TAG, "onStartGame");
-        Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
-        Bundle b = new Bundle();
-        // TODO Session for users
-        startActivity(intent);
+       startGame();
     }
 
+    private void startGame() {
+        Intent intent = new Intent(LobbyActivity.this, VoteOnLowestEffortActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("session", session);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
 
 }
