@@ -15,7 +15,9 @@ method.setup = function(){
       if(!socket.auth) return;
       self.on(socket);
     });
-    self.clientDisconnected(socket);
+    socket.on('disconnect', function (data) {
+      self.clientDisconnected(socket);
+    });
   });
 }
 
@@ -30,11 +32,9 @@ method.clientConnected = function(socket){
 //client disconnected
 method.clientDisconnected = function(socket){
   var self = this;
-  socket.on('disconnect', function (data) {
-    if(this.dev) console.log("[Socket] disconnected:", socket.id);
-    if(socket.auth)
-	    self.clients.splice(self.clients.indexOf(socket),1);
-  });
+  if(this.dev) console.log("[Socket] disconnected:", socket.id);
+  if(socket.auth)
+    self.clients.splice(self.clients.indexOf(socket),1);  
 }
 //validate token
 method.validateToken = function(token){
@@ -51,6 +51,7 @@ method.authenticate = function(socket, cb) {
     if(this.dev) console.log("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
   }
+
   cb();
 };
 //any other socket event

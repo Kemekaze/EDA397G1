@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 
 /**
- * start the game
+ * start the session
  */
 
 module.exports = function (socket, data, callback){
