@@ -23,6 +23,7 @@ var Session = mongoose.model('Session');
  *            number: 57,
  *            state: "open",
  *            title: "As a user i would like to automatically log in on app start so that the user dont have to reenter credentials",
+              body: "This is a comment for this issue!",
  *            votes: []
  *          },
             ....

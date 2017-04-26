@@ -18,6 +18,7 @@ import java.util.List;
 
 import chalmers.eda397g1.Adapters.AvailableGamesAdapter;
 import chalmers.eda397g1.Events.AvailableSessionsEvent;
+import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.Objects.AvailSession;
@@ -98,6 +99,17 @@ public class MainActivity extends AppCompatActivity{
         mAdapter.addGames(availSessions);
     }
 
+    @Subscribe
+    public void onJoinSession(JoinSessionEvent event){
+        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", false);
+        b.putSerializable("session", event.getSession());
+        intent.putExtras(b);
+        startActivity(intent);
+
+    }
+
     private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
         @Override
         public void recycleViewListClicked(View v, int position) {
@@ -112,13 +124,7 @@ public class MainActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
 
-            EventBus.getDefault().postSticky(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
-
-            Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-            Bundle b = new Bundle();
-            b.putBoolean("isHost", false);
-            intent.putExtras(b);
-            startActivity(intent);
+            EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
         }
     };
 

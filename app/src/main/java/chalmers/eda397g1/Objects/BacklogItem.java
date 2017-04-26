@@ -16,7 +16,10 @@ public class BacklogItem implements Serializable{
     private String state;
     private String title;
 
-    public BacklogItem(int businessValue, String cardId, int effortValue, String issueId, int number, String state, String title) {
+
+    private String body;
+
+    public BacklogItem(int businessValue, String cardId, int effortValue, String issueId, int number, String state, String title, String body) {
         this.businessValue = businessValue;
         this.cardId = cardId;
         this.effortValue = effortValue;
@@ -24,8 +27,14 @@ public class BacklogItem implements Serializable{
         this.number = number;
         this.state = state;
         this.title = title;
+        this.body = body;
     }
 
+
+    public String getBody() {return body;}
+
+    public void setBody(String body) {this.body = body;
+    }
     public void setBusinessValue(int businessValue) {
         this.businessValue = businessValue;
     }

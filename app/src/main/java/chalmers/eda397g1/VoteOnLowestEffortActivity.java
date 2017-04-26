@@ -115,14 +115,16 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         super.onStop();
     }
 
-
     private void setBacklogList(){
         List<BacklogItem> items = session.getGithub().getBacklogItems();
         voteIssues.clear();
         for(BacklogItem i : items){
-            voteIssues.add(
-                    i.getTitle() + "\nBusiness Value: " + i.getBusinessValue()
-            );
+            String content = i.getTitle();
+            content += "\nBusiness Value: " + i.getBusinessValue();
+            Log.d(TAG, "Body: " + i.getBody());
+            if(!i.getBody().isEmpty())
+                content += "\n" + i.getBody();
+            voteIssues.add(content);
         }
     }
 
