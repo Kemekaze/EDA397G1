@@ -16,6 +16,7 @@ import java.util.List;
 import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
+import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Objects.User;
@@ -104,14 +105,14 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (sticky = true)
     public void onCreateSessionEvent(CreateSessionEvent event) {
         Log.i(TAG, "onCreateSessionEvent");
-        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS); // TODO: remove when server is working correcly
+        EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_CLIENTS)); // TODO: remove when server is working correcly
     }
 
     @Subscribe (sticky = true)
     public void onJoinSessionEvent(JoinSessionEvent event) {
         Log.i(TAG, "onJoinSessionEvent");
         session = event.getSession();
-        EventBus.getDefault().post(Constants.SocketEvents.SESSION_CLIENTS); // TODO: remove when server is working correcly
+        EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_CLIENTS)); // TODO: remove when server is working correcly
     }
 
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
