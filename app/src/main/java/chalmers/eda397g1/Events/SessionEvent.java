@@ -44,7 +44,8 @@ public class SessionEvent extends Event{
                             obj.getString("issue_id"),
                             obj.getInt("number"),
                             obj.getString("state"),
-                            obj.getString("title")
+                            obj.getString("title"),
+                            obj.getString("body")
                     ));
             }
 
