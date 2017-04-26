@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="chalmers.eda397g1.LobbyActivity">
-
-        <ListView
+    
+    <ListView
             android:id="@+id/playerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             />
 
-    <Button
-        android:id="@+id/startGameButton"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
         android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Start Game"
-        android:textSize="32dp"
-        />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/Accent"
+        app:borderWidth="0dp"
+        app:elevation="12dp"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp"/>
+
+</android.support.design.widget.CoordinatorLayout>
+

@@ -1,44 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewChooseRepo"
+        android:id="@+id/chooseRepoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Select Repository"
-        android:textSize="32sp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/select_repository"/>
 
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/repoSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:layout_height="50dp"
+        app:met_floatingLabel="normal"/>
 
     <TextView
-        android:id="@+id/textViewChooseProject"
+        android:id="@+id/chooseProjectText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Select Project"
-        android:textSize="32sp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/select_project"/>
 
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/projectSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:layout_height="50dp"
+        app:met_floatingLabel="normal"/>
 
-    <Button
-        android:id="@+id/chooseButton"
+    <TextView
+        android:id="@+id/chooseColumnText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/select_column"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/columnSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:met_floatingLabel="normal"/>
 
 </LinearLayout>
+
+<android.support.design.widget.FloatingActionButton
+android:id="@+id/fab3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom|end"
+android:layout_margin="@dimen/fab_margin"
+app:backgroundTint="@color/Accent"
+app:borderWidth="0dp"
+app:elevation="12dp"
+app:srcCompat="@drawable/ic_arrow_forward_black_24dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

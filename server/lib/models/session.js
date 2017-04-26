@@ -1,40 +1,94 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 // User Schema
 const SessionSchema = mongoose.Schema({
-  leader: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
+  host: {
+    type: String,
+    required: true
   },
-  clients:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
-  }],
+  started:{
+    type: Boolean,
+    default: false
+  },
   github:{
-    repo_id: String,
-    project_id: String,
-    column_id: String,
+    repo_id:{
+      type: String,
+      required: true
+    },
+    project_id:{
+      type: String,
+      required: true
+    },
+    column_id:{
+      type: String,
+      required: true
+    },
+    full_name:{
+      type: String,
+      required: true
+    },
+    lowest_effort:{
+      loweset_item: Number,
+      votes: [{
+          round_index: Number,
+          rounds: [{
+               phone_id: {
+                 type: String,
+                 required: true
+               },
+               vote:{
+                 type: Number,
+                 required: true
+               }
+          }]
+      }]
+    },
     backlog_items:[{
-        item_id:{
+        issue_id:{
           type: Number,
           required: true
         },
-        name: String,
+        card_id:{
+          type: Number,
+          required: true
+        },
+        number:{
+          type: Number,
+          required: true
+        },
+        title: String,
+        body: String,
+        state: String,
         business_value: Number,
         effort_value: Number,
         votes: [{
             round_index: Number,
             rounds: [{
-                 client_id: {
-                   type: mongoose.Schema.Types.ObjectId,
-                   ref: 'Client'
+                 phone_id: {
+                   type: String,
+                   required: true
                  },
-                 vote: Number
+                 vote:{
+                   type: Number,
+                   required: true
+                 }
             }]
         }]
     }]
   }
-});
+})
 
 // Export the model
-const Session = module.exports = mongoose.model('Session', SessionSchema);
+const Session = module.exports = mongoose.model('Session', SessionSchema)
+
+module.exports.createSession = function(leaderClient, repo, project, column, callback){
+  let newSession = new Session({
+    leader: leaderClient,
+    github: {
+      repo_id: repo,
+      project_id: project,
+      column_id: column
+    }
+  })
+  newSession.save(callback)
+}
