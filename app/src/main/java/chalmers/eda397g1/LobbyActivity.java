@@ -39,7 +39,7 @@ public class LobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby);
 
         players = new ArrayList<>();
-        
+
         // Find out if this is a lobby started by a host
         Bundle b = getIntent().getExtras();
         if(b != null) {
@@ -72,7 +72,7 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(Constants.SocketEvents.SESSION_START);
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_START));
                 startGame();
             }
         });
