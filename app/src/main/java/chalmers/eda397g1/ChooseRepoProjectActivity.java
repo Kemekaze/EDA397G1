@@ -26,6 +26,7 @@ import chalmers.eda397g1.Events.UserProjectsEvent;
 import chalmers.eda397g1.Objects.Column;
 import chalmers.eda397g1.Objects.Project;
 import chalmers.eda397g1.Objects.Repository;
+import chalmers.eda397g1.Objects.Session;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -64,7 +65,7 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         columnSpinner = (AppCompatSpinner) findViewById(R.id.columnSpinner);
 
         // Find Button
-        FloatingActionButton chooseButton = (FloatingActionButton) findViewById(R.id.fab3);
+        final FloatingActionButton chooseButton = (FloatingActionButton) findViewById(R.id.fab3);
 
         // Create the adapters
         final ArrayAdapter<String> repoAdapter = new ArrayAdapter<String>(
@@ -202,12 +203,8 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    // Start lobby as host
-                    Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
-                    Bundle b = new Bundle();
-                    b.putBoolean("isHost", true);
-                    intent.putExtras(b);
-                    startActivity(intent);
+                    // Now wait for the server to create the session.
+                    chooseButton.setEnabled(false);
                 }
             }
         });
@@ -344,8 +341,16 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
 
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onCreateSession(CreateSessionEvent event){
-        Log.d(TAG, "################ new session");
-
+        Log.d(TAG, "Created session");
+        Session session = event.getSession();
+        // Start lobby as host
+        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", true);
+        // TODO pass session somehow.
+        intent.putExtras(b);
+        startActivity(intent);
+        finish();
     }
 
 }
