@@ -200,6 +200,13 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         query.putOpt("full_name", selectedRepo.getFullName());
                         RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
                         EventBus.getDefault().post(event);
+
+                        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+                        Bundle b = new Bundle();
+                        b.putBoolean("isHost", true);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                        finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -338,19 +345,4 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
         }
         ( (ArrayAdapter<String>) columnSpinner.getAdapter()).notifyDataSetChanged();
     }
-
-    @Subscribe (threadMode = ThreadMode.MainThread)
-    public void onCreateSession(CreateSessionEvent event){
-        Log.d(TAG, "Created session");
-        Session session = event.getSession();
-        // Start lobby as host
-        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
-        Bundle b = new Bundle();
-        b.putBoolean("isHost", true);
-        b.putSerializable("session", session);
-        intent.putExtras(b);
-        startActivity(intent);
-        finish();
-    }
-
 }

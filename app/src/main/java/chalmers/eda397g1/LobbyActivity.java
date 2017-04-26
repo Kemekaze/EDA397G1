@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +76,13 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_START));
+                JSONObject query = new JSONObject();
+                try {
+                    query.putOpt("session_id", session.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_START, query));
                 startGame();
             }
         });
@@ -102,6 +112,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (sticky = true)
     public void onCreateSessionEvent(CreateSessionEvent event) {
         Log.i(TAG, "onCreateSessionEvent");
+        session = event.getSession();
         EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_CLIENTS)); // TODO: remove when server is working correcly
     }
 
@@ -128,7 +139,12 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onStartGame(StartGameEvent event) {
         Log.i(TAG, "onStartGame");
-       startGame();
+        if (event.getStatus() == 200) {
+            startGame();
+        } else {
+            Toast.makeText(this, event.getStatus() + event.getErrors()[0].getError() + ": " + event.getErrors()[0].getMessage(), Toast.LENGTH_LONG);
+            startGame(); // TODO: remove
+        }
     }
 
     private void startGame() {
