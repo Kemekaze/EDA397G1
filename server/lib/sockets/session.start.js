@@ -11,7 +11,7 @@ module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
 
-  var room = handler.room.getCurrentRoom();
+  var room = handler.room.getCurrentRoom(socket);
   if(room == null)
     return callback(response.NOT_FOUND('Session does not exist'));
   Session.findById(room,function(e,session){

@@ -11,7 +11,7 @@ method.exists = function(room){
 method.get = function(socket){
   return Object.keys( this.io.sockets.adapter.sids[socket.id] );
 }
-method.getCurrentRoom = function(){
+method.getCurrentRoom = function(socket){
   var current_rooms = this.get(socket);
   if(current_rooms.length > 1)
     return current_rooms[1];
