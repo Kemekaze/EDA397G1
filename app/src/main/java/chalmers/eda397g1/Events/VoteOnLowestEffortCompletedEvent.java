@@ -1,4 +1,4 @@
-package chalmers.eda397g1.Events;
+package chalmers.eda397g1.events;
 
 import android.util.Log;
 
