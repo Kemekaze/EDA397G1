@@ -131,6 +131,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_SESSIONS, eventAvailableGames);
+        socket.on(Constants.SocketEvents.SESSION_CREATED, eventSessionCreated);
         socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
@@ -287,6 +288,18 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().postSticky(new CreateSessionEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventCreatedSession = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventSessionCreated()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            RequestEvent event = new RequestEvent(Constants.SocketEvents.AVAILABLE_SESSIONS);
+            this.emit(event);
         }
     };
 

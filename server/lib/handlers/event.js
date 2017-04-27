@@ -43,7 +43,7 @@ method.room = function(){
     });
   });
   self.ee.on(self.CREATE,function(room){
-
+      handler.socket.io.emit('session.created', self.reponse.OK({}));
   });
   self.ee.on(self.START,function(room,host){
     var clients = handler.room.clients(room);

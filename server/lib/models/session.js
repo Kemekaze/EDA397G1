@@ -6,9 +6,9 @@ const SessionSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  started:{
-    type: Boolean,
-    default: false
+  state : {
+    type: Number,
+    default: 0
   },
   github:{
     repo_id:{
@@ -91,4 +91,9 @@ module.exports.createSession = function(leaderClient, repo, project, column, cal
     }
   })
   newSession.save(callback)
+}
+module.exports.STATES = {
+ LOBBY: 0,
+ LOWEST_EFFORT: 1
+
 }
