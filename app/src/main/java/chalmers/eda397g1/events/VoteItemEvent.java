@@ -8,4 +8,4 @@ public class VoteItemEvent extends Event{
     public VoteItemEvent(Object... args) {
         super(args);
     }
-}
+} // nothing to add

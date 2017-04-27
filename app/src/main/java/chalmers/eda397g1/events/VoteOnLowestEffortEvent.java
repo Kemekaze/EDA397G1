@@ -8,4 +8,4 @@ public class VoteOnLowestEffortEvent extends Event {
     public VoteOnLowestEffortEvent(Object... args) {
         super(args);
     }
-} // nothing is returned
+} // nothing to add

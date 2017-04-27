@@ -1,7 +1,6 @@
 package chalmers.eda397g1.models;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by Martin on 2017-04-27.

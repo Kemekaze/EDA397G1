@@ -20,4 +20,5 @@ public class Vote {
     public User getUser() {
         return user;
     }
+
 }

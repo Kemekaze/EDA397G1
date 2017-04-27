@@ -9,25 +9,25 @@ import org.json.JSONObject;
 
 public class VoteOnLowestEffortCompletedEvent extends Event {
     private final String TAG = "VoteOnLow..Comp..Event:";
-    private String itemId;
-    private int effort;
-    private String nextId;
+    private String referenceItemId;
+    private int lowestEffort;
+    private String nextId; // next id to vote on
 
     public VoteOnLowestEffortCompletedEvent(Object... args) {
         super(args);
         JSONObject root = (JSONObject) getData();
         Log.d(TAG, "getData:" + root.toString());
-        itemId = root.optString("item_id");
-        effort = root.optInt("effort");
+        referenceItemId = root.optString("item_id");
+        lowestEffort = root.optInt("effort");
         nextId = root.optString("next_id");
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getReferenceItemId() {
+        return referenceItemId;
     }
 
-    public int getEffort() {
-        return effort;
+    public int getLowestEffort() {
+        return lowestEffort;
     }
 
     public String getNextId() {
