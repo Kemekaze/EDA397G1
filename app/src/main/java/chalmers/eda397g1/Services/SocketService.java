@@ -29,11 +29,14 @@ import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.LoginEvent;
+import chalmers.eda397g1.Events.NextStepEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Events.UserProjectsEvent;
+import chalmers.eda397g1.Events.VoteItemEvent;
+import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
 import de.greenrobot.event.EventBus;
@@ -136,6 +139,9 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
+        socket.on(Constants.SocketEvents.VOTE_ON_LOWEST, eventVoteOnLowest);
+        socket.on(Constants.SocketEvents.VOTE_ITEM, eventVoteItem);
+        socket.on(Constants.SocketEvents.NEXT_STEP, eventNextStep);
     }
 
     @Override
@@ -333,6 +339,39 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().postSticky(new LobbyUpdateEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventVoteOnLowest = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventVoteOnLowest()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().postSticky(new VoteOnLowestEffortEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventVoteItem = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventVoteItem()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().postSticky(new VoteItemEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventNextStep = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventNextStep()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().postSticky(new NextStepEvent(args));
         }
     };
 

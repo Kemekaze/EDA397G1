@@ -43,5 +43,9 @@ public class Constants {
         public static final String AVAILABLE_SESSIONS = "available.sessions";
 
         public static final String SESSION_CLIENTS = "session.clients";
+
+        public static final String VOTE_ON_LOWEST = "vote.on.lowest";
+        public static final String VOTE_ITEM = "vote.item";
+        public static final String NEXT_STEP = "next.step";
     }
 }
