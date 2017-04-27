@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="chalmers.eda397g1.LobbyActivity">
+    tools:context="chalmers.eda397g1.ui.LobbyActivity">
     
     <ListView
             android:id="@+id/playerList"
