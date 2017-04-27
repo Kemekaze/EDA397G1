@@ -29,13 +29,14 @@ import chalmers.eda397g1.Events.CreateSessionEvent;
 import chalmers.eda397g1.Events.JoinSessionEvent;
 import chalmers.eda397g1.Events.LobbyUpdateEvent;
 import chalmers.eda397g1.Events.LoginEvent;
-import chalmers.eda397g1.Events.NextStepEvent;
 import chalmers.eda397g1.Events.ProjectColumnsEvent;
 import chalmers.eda397g1.Events.ReposProjectsEvent;
 import chalmers.eda397g1.Events.RequestEvent;
 import chalmers.eda397g1.Events.StartGameEvent;
 import chalmers.eda397g1.Events.UserProjectsEvent;
+import chalmers.eda397g1.Events.VoteItemCompletedEvent;
 import chalmers.eda397g1.Events.VoteItemEvent;
+import chalmers.eda397g1.Events.VoteOnLowestEffortCompletedEvent;
 import chalmers.eda397g1.Events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.Resources.Constants;
@@ -139,9 +140,10 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
-        socket.on(Constants.SocketEvents.VOTE_ON_LOWEST, eventVoteOnLowest);
-        socket.on(Constants.SocketEvents.VOTE_ITEM, eventVoteItem);
-        socket.on(Constants.SocketEvents.NEXT_STEP, eventNextStep);
+        socket.on(Constants.SocketEvents.VOTE_LOWEST, eventVoteOnLowest);
+        socket.on(Constants.SocketEvents.VOTE_LOWEST_COMPLETED, eventVoteOnLowestCompleted);
+        socket.on(Constants.SocketEvents.VOTE, eventVoteItem);
+        socket.on(Constants.SocketEvents.VOTE_COMPLETED, eventVoteItemCompleted);
     }
 
     @Override
@@ -342,6 +344,17 @@ public class SocketService extends Service {
         }
     };
 
+    private Emitter.Listener eventVoteOnLowestCompleted = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventVoteOnLowestCompleted()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().postSticky(new VoteOnLowestEffortCompletedEvent(args));
+        }
+    };
+
     private Emitter.Listener eventVoteOnLowest = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -364,14 +377,14 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventNextStep = new Emitter.Listener() {
+    private Emitter.Listener eventVoteItemCompleted = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i(TAG, "eventNextStep()");
+            Log.i(TAG, "eventVoteItemCompleted()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new NextStepEvent(args));
+            EventBus.getDefault().postSticky(new VoteItemCompletedEvent(args));
         }
     };
 
