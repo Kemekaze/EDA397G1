@@ -92,8 +92,7 @@ module.exports.createSession = function(leaderClient, repo, project, column, cal
   })
   newSession.save(callback)
 }
-module.exports.STATES = {
+module.exports.STATE = {
  LOBBY: 0,
  LOWEST_EFFORT: 1
-
 }

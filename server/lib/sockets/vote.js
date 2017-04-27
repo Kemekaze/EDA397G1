@@ -29,4 +29,6 @@ module.exports = function (socket, data, callback){
   if(data.phone_id  == null || data.auth == null)
     return callback(response.BAD_REQUEST('Invalid request'));
 
+
+
 };
