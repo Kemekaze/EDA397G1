@@ -351,7 +351,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new VoteOnLowestEffortCompletedEvent(args));
+            EventBus.getDefault().post(new VoteOnLowestEffortCompletedEvent(args));
         }
     };
 
@@ -362,7 +362,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new VoteOnLowestEffortEvent(args));
+            EventBus.getDefault().post(new VoteOnLowestEffortEvent(args));
         }
     };
 
@@ -373,7 +373,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new VoteItemEvent(args));
+            EventBus.getDefault().post(new VoteItemEvent(args));
         }
     };
 
@@ -384,7 +384,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new VoteItemCompletedEvent(args));
+            EventBus.getDefault().post(new VoteItemCompletedEvent(args));
         }
     };
 
