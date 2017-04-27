@@ -85,7 +85,11 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                             Snackbar.LENGTH_LONG);
                     alert.show();
                 } else {
-                    startActivity(new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+                    startActivity(
+                    // TODO: Send the vote to server and wait for response. Refactor start of voteActivity to
+                        //    fire when response is received
+
+                            new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
                 }
             }
         });
@@ -126,6 +130,13 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 content += "\n" + i.getBody();
             voteIssues.add(content);
         }
+    }
+
+    @Subscribe
+    public void onVoteOnLowestEffortCompleted (){
+        Log.i(TAG, "onLVoteOnLowestEffortCompleted");
+        //Here we need to start the next activity and pass the lowest effort item to it.
+        //new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
     }
 
 }
