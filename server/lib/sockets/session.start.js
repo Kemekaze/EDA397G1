@@ -2,6 +2,7 @@ var response = lib.helpers.response;
 var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
+var Session = mongoose.model('Session');
 
 /**
  * start the session
