@@ -18,17 +18,21 @@ module.exports = function (socket, data, callback){
   Session.findById(room,function(e,session){
     if(!e && session){
       if(session.host == socket.phone_id){
-        session.started = true;
-        session.save(function(e,newSession){
-          if(!e){
-            handler.ev.emit(handler.ev.START,room);
-            callback(response.OK({}));
-          }else{
-            callback(response.SERVER_ERROR('Something went wrong'));
-          }
-        });
+        if(session.state == Session.STATE.LOBBY){
+          session.state = Session.STATE.LOWEST_EFFORT;
+          session.save(function(e,newSession){
+            if(!e){
+              handler.ev.emit(handler.ev.START,room);
+              callback(response.OK({}));
+            }else{
+              callback(response.SERVER_ERROR('Something went wrong'));
+            }
+          });
+        }else{
+          callback(response.FORBIDDEN('Session already started'));
+        }
       }else {
-        callback(response.UNAUTHORIZED('You are not the host of the game'));
+        callback(response.FORBIDDEN('You are not the host of the game'));
       }
     }else{
       callback(response.NOT_FOUND('Session could not be found'));

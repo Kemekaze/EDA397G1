@@ -37,6 +37,7 @@ public class Constants {
         public static final String PROJECT_COLUMNS = "project.columns";
 
         public static final String SESSION_CREATE = "session.create";
+        public static final String SESSION_CREATED = "session.created";
         public static final String SESSION_JOIN = "session.join";
         public static final String SESSION_START = "session.start";
         public static final String AVAILABLE_SESSIONS = "available.sessions";
