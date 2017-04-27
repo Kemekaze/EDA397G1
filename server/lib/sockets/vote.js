@@ -13,14 +13,17 @@ var Client = mongoose.model('Client');
  *     just a 200
  *  }
  *  vote.completed   // when all voted
- * [{
- *     item: itemid,
+ * {
+ * votes:[{
  *     effort: 2,
  *     user: {
  *    	 "login": "Kemekaze",
  *       "avatar": "https://avatars3.githubusercontent.com/u/5463135?v=3"
  *    }
- * }]
+ * }],
+   item_id: item_id,
+ * next_id: next_id
+ * }
 
  */
 

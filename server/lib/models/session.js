@@ -30,17 +30,14 @@ const SessionSchema = mongoose.Schema({
     lowest_effort:{
       loweset_item: Number,
       votes: [{
-          round_index: Number,
-          rounds: [{
-               phone_id: {
-                 type: String,
-                 required: true
-               },
-               vote:{
-                 type: Number,
-                 required: true
-               }
-          }]
+           phone_id: {
+             type: String,
+             required: true
+           },
+           issue_id:{
+             type: Number,
+             required: true
+           }
       }]
     },
     backlog_items:[{
