@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity{
         hostGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 startActivity(new Intent(MainActivity.this, ChooseRepoProjectActivity.class));
             }
         });

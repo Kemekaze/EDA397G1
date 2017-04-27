@@ -291,7 +291,7 @@ public class SocketService extends Service {
         }
     };
 
-    private Emitter.Listener eventCreatedSession = new Emitter.Listener() {
+    private Emitter.Listener eventSessionCreated = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventSessionCreated()");
@@ -299,7 +299,7 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             RequestEvent event = new RequestEvent(Constants.SocketEvents.AVAILABLE_SESSIONS);
-            this.emit(event);
+            EventBus.getDefault().post(event);
         }
     };
 
