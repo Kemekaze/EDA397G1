@@ -44,8 +44,9 @@ public class Constants {
 
         public static final String SESSION_CLIENTS = "session.clients";
 
-        public static final String VOTE_ON_LOWEST = "vote.on.lowest";
-        public static final String VOTE_ITEM = "vote.item";
-        public static final String NEXT_STEP = "next.step";
+        public static final String VOTE_LOWEST = "vote.lowest";
+        public static final String VOTE_LOWEST_COMPLETED = "vote.lowest.completed";
+        public static final String VOTE = "vote";
+        public static final String VOTE_COMPLETED = "vote.completed";
     }
 }
