@@ -3,6 +3,7 @@ package chalmers.eda397g1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -76,14 +77,7 @@ public class LobbyActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject query = new JSONObject();
-                try {
-                    query.putOpt("session_id", session.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_START, query));
-                startGame();
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_START));
             }
         });
     }
@@ -142,8 +136,7 @@ public class LobbyActivity extends AppCompatActivity {
         if (event.getStatus() == 200) {
             startGame();
         } else {
-            Toast.makeText(this, event.getStatus() + event.getErrors()[0].getError() + ": " + event.getErrors()[0].getMessage(), Toast.LENGTH_LONG);
-            startGame(); // TODO: remove
+            Snackbar.make(playerListView, event.getStatus() + " " + event.getErrors()[0].getError() + ": " + event.getErrors()[0].getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 
