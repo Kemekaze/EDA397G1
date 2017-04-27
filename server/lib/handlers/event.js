@@ -64,21 +64,23 @@ method.vote = function(){
     console.log('[Event]',self.VOTE_LOWEST_COMPLETED);
     Session.findById(room,function(e,session){
       if(!e && session){
-
+        var lowest_effort = 2;
         var current_votes = session.github.lowest_effort.votes;
-        var votes ={}
+        var backlog_items_lookup = {};
+        for (var item in session.github.backlog_items) {
+          backlog_items_lookup[session.github.backlog_items[item].issue_id] = session.github.backlog_items[item];
+        }
+        backlog_items_lookup.sort(function (a, b) {
+            return a.business_value - b.business_value;
+        });
+        var votes ={};
         for (var vote in current_votes) {
-          var id = current_votes[vote].vote;
+          var id = current_votes[vote].issue_id;
           if(votes[id] == null){
             votes[id] = {
               count: 1,
-              b_value: 0
+              b_value: backlog_items[id].business_value
             };
-            for (var item in session.github.backlog_items) {
-              if(id == session.github.backlog_items[item].issue_id){
-                votes[id].b_value = session.github.backlog_items[item].business_value;
-              }
-            }
           }
           else{
             votes[id].count = votes[id].count+1;
@@ -88,12 +90,20 @@ method.vote = function(){
             return a.count - b.count || a.b_value - b.b_value;
         });
         session.github.lowest_effort.lowest_item = Object.keys(votes)[0];
+        for (var item in session.github.backlog_items) {
+          if(session.github.backlog_items[item].issue_id == session.github.lowest_effort.lowest_item ){
+            session.github.backlog_items[item].effort_value = lowest_effort;
+            session.github.backlog_items[item].completed = true;
+            break;
+          }
+        }
         session.save(function(e,newSession){
           if(!e){
             self.io.in(room).emit('vote.lowest.completed',self.response.OK({
-
+                item_id: newSession.github.lowest_effort.lowest_item
+                effort: lowest_effort,
+                next_id: Object.keys(backlog_items_lookup)[0]
             }));
-
           }
         });
       }

@@ -58,6 +58,10 @@ const SessionSchema = mongoose.Schema({
         state: String,
         business_value: Number,
         effort_value: Number,
+        completed: {
+          type: Boolean,
+          default: false
+        },
         votes: [{
             round_index: Number,
             rounds: [{
