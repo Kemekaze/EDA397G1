@@ -27,6 +27,7 @@ public class Constants {
         public static final String AUTHENTICATE = "authenticate";
         public static final String AUTHORIZED = "authorized";
         public static final String UNAUTHORIZED = "unauthorized";
+        public static final String SIGNOUT = "signout";
         public static final String AUTHENTICATE_AUTOLOGIN = "authenticate.autologin";
         public static final String AUTHENTICATE_GITHUB = "authenticate.github";
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
@@ -39,6 +40,7 @@ public class Constants {
         public static final String SESSION_CREATE = "session.create";
         public static final String SESSION_CREATED = "session.created";
         public static final String SESSION_JOIN = "session.join";
+        public static final String SESSION_LEAVE = "session.leave";
         public static final String SESSION_START = "session.start";
         public static final String AVAILABLE_SESSIONS = "available.sessions";
 

@@ -2,6 +2,7 @@ package chalmers.eda397g1.events;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import chalmers.eda397g1.models.Error;
 
 /**

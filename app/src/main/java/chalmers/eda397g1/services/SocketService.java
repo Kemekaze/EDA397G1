@@ -129,7 +129,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
         socket.on(Constants.SocketEvents.AUTHENTICATE_BITBUCKET, eventAuthenticatedBitbucket);
-        //custom
+        //session
         socket.on(Constants.SocketEvents.REPOSITORIES, eventRepositories);
         socket.on(Constants.SocketEvents.REPOSITORY_PROJECTS, eventRepositoryProjects);
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
@@ -138,6 +138,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_CREATED, eventSessionCreated);
         socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
+        socket.on(Constants.SocketEvents.SESSION_LEAVE, eventLeaveSession);
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
         socket.on(Constants.SocketEvents.VOTE_LOWEST, eventVoteOnLowest);
@@ -311,6 +312,16 @@ public class SocketService extends Service {
         }
     };
 
+    private Emitter.Listener eventLeaveSession = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventLeaveSession()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+
+        }
+    };
     private Emitter.Listener eventJoinSession = new Emitter.Listener() {
         @Override
         public void call(Object... args) {

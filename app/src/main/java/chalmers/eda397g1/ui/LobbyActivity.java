@@ -100,17 +100,19 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe (sticky = true)
+    @Subscribe (sticky = true,threadMode = ThreadMode.MainThread)
     public void onCreateSessionEvent(CreateSessionEvent event) {
         Log.i(TAG, "onCreateSessionEvent");
         session = event.getSession();
+        setTitle(session.getGithub().getFullName());
         EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_CLIENTS)); // TODO: remove when server is working correcly
     }
 
-    @Subscribe (sticky = true)
+    @Subscribe (sticky = true,threadMode = ThreadMode.MainThread)
     public void onJoinSessionEvent(JoinSessionEvent event) {
         Log.i(TAG, "onJoinSessionEvent");
         session = event.getSession();
+        setTitle(session.getGithub().getFullName());
         EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_CLIENTS)); // TODO: remove when server is working correcly
     }
 
