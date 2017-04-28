@@ -22,7 +22,7 @@ module.exports = function (socket, data, callback){
           session.state = Session.STATE.LOWEST_EFFORT;
           session.save(function(e,newSession){
             if(!e){
-              handler.ev.emit(handler.ev.START,room);
+              handler.ev.emit(handler.ev.START,{room:room,host:socket.id});
               callback(response.OK({}));
             }else{
               callback(response.SERVER_ERROR('Something went wrong'));

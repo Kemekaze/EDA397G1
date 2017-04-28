@@ -44,7 +44,7 @@ module.exports = function (socket, data, callback){
         var viewable_games = [];
         for (var game of games) {
           for (var repo of repos) {
-            if(game.github.full_name == repo && game.state == Session.STATE.LOBBY){
+            if(game.github.full_name == repo && (game.state == Session.STATE.LOBBY || Session.inSession(game,socket.phone_id))){
               viewable_games.push({
                 session_id: game._id,
                 full_name: repo,

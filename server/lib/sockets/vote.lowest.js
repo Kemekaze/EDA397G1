@@ -23,8 +23,9 @@ var Session = mongoose.model('Session');
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
-  if(data.item_id  == null)
+  if(data.item_id  == null || typeof data.item_id !== 'string')
     return callback(response.BAD_REQUEST('Invalid request'));
+
   var room = handler.room.getCurrentRoom(socket);
   Session.findById(room,function(e,session){
     if(!e && session){
@@ -39,12 +40,12 @@ module.exports = function (socket, data, callback){
         }
         session.github.lowest_effort.votes.push({
           phone_id: socket.phone_id,
-          issue_id: data.item_id
+          item_id: data.item_id
         });
         var voted_count = session.github.lowest_effort.votes.length;
         session.save(function(e,newSession){
           if(!e){
-            if(voted_count >= handler.room.clients(room).length){
+            if(voted_count == newSession.clients_phone_id.length){
                 handler.ev.emit(handler.ev.VOTE_LOWEST_COMPLETED,room);
             }
             callback(response.OK({}));

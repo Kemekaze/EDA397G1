@@ -48,6 +48,27 @@ module.exports = function (socket, data, callback){
       Session.findById(data.game_id,function(e,session){
         if(!e){
           if(session.state == Session.STATE.LOBBY){
+            if(!Session.inSession(session,socket.phone_id)){
+              session.clients_phone_id.push(socket.phone_id);
+            }
+            session.save(function(e,newSession){
+              if(!e){
+                var obj = newSession.toObject();
+                obj.isHost = (obj.host == socket.phone_id);
+                delete obj.__v;
+                delete obj.leader;
+                Client.findOne({phone_id: obj.host}, function(err,c){
+                  obj.host = {
+                    login: c.github.login,
+                    avatar: c.github.avatar
+                  }
+                  callback(response.OK(obj));
+                });
+              }else{
+                callback(response.SERVER_ERROR('Something went wrong'));
+              }
+            });
+          }else if (Session.inSession(session,socket.phone_id)) {
             var obj = session.toObject();
             obj.isHost = (obj.host == socket.phone_id);
             delete obj.__v;
@@ -59,6 +80,7 @@ module.exports = function (socket, data, callback){
               }
               callback(response.OK(obj));
             });
+
           }else{
             callback(response.FORBIDDEN('Session already started'));
           }

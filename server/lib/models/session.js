@@ -10,6 +10,7 @@ const SessionSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
+  clients_phone_id:[String],
   github:{
     repo_id:{
       type: String,
@@ -34,8 +35,8 @@ const SessionSchema = mongoose.Schema({
              type: String,
              required: true
            },
-           issue_id:{
-             type: Number,
+           item_id:{
+             type: String,
              required: true
            }
       }]
@@ -96,4 +97,21 @@ module.exports.createSession = function(leaderClient, repo, project, column, cal
 module.exports.STATE = {
  LOBBY: 0,
  LOWEST_EFFORT: 1
+}
+module.exports.inSession = function(session, phone_id){
+  for (var id in session.clients_phone_id) {
+    if(session.clients_phone_id[id] == phone_id) return true;
+  }
+  return false;
+}
+module.exports.nextIssue = function(session){
+  var items = session.github.backlog_items;
+  items.sort(function (a, b) {
+    if(a.completed === b.completed)
+      return a.business_value-b.business_value;
+    else if(a.completed)
+      return 1;
+    else return -1;
+});
+  return items[0]._id;
 }
