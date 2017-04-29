@@ -2,10 +2,6 @@
 <manifest package="chalmers.eda397g1"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -39,6 +35,7 @@
 
         <activity
             android:name=".ui.LobbyActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_lobby">
         </activity>
 

@@ -28,8 +28,9 @@ var Client = mongoose.model('Client');
  */
 
 module.exports = function (socket, data, callback){
-
-  if(data.phone_id  == null || data.auth == null)
+  if(!socket.git.auth)
+    return callback(response.UNAUTHORIZED('Unauthorized'));
+  if(data.item_id  == null || data.effort == null)
     return callback(response.BAD_REQUEST('Invalid request'));
 
 

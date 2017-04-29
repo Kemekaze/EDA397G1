@@ -3,6 +3,7 @@ package chalmers.eda397g1.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.io.InputStream;
@@ -27,6 +28,7 @@ import chalmers.eda397g1.events.AvailableSessionsEvent;
 import chalmers.eda397g1.events.CardsEvent;
 import chalmers.eda397g1.events.CreateSessionEvent;
 import chalmers.eda397g1.events.JoinSessionEvent;
+import chalmers.eda397g1.events.KickedEvent;
 import chalmers.eda397g1.events.LobbyUpdateEvent;
 import chalmers.eda397g1.events.LoginEvent;
 import chalmers.eda397g1.events.ProjectColumnsEvent;
@@ -40,6 +42,7 @@ import chalmers.eda397g1.events.VoteOnLowestEffortCompletedEvent;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.resources.Constants;
+import chalmers.eda397g1.resources.Queries;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import io.socket.client.IO;
@@ -135,16 +138,19 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.PROJECT_COLUMNS, eventProjectColumns);
         socket.on(Constants.SocketEvents.COLUMN_CARDS, eventColumnCards);
         socket.on(Constants.SocketEvents.AVAILABLE_SESSIONS, eventAvailableGames);
+
+        socket.on(Constants.SocketEvents.SESSION_KICKED, eventSessionKicked);
         socket.on(Constants.SocketEvents.SESSION_CREATED, eventSessionCreated);
         socket.on(Constants.SocketEvents.SESSION_CREATE, eventCreateSession);
         socket.on(Constants.SocketEvents.SESSION_JOIN, eventJoinSession);
         socket.on(Constants.SocketEvents.SESSION_LEAVE, eventLeaveSession);
+
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
         socket.on(Constants.SocketEvents.VOTE_LOWEST, eventVoteOnLowest);
-        socket.on(Constants.SocketEvents.VOTE_LOWEST_COMPLETED, eventVoteOnLowestCompleted);
+        socket.on(Constants.SocketEvents.VOTE_LOWEST_RESULT, eventVoteOnLowestCompleted);
         socket.on(Constants.SocketEvents.VOTE, eventVoteItem);
-        socket.on(Constants.SocketEvents.VOTE_COMPLETED, eventVoteItemCompleted);
+        socket.on(Constants.SocketEvents.VOTE_RESULT, eventVoteItemCompleted);
     }
 
     @Override
@@ -173,6 +179,8 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventReconnected");
+            String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            socket.emit(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN,Queries.query("phone_id", android_id));
             emitQueue();
             isConnected = true;
         }
@@ -337,6 +345,26 @@ public class SocketService extends Service {
         @Override
         public void call(Object... args) {
             Log.i(TAG, "eventStartGame()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new StartGameEvent(args));
+        }
+    };
+    private Emitter.Listener eventSessionKicked = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventSessionKicked()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new KickedEvent(args));
+        }
+    };
+    private Emitter.Listener eventStartedGame = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventStartedGame()");
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }

@@ -1,8 +1,12 @@
 package chalmers.eda397g1.resources;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -14,17 +18,16 @@ import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
-    boolean round;
+    Context context;
 
-    public DownloadImageTask(ImageView bmImage, Boolean round) {
+    public DownloadImageTask(ImageView bmImage, Context context) {
         this.bmImage = bmImage;
-        this.round= round;
+        this.context = context;
     }
     public DownloadImageTask(ImageView bmImage) {
         this.bmImage = bmImage;
-        this.round = false;
+        this.context = null;
     }
-
     protected Bitmap doInBackground(String... urls) {
         String urldisplay = urls[0];
         Bitmap mIcon11 = null;
@@ -39,7 +42,16 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        if(round) result = Images.roundCornerImage(result,40);
-        bmImage.setImageBitmap(result);
+        if(context != null){
+            Resources res = context.getResources();
+            RoundedBitmapDrawable dr =
+                    RoundedBitmapDrawableFactory.create(res, result);
+            dr.setCornerRadius(Math.max(result.getWidth(), result.getHeight()) / 2.0f);
+            bmImage.setImageDrawable(dr);
+        }else{
+            bmImage.setImageBitmap(result);
+        }
+
+
     }
 }

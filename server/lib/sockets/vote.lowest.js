@@ -46,7 +46,7 @@ module.exports = function (socket, data, callback){
         session.save(function(e,newSession){
           if(!e){
             if(voted_count == newSession.clients_phone_id.length){
-                handler.ev.emit(handler.ev.VOTE_LOWEST_COMPLETED,room);
+                handler.ev.emit(handler.ev.VOTE_LOWEST_RESULT,room);
             }
             callback(response.OK({}));
           }else{

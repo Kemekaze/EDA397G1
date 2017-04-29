@@ -9,14 +9,12 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings.Secure;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,18 +34,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.R;
 import chalmers.eda397g1.events.LoginEvent;
 import chalmers.eda397g1.events.RequestEvent;
-import chalmers.eda397g1.R;
 import chalmers.eda397g1.resources.Constants;
 import chalmers.eda397g1.resources.Queries;
 import chalmers.eda397g1.services.SocketService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
-
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -83,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         EventBus.getDefault().register(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
@@ -139,61 +133,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         EventBus.getDefault().unregister(this);
     }
 
-    private void populateAutoComplete()
-    {
-        if (!mayRequestContacts())
-        {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts()
-    {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-        {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
-        {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS))
-        {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener()
-                    {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v)
-                        {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        }
-        else
-        {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
-        if (requestCode == REQUEST_READ_CONTACTS)
-        {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                populateAutoComplete();
-            }
-        }
-    }
 
     private void attemptAutoLogin(){
         String android_id = Secure.getString(getContentResolver(), Secure.ANDROID_ID);

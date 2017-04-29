@@ -109,6 +109,7 @@ module.exports = function (socket, data, callback){
                           login: c.github.login,
                           avatar: c.github.avatar
                         }
+                        handler.ev.emit(handler.ev.CREATED,newSession._id);
                         callback(response.OK(obj));
                       });
                     }else{

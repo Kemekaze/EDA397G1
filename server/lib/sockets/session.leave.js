@@ -21,11 +21,29 @@ module.exports = function (socket, data, callback){
   Session.findById(room,function(e,session){
     if(!e && session){
       for (var i= 0; i<session.clients_phone_id.length; i++) {
-        if(session.clients_phone_id[i] == phone_id) session.clients_phone_id.splice(i,1);
+        if(session.clients_phone_id[i] == socket.phone_id) session.clients_phone_id.splice(i,1);
       }
       session.save(function(e,newSession){
         if(!e){
           socket.leave(room);
+          if(handler.room.exists(room)){
+            if(newSession.host == socket.phone_id){
+                var clients = handler.room.clients(room);
+                for (var id in clients) {
+                  handler.ev.emit(handler.ev.KICKED,{
+                    session:newSession,
+                    socket:clients[id],
+                    reason: 'Host has ended the session'
+                  });
+                  clients[id].leave(room);
+                }
+            }else{
+              handler.ev.emit(handler.ev.LEFT,{
+                room: room,
+                phone_id: socket.phone_id
+              });
+            }
+          }
           callback(response.OK({}));
         }else{
           callback(response.SERVER_ERROR('Something went wrong'));

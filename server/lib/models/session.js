@@ -63,9 +63,9 @@ const SessionSchema = mongoose.Schema({
           type: Boolean,
           default: false
         },
-        votes: [{
-            round_index: Number,
-            rounds: [{
+        current_round:String,
+        rounds: [{
+            votes: [{
                  phone_id: {
                    type: String,
                    required: true

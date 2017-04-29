@@ -28,27 +28,49 @@ public class Constants {
         public static final String AUTHORIZED = "authorized";
         public static final String UNAUTHORIZED = "unauthorized";
         public static final String SIGNOUT = "signout";
+        /********* LOGIN *********/
         public static final String AUTHENTICATE_AUTOLOGIN = "authenticate.autologin";
         public static final String AUTHENTICATE_GITHUB = "authenticate.github";
         public static final String AUTHENTICATE_BITBUCKET = "authenticate.bitbucket";
-
+        /********* GITHUB INFO *********/
         public static final String REPOSITORIES = "repositories";
         public static final String REPOSITORY_PROJECTS = "repository.projects";
         public static final String COLUMN_CARDS = "column.cards";
         public static final String PROJECT_COLUMNS = "project.columns";
 
+        /********* SESSION *********/
         public static final String SESSION_CREATE = "session.create";
-        public static final String SESSION_CREATED = "session.created";
         public static final String SESSION_JOIN = "session.join";
         public static final String SESSION_LEAVE = "session.leave";
+        public static final String SESSION_KICK = "session.kick";
         public static final String SESSION_START = "session.start";
         public static final String AVAILABLE_SESSIONS = "available.sessions";
 
-        public static final String SESSION_CLIENTS = "session.clients";
-
+        /********* VOTEING *********/
         public static final String VOTE_LOWEST = "vote.lowest";
-        public static final String VOTE_LOWEST_COMPLETED = "vote.lowest.completed";
         public static final String VOTE = "vote";
-        public static final String VOTE_COMPLETED = "vote.completed";
+
+        /********* BEGIN FROM SERVER ONLY *********/
+        /********* SESSION *********/
+        //When someone has joined the session
+        public static final String SESSION_JOINED = "session.joined";
+        //Client list update when someone joins or leaves
+        public static final String SESSION_CLIENTS = "session.clients";
+        //When the host has stated the session
+        public static final String SESSION_STARTED = "session.started";
+        //When the host has kicked you from the session
+        public static final String SESSION_KICKED = "session.kicked";
+        //When a session is created
+        public static final String SESSION_CREATED = "session.created";
+        //When someone left the session
+        public static final String SESSION_LEFT = "session.left";
+        /********* VOTEING *********/
+        //When everyone has voted on the lowest item
+        public static final String VOTE_LOWEST_RESULT = "vote.lowest.result";
+        //When everyone has selected an effort for the current item, the round result
+        public static final String VOTE_ROUND_RESULT = "vote.round.result";
+        //When all the rounds are completed and an effort for the item is set
+        public static final String VOTE_RESULT = "vote.result";
+        /********* END FROM SERVER ONLY ********/
     }
 }

@@ -17,16 +17,24 @@ var method = EventHandler.prototype;
 method.emit = function(ev,data){
   this.ee.emit(ev,data);
 }
-method.JOIN = 'session.join';
-method.CREATE = 'session.create';
-method.START = 'session.start';
-method.VOTE_LOWEST_COMPLETED = 'vote.lowest.completed';
-method.VOTE_COMPLETED = 'vote.completed';
+method.JOINED = 'session.joined';
+method.CREATED = 'session.created';
+method.STARTED = 'session.started';
+method.LEFT = 'session.left';
+method.KICKED = 'session.kicked';
+method.CLIENTS = 'session.clients';
+method.VOTE_LOWEST_RESULT = 'vote.lowest.result';
+method.VOTE_ROUND_RESULT = 'vote.round.result';
+method.VOTE_RESULT = 'vote.result';
 
 method.room = function(){
   var self = this;
-  self.ee.on(self.JOIN,function(room){
-    console.log('[Event]',self.JOIN);
+  self.ee.on(self.JOINED,function(room){
+    console.log('[Event]',self.JOINED);
+    self.emit(self.CLIENTS,room);
+  });
+  self.ee.on(self.CLIENTS,function(room){
+    console.log('[Event]',self.CLIENTS);
     var clients = handler.room.clients(room);
     var phone_ids = []
     for (var id in clients) {
@@ -42,26 +50,37 @@ method.room = function(){
             avatar: client_s[client].github.avatar
           });
       }
-      self.io.in(room).emit('session.clients',self.response.OK(d));
+      self.io.in(room).emit(self.CLIENTS,self.response.OK(d));
     });
   });
-  self.ee.on(self.CREATE,function(room){
-    console.log('[Event]',self.CREATE);
-    handler.socket.io.emit('session.created', self.response.OK({}));
+  self.ee.on(self.CREATED,function(room){
+    console.log('[Event]',self.CREATED);
+    handler.socket.io.emit(self.CREATED, self.response.OK({}));
   });
-  self.ee.on(self.START,function(data){
-    console.log('[Event]',self.START);
+  self.ee.on(self.STARTED,function(data){
+    console.log('[Event]',self.STARTED);
     var clients = handler.room.clients(data.room);
     for (var id in clients) {
       if(clients[id].id != data.host)
-        clients[id].emit('session.start',self.response.OK({}));
+        clients[id].emit(self.STARTED,self.response.OK({}));
     }
+  });
+  self.ee.on(self.LEFT,function(data){
+    console.log('[Event]',self.LEFT);
+    self.emit(self.CLIENTS,data.room);
+  });
+  self.ee.on(self.KICKED,function(data){
+    console.log('[Event]',self.KICKED);
+    data.socket.emit(self.KICKED,self.response.OK({
+      full_name: data.session.github.full_name,
+      reason: data.reason
+    }));
   });
 }
 method.vote = function(){
   var self = this;
-  self.ee.on(self.VOTE_LOWEST_COMPLETED,function(room){
-    console.log('[Event]',self.VOTE_LOWEST_COMPLETED);
+  self.ee.on(self.VOTE_LOWEST_RESULT,function(room){
+    console.log('[Event]',self.VOTE_LOWEST_RESULT);
     Session.findById(room,function(e,session){
       if(!e && session){
         var lowest_effort = 2;
@@ -101,7 +120,7 @@ method.vote = function(){
 
         session.save(function(e,newSession){
           if(!e){
-            self.io.in(room).emit('vote.lowest.completed',self.response.OK({
+            self.io.in(room).emit(self.VOTE_LOWEST_RESULT,self.response.OK({
                 item_id: newSession.github.lowest_effort.lowest_item,
                 effort: lowest_effort,
                 next_id: Session.nextIssue(newSession)
