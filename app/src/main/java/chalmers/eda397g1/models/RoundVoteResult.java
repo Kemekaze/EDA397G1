@@ -1,10 +1,12 @@
 package chalmers.eda397g1.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Julius on 01.05.2017.
  */
 
-public class RoundVoteResult {
+public class RoundVoteResult implements Serializable{
     private User user;
     private int vote;
 
