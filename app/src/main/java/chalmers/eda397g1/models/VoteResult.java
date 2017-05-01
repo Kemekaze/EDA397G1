@@ -8,19 +8,17 @@ public class VoteResult {
     private User user;
     private int vote;
 
-    public User getUser() {
-        return user;
+    public VoteResult(User user, int vote) {
+        this.user = user;
+        this.vote = vote;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public User getUser() {
+        return user;
     }
 
     public int getVote() {
         return vote;
     }
-
-    public void setVote(int vote) {
-        this.vote = vote;
-    }
+    
 }
