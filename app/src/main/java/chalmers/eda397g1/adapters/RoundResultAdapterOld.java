@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import chalmers.eda397g1.R;
 
-public class RoundResultAdapter extends ArrayAdapter<String> {
+public class RoundResultAdapterOld extends ArrayAdapter<String> {
     private final Context context;
     private final String[] playerNames;
     private final int[] voteResults;
 
-    public RoundResultAdapter(@NonNull Context context, String[] playerNames, int[] voteResults) {
+    public RoundResultAdapterOld(@NonNull Context context, String[] playerNames, int[] voteResults) {
         super(context, R.layout.listview_element_round_vote, playerNames);
         this.context = context;
         this.playerNames = playerNames;

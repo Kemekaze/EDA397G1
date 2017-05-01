@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
-import chalmers.eda397g1.adapters.RoundResultAdapter;
+import chalmers.eda397g1.adapters.RoundResultAdapterOld;
 import chalmers.eda397g1.R;
 
 public class DisplayRoundResultsActivity extends AppCompatActivity
@@ -29,7 +29,7 @@ public class DisplayRoundResultsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_round_result);
 
-        final RoundResultAdapter adapter = new RoundResultAdapter(this, dummyPlayers, dummyVotes);
+        final RoundResultAdapterOld adapter = new RoundResultAdapterOld(this, dummyPlayers, dummyVotes);
 
         ListView voteResult = (ListView) findViewById(R.id.list);
         voteResult.setAdapter(adapter);

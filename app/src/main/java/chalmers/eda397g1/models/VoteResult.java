@@ -20,5 +20,5 @@ public class VoteResult {
     public int getVote() {
         return vote;
     }
-    
+
 }
