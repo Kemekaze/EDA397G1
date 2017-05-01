@@ -2,6 +2,7 @@ package chalmers.eda397g1.ui;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.models.RoundVoteResult;
+import chalmers.eda397g1.models.User;
+import chalmers.eda397g1.ui.fragments.ResultsDialogFragment;
 
 /**
  * Created by Jesper Kjellqvist 03/04/17
@@ -53,8 +57,18 @@ public class VoteActivity extends AppCompatActivity {
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(VoteActivity.this, DisplayRoundResultsActivity.class));
+                // DEBUG
+                // Insert the next line to make stuff work correctly again!
+                //startActivity(new Intent(VoteActivity.this, DisplayRoundResultsActivity.class));
+                RoundVoteResult[] debugRes = new RoundVoteResult[1];
+                debugRes[0] = new RoundVoteResult(new User("Testuser", "tessturi"), 42);
+                displayResults(debugRes );
             }
         });
+    }
+
+    public void displayResults(RoundVoteResult[] results){
+        ResultsDialogFragment frag = ResultsDialogFragment.newInstance(results);
+        frag.show(getFragmentManager(), "dialog");
     }
 }

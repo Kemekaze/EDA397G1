@@ -1,5 +1,6 @@
 package chalmers.eda397g1.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -27,8 +28,9 @@ public class RoundResultAdapter extends ArrayAdapter {
         public TextView result;
     }
 
-    public RoundResultAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull RoundVoteResult[] voteResults) {
-        super(context, resource, voteResults);
+    public RoundResultAdapter(@NonNull Context context, @NonNull RoundVoteResult[] voteResults) {
+        super(context, R.layout.listview_element_round_vote, voteResults);
+        this.context = context;
     }
 
     @Override
@@ -36,15 +38,15 @@ public class RoundResultAdapter extends ArrayAdapter {
         View rowView = convertView;
 
         // Reuse old view for better performance.
-        if(rowView == null){
-            LayoutInflater inflater = LayoutInflater.from(context);
-            rowView = inflater.inflate(R.layout.listview_element_round_vote, null);
+        //if(rowView == null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.listview_element_round_result, null);
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.avatar = (ImageView) rowView.findViewById(R.id.avatar);
             viewHolder.name = (TextView) rowView.findViewById(R.id.player_name);
             viewHolder.result = (TextView) rowView.findViewById(R.id.votedEffort);
             rowView.setTag(viewHolder);
-        }
+        //}
 
         // Fill data
         ViewHolder holder = (ViewHolder) rowView.getTag();
