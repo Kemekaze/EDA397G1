@@ -12,16 +12,18 @@ var Client = mongoose.model('Client');
  *  {
  *     just a 200
  *  }
- *  vote.completed   // when all voted
- * {
- * votes:[{
+ *  vote.round.result   // when all voted
+ * [{
  *     effort: 2,
  *     user: {
  *    	 "login": "Kemekaze",
  *       "avatar": "https://avatars3.githubusercontent.com/u/5463135?v=3"
  *    }
- * }],
-   item_id: item_id,
+ * }]
+ * vote.result   // when all voted
+ * {
+ * effort: effort
+ * item_id: item_id,
  * next_id: next_id
  * }
 
@@ -30,9 +32,8 @@ var Client = mongoose.model('Client');
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
-  if(data.item_id  == null || data.effort == null)
+    return callback(response.UNAUTHORIZED('Unauthorized'));
+  if( (data.item_id  == null || typeof data.item_id !== 'string') &&
+     (data.effort == null || !Number.isInteger(data.effort)))
     return callback(response.BAD_REQUEST('Invalid request'));
-
-
-
 };
