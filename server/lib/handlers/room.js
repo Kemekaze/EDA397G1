@@ -23,7 +23,6 @@ method.join = function(socket, room, cb){
   if(current_rooms.length > 1)
     socket.leave(current_rooms[1]);
   socket.join(room);
-  handler.ev.emit(handler.ev.JOIN,room);
   return cb(true);
 }
 method.create = function(socket, room, cb){
@@ -32,7 +31,6 @@ method.create = function(socket, room, cb){
   if(current_rooms.length > 1)
     socket.leave(current_rooms[1]);
   socket.join(room);
-  handler.ev.emit(handler.ev.CREATE,room);
   return cb(true);
 }
 method.end = function(room, cb){

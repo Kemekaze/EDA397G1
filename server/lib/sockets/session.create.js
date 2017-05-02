@@ -92,7 +92,10 @@ module.exports = function (socket, data, callback){
                       column_id: data.column_id,
                       project_id: data.project_id,
                       full_name: data.full_name,
-                      backlog_items: items
+                      backlog_items: items,
+                      lowest_effort:{
+                        votes:[]
+                      }
                     }
                 });
                 session.save(function(e,newSession){
@@ -106,6 +109,7 @@ module.exports = function (socket, data, callback){
                           login: c.github.login,
                           avatar: c.github.avatar
                         }
+                        handler.ev.emit(handler.ev.CREATED,newSession._id);
                         callback(response.OK(obj));
                       });
                     }else{

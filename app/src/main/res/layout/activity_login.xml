@@ -9,7 +9,7 @@
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
               android:id="@+id/login_linear_layout"
-              tools:context="chalmers.eda397g1.LoginActivity">
+              tools:context="chalmers.eda397g1.ui.LoginActivity">
 
     <!-- User progress -->
     <ProgressBar

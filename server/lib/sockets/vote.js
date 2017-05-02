@@ -13,20 +13,24 @@ var Client = mongoose.model('Client');
  *     just a 200
  *  }
  *  vote.completed   // when all voted
- * [{
- *     item: itemid,
+ * {
+ * votes:[{
  *     effort: 2,
  *     user: {
  *    	 "login": "Kemekaze",
  *       "avatar": "https://avatars3.githubusercontent.com/u/5463135?v=3"
  *    }
- * }]
+ * }],
+   item_id: item_id,
+ * next_id: next_id
+ * }
 
  */
 
 module.exports = function (socket, data, callback){
-
-  if(data.phone_id  == null || data.auth == null)
+  if(!socket.git.auth)
+    return callback(response.UNAUTHORIZED('Unauthorized'));
+  if(data.item_id  == null || data.effort == null)
     return callback(response.BAD_REQUEST('Invalid request'));
 
 
