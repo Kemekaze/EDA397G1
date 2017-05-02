@@ -99,13 +99,6 @@ public class LobbyActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe (sticky = true,threadMode = ThreadMode.MainThread)
-    public void onCreateSessionEvent(CreateSessionEvent event) {
-        Log.i(TAG, "onCreateSessionEvent");
-        session = event.getSession();
-        setTitle(session.getGithub().getFullName());
-    }
-
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
         Log.i(TAG, "onLobbyUpdateEvent");

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import chalmers.eda397g1.events.CreateSessionEvent;
 import chalmers.eda397g1.events.ProjectColumnsEvent;
 import chalmers.eda397g1.events.ReposProjectsEvent;
 import chalmers.eda397g1.events.RequestEvent;
@@ -199,13 +200,6 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
                         query.putOpt("full_name", selectedRepo.getFullName());
                         RequestEvent event = new RequestEvent(Constants.SocketEvents.SESSION_CREATE, query);
                         EventBus.getDefault().post(event);
-
-                        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
-                        Bundle b = new Bundle();
-                        b.putBoolean("isHost", true);
-                        intent.putExtras(b);
-                        startActivity(intent);
-                        finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -215,6 +209,18 @@ public class ChooseRepoProjectActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onCreateSessionEvent(CreateSessionEvent event) {
+        Log.i(TAG, "onCreateSessionEvent");
+        Intent intent = new Intent(ChooseRepoProjectActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", true);
+        b.putSerializable("session", event.getSession());
+        intent.putExtras(b);
+        startActivity(intent);
+        finish();
     }
 
     @Override
