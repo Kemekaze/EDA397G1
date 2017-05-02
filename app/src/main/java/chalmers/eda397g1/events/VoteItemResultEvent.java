@@ -8,16 +8,16 @@ import java.util.List;
 
 import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.models.Vote;
-import chalmers.eda397g1.models.VoteItemCompleted;
+import chalmers.eda397g1.models.VoteItemResult;
 
 /**
  * Created by Martin on 2017-04-27.
  */
 
-public class VoteItemCompletedEvent extends Event {
-    private VoteItemCompleted voteItemCompleted;
+public class VoteItemResultEvent extends Event {
+    private VoteItemResult voteItemResult;
 
-    public VoteItemCompletedEvent(Object... args) {
+    public VoteItemResultEvent(Object... args) {
         super(args);
         List<Vote> votes = new ArrayList<>();
         JSONObject obj = (JSONObject) getData();
@@ -33,12 +33,12 @@ public class VoteItemCompletedEvent extends Event {
                             user.optString("avatar"))));
         }
 
-        voteItemCompleted = new VoteItemCompleted(votes,
+        voteItemResult = new VoteItemResult(votes,
                 obj.optString("item_id"),
                 obj.optString("next_id"));
     }
 
-    public VoteItemCompleted getVoteItemCompleted() {
-        return voteItemCompleted;
+    public VoteItemResult getVoteItemResult() {
+        return voteItemResult;
     }
 }
