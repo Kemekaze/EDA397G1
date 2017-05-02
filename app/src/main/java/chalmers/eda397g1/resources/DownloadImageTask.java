@@ -42,16 +42,16 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        if(context != null){
-            Resources res = context.getResources();
-            RoundedBitmapDrawable dr =
-                    RoundedBitmapDrawableFactory.create(res, result);
-            dr.setCornerRadius(Math.max(result.getWidth(), result.getHeight()) / 2.0f);
-            bmImage.setImageDrawable(dr);
-        }else{
-            bmImage.setImageBitmap(result);
+        if(result != null) {
+            if (context != null) {
+                Resources res = context.getResources();
+                RoundedBitmapDrawable dr =
+                        RoundedBitmapDrawableFactory.create(res, result);
+                dr.setCornerRadius(Math.max(result.getWidth(), result.getHeight()) / 2.0f);
+                bmImage.setImageDrawable(dr);
+            } else {
+                bmImage.setImageBitmap(result);
+            }
         }
-
-
     }
 }
