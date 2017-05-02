@@ -18,6 +18,7 @@ import java.util.List;
 
 import chalmers.eda397g1.adapters.AvailableGamesAdapter;
 import chalmers.eda397g1.events.AvailableSessionsEvent;
+import chalmers.eda397g1.events.JoinSessionEvent;
 import chalmers.eda397g1.events.RequestEvent;
 import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.R;
@@ -29,7 +30,7 @@ import de.greenrobot.event.ThreadMode;
 
 public class MainActivity extends AppCompatActivity{
 
-
+    private String TAG = "eda397.Main";
     private RecyclerView mRecyclerView;
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -117,12 +118,19 @@ public class MainActivity extends AppCompatActivity{
 
             EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SESSION_JOIN, query));
             mRecyclerView.setClickable(false);
-            Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
-            Bundle b = new Bundle();
-            b.putBoolean("isHost", false);
-            intent.putExtras(b);
-            startActivity(intent);
+            // wait for response from server. Then response handled in 'onJoinSessionEvent'
         }
     };
+
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onJoinSessionEvent(JoinSessionEvent event) {
+        Log.i(TAG, "onJoinSessionEvent");
+        Intent intent = new Intent(MainActivity.this, LobbyActivity.class);
+        Bundle b = new Bundle();
+        b.putBoolean("isHost", false);
+        b.putSerializable("session", event.getSession());
+        intent.putExtras(b);
+        startActivity(intent);
+    }
 
 }

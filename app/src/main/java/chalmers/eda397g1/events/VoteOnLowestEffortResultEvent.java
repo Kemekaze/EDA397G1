@@ -7,13 +7,13 @@ import org.json.JSONObject;
  * Created by Martin on 2017-04-27.
  */
 
-public class VoteOnLowestEffortCompletedEvent extends Event {
+public class VoteOnLowestEffortResultEvent extends Event {
     private final String TAG = "VoteOnLow..Comp..Event:";
     private String referenceItemId;
     private int lowestEffort;
     private String nextId; // next id to vote on
 
-    public VoteOnLowestEffortCompletedEvent(Object... args) {
+    public VoteOnLowestEffortResultEvent(Object... args) {
         super(args);
         JSONObject root = (JSONObject) getData();
         Log.d(TAG, "getData:" + root.toString());

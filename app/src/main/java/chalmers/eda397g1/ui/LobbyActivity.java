@@ -48,10 +48,11 @@ public class LobbyActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             isHost = b.getBoolean("isHost");
+            session = (Session) b.getSerializable("session");
         } else {
             throw new RuntimeException("No bundle!");
         }
-
+        setTitle(session.getGithub().getFullName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.startGameButton);
 
@@ -96,20 +97,6 @@ public class LobbyActivity extends AppCompatActivity {
         super.onStop();
         Log.d(TAG, "onStop()");
         EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe (sticky = true,threadMode = ThreadMode.MainThread)
-    public void onCreateSessionEvent(CreateSessionEvent event) {
-        Log.i(TAG, "onCreateSessionEvent");
-        session = event.getSession();
-        setTitle(session.getGithub().getFullName());
-    }
-
-    @Subscribe (sticky = true,threadMode = ThreadMode.MainThread)
-    public void onJoinSessionEvent(JoinSessionEvent event) {
-        Log.i(TAG, "onJoinSessionEvent");
-        session = event.getSession();
-        setTitle(session.getGithub().getFullName());
     }
 
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
