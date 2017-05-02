@@ -62,7 +62,7 @@ public class VoteActivity extends AppCompatActivity {
                 //startActivity(new Intent(VoteActivity.this, DisplayRoundResultsActivity.class));
                 RoundVoteResult[] debugRes = new RoundVoteResult[2];
                 debugRes[0] = new RoundVoteResult(new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3"), 42);
-                debugRes[1] = new RoundVoteResult(new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3"), 42);
+                debugRes[1] = new RoundVoteResult(new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3"), 6);
                 displayResults(debugRes );
             }
         });

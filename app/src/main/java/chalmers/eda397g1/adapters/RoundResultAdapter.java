@@ -38,7 +38,7 @@ public class RoundResultAdapter extends ArrayAdapter {
         View rowView = convertView;
 
         // Reuse old view for better performance.
-        //if(rowView == null){
+        if(rowView == null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.listview_element_round_result, null);
             ViewHolder viewHolder = new ViewHolder();
@@ -46,7 +46,7 @@ public class RoundResultAdapter extends ArrayAdapter {
             viewHolder.name = (TextView) rowView.findViewById(R.id.player_name);
             viewHolder.result = (TextView) rowView.findViewById(R.id.votedEffort);
             rowView.setTag(viewHolder);
-        //}
+        }
 
         // Fill data
         ViewHolder holder = (ViewHolder) rowView.getTag();
