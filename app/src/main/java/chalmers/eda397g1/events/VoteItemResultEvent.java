@@ -23,17 +23,7 @@ public class VoteItemResultEvent extends Event {
         JSONObject obj = (JSONObject) getData();
 
 
-        JSONArray array = obj.optJSONArray("votes");
-        for(int i = 0; i < array.length(); i++) {
-            JSONObject vote = array.optJSONObject(i);
-            JSONObject user = vote.optJSONObject("user");
-
-            votes.add(new Vote(vote.optInt("effort"),
-                    new User(user.optString("login"),
-                            user.optString("avatar"))));
-        }
-
-        voteItemResult = new VoteItemResult(votes,
+        voteItemResult = new VoteItemResult(obj.optInt("effort"),
                 obj.optString("item_id"),
                 obj.optString("next_id"));
     }

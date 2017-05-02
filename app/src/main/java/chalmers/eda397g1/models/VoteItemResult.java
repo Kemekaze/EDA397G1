@@ -6,19 +6,19 @@ import java.util.List;
  * Created by Martin on 2017-04-27.
  */
 
-public class VoteItemResult {
-    private List<Vote> votes;
+public class VoteItemResult { // sent when finished
+    private int effort;
     private String itemId;
     private String nextId;
 
-    public VoteItemResult(List<Vote> votes, String itemId, String nextId) {
-        this.votes = votes;
+    public VoteItemResult(int effort, String itemId, String nextId) {
+        this.effort = effort;
         this.itemId = itemId;
         this.nextId = nextId;
     }
 
-    public List<Vote> getVotes() {
-        return votes;
+    public int getEffort() {
+        return effort;
     }
 
     public String getItemId() {
