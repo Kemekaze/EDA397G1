@@ -34,7 +34,7 @@ import de.greenrobot.event.ThreadMode;
 
 public class ChooseRepoProjectActivity extends AppCompatActivity {
 
-    public static final String TAG = "chooserepo";
+    public static final String TAG = "eda397.ChooseRepo";
 
     private AppCompatSpinner repoSpinner;
     private AppCompatSpinner projectSpinner;
