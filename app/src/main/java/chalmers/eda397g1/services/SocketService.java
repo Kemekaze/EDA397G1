@@ -339,7 +339,7 @@ public class SocketService extends Service {
             for(int i = 0; i < args.length; i++) {
                 Log.i(TAG,  args[i].toString());
             }
-            EventBus.getDefault().postSticky(new JoinSessionEvent(args));
+            EventBus.getDefault().post(new JoinSessionEvent(args));
         }
     };
 
