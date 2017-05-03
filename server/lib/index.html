@@ -160,12 +160,13 @@
       var socket = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
       var socket2 = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
 
-
+      //8508af3dc773fff
+      //f41f204d91922767
       socket.on('connect',function(data){
-        socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket.emit('authenticate.autologin',{phone_id:'8508af3dc773fff'});
       });
       socket2.on('connect',function(data){
-        socket2.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket2.emit('authenticate.autologin',{phone_id:'8508af3dc773fff'});
       });
       socket.on('authenticate.autologin',function(data){
         console.log('Socket1 - authenticate.autologin');

@@ -87,6 +87,7 @@ module.exports = function (socket, data, callback){
               }else{
                 var session = new Session({
                     host: c.phone_id,
+                    clients_phone_id:[socket.phone_id],
                     github:{
                       repo_id: data.repo_id,
                       column_id: data.column_id,
