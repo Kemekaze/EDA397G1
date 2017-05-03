@@ -71,6 +71,7 @@ module.exports = function (socket, data, callback){
             session.github.backlog_items[index].rounds[round_index].votes.push(v);
             voted_count =   session.github.backlog_items[index].rounds[round_index].votes.length;
           }
+          //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
           session.save(function(e,newSession){
             if(!e){
               if(voted_count == newSession.clients_phone_id.length){

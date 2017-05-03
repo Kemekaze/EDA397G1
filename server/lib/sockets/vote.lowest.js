@@ -43,6 +43,7 @@ module.exports = function (socket, data, callback){
           item_id: data.item_id
         });
         var voted_count = session.github.lowest_effort.votes.length;
+        //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
         session.save(function(e,newSession){
           if(!e){
             logger.info(newSession.github.lowest_effort.toObject());
