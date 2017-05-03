@@ -1,5 +1,6 @@
 package chalmers.eda397g1.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,17 +8,17 @@ import java.util.List;
  */
 
 public class VoteItemCompleted {
-    private List<Vote> votes;
+    private ArrayList<Vote> votes;
     private String itemId;
     private String nextId;
 
-    public VoteItemCompleted(List<Vote> votes, String itemId, String nextId) {
+    public VoteItemCompleted(ArrayList<Vote> votes, String itemId, String nextId) {
         this.votes = votes;
         this.itemId = itemId;
         this.nextId = nextId;
     }
 
-    public List<Vote> getVotes() {
+    public ArrayList<Vote> getVotes() {
         return votes;
     }
 

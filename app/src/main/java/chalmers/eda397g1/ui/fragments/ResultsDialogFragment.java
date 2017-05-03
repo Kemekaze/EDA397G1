@@ -9,26 +9,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.RoundResultAdapter;
-import chalmers.eda397g1.models.RoundVoteResult;
+import chalmers.eda397g1.models.Vote;
 
 
 public class ResultsDialogFragment extends DialogFragment {
     // the fragment initialization parameters
     private static final String TAG = "ResultsDialogFragment";
     private static final String ROUND_RESULTS = "results";
-    private RoundVoteResult[] results;
+    private ArrayList<Vote> results;
 
 
     public ResultsDialogFragment() {
         // Required empty public constructor
     }
 
-    public static ResultsDialogFragment newInstance(RoundVoteResult[] results) {
+    public static ResultsDialogFragment newInstance(ArrayList<Vote> results) {
         ResultsDialogFragment fragment = new ResultsDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable(ROUND_RESULTS, results);
@@ -40,7 +41,7 @@ public class ResultsDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            results = (RoundVoteResult[]) getArguments().getSerializable(ROUND_RESULTS);
+            results = (ArrayList<Vote>) getArguments().getSerializable(ROUND_RESULTS);
         }
     }
 
@@ -50,7 +51,7 @@ public class ResultsDialogFragment extends DialogFragment {
         Log.d(TAG, "onCreateDialog");
 
         AlertDialog.Builder b  = new AlertDialog.Builder(getActivity())
-                .setTitle("TITLE")
+                .setTitle("Results")
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override

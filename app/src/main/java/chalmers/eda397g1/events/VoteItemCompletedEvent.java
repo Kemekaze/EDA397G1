@@ -19,7 +19,7 @@ public class VoteItemCompletedEvent extends Event {
 
     public VoteItemCompletedEvent(Object... args) {
         super(args);
-        List<Vote> votes = new ArrayList<>();
+        ArrayList<Vote> votes = new ArrayList<>();
         JSONObject obj = (JSONObject) getData();
 
 
