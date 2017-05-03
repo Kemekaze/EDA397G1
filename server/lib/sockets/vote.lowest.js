@@ -45,6 +45,7 @@ module.exports = function (socket, data, callback){
         var voted_count = session.github.lowest_effort.votes.length;
         session.save(function(e,newSession){
           if(!e){
+            logger.info(newSession.github.lowest_effort.toObject());
             if(voted_count == newSession.clients_phone_id.length){
                 handler.ev.emit(handler.ev.VOTE_LOWEST_RESULT,room);
             }
