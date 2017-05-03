@@ -7,18 +7,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.events.RequestEvent;
 import chalmers.eda397g1.events.VoteItemResultEvent;
 import chalmers.eda397g1.events.VoteRoundResultEvent;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
 import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.models.Vote;
+import chalmers.eda397g1.resources.Constants;
 import chalmers.eda397g1.ui.fragments.ResultsDialogFragment;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -30,12 +36,18 @@ import de.greenrobot.event.Subscribe;
 public class VoteActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     final static String TAG = "VoteActivity";
     private NumberPicker effortPicker;
+    private FloatingActionButton voteButton;
+    private TextView currentItemTextView;
     private int selectedEffort;
     private Session session;
     private BacklogItem currentItem;
+    private BacklogItem referenceItem;
+    private int referenceEffort;
 
     int[] effortValues = {0, 1, 2, 3, 4, 5, 8, 13, 20, 30, 50, 100, 200};
 
+    // TODO: Remove this when actual data is passed from VoteOnLowestEffortActivity
+    private boolean DEBUG = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,9 +58,28 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         Bundle b = getIntent().getExtras();
         if(b != null) {
             session = (Session) b.getSerializable("session");
+            String startItem;
+            String referenceId;
+            if(DEBUG){
+                startItem = session.getGithub().getBacklogItems().get(0).getCardId();
+                referenceId = session.getGithub().getBacklogItems().get(0).getCardId();
+                referenceEffort = 2;
+            } else {
+                startItem = b.getString("startItemId");
+                referenceId = b.getString("referenceId");
+                referenceEffort = b.getInt("referenceEffort");
+            }
+            currentItem = getBackLogItemById(startItem);
+            referenceItem = getBackLogItemById(referenceId);
+
         } else {
             throw new RuntimeException("No session passed!");
         }
+
+        currentItemTextView = (TextView) findViewById(R.id.currentItemTextView);
+        ((TextView) findViewById(R.id.refrenceItemTitle)).setText(referenceItem.getTitle());
+        ((TextView) findViewById(R.id.refrenceItemBody)).setText(referenceItem.getBody());
+        ((TextView) findViewById(R.id.refrenceText)).setText("Effort: "+ referenceEffort);
 
         setupEffortPicker();
         setupVoteButton();
@@ -107,7 +138,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
     public void onDismiss(DialogInterface dialogInterface) {
         // The results dialog has been dismissed
         Log.d(TAG, "onDismiss()");
-        //TODO Update the displayed item to show the new item
+        voteButton.setEnabled(true);
+        effortPicker.setEnabled(true);
+        currentItemTextView.setText(currentItem.getTitle());
     }
 
     /**
@@ -138,16 +171,24 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
      */
     private void setupVoteButton(){
         // Initialize voteButton
-        FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.votebutton);
+        voteButton = (FloatingActionButton) findViewById(R.id.votebutton);
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                DEBUG
-                Insert the next line to make stuff work correctly again!
-                startActivity(new Intent(VoteActivity.this, DisplayRoundResultsActivity.class));
-                TODO: Send vote to server and disable the button. Then wait for the results and new item to come in.
-                */
+                voteButton.setEnabled(false);
+                effortPicker.setEnabled(false);
+                JSONObject query = new JSONObject();
+                try {
+                    query.putOpt("item_id", currentItem.getCardId());
+                    query.putOpt("effort", Integer.toString(selectedEffort));
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.VOTE, query));
+
+                // DEBUG
                 ArrayList<Vote> debugRes = new ArrayList<>();
                 debugRes.add( new Vote( 42, new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
                 debugRes.add( new Vote( 1, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
@@ -160,14 +201,14 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 debugRes.add( new Vote( 8, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
                 debugRes.add( new Vote( 9, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
                 debugRes.add( new Vote( 10, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser A ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser B ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser C ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser D ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser E ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser F ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser G ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
+                debugRes.add( new Vote( 6, new User("Testuser H ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
 
                 displayResults(debugRes );
             }
