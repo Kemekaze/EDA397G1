@@ -67,7 +67,11 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                             Snackbar.LENGTH_LONG);
                     alert.show();
                 } else {
-                    startActivity(new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+                    Intent i = new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("session",session);
+                    i.putExtras(b);
+                    startActivity(i);
                 }
             }
         });
