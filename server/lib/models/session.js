@@ -7,7 +7,7 @@ const SessionSchema = mongoose.Schema({
     required: true
   },
   state : {
-    type: Number,
+    type: mongoose.Schema.Types.Mixed,
     default: 0
   },
   clients_phone_id:[String],

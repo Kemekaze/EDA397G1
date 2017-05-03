@@ -160,20 +160,26 @@
       var socket = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
       var socket2 = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
 
-
+      //8508af3dc773fff
+      //f41f204d91922767
       socket.on('connect',function(data){
         socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
       });
       socket2.on('connect',function(data){
-        socket2.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket2.emit('authenticate.autologin',{phone_id:'8508af3dc773fff'});
       });
       socket.on('authenticate.autologin',function(data){
         console.log('Socket1 - authenticate.autologin');
         console.log(data);
         socket.emit('repositories');
       });
+      socket2.on('authenticate.github',function(data){
+        console.log('Socket2 - authenticate.github');
+        console.log(data);
+      });
       socket2.on('authenticate.autologin',function(data){
         console.log('Socket2 - authenticate.autologin');
+        console.log(data);
       });
       var full_name  = "";
       var project_id = 0;
@@ -239,12 +245,18 @@
         console.log('Socket1 - session.start');
         console.log(data);
         socket.emit('vote.lowest',{item_id: vote_lowest});
+
+      });
+      socket2.on('vote.lowest',function (data) {
+        console.log('Socket2 - vote.lowest');
+        console.log(data);
       });
       socket.on('vote.lowest',function (data) {
         console.log('Socket1 - vote.lowest');
         console.log(data);
+        socket2.emit('vote.lowest',{item_id: vote_lowest});
       });
-      socket.on('vote.lowest.completed',function (data) {
+      socket.on('vote.lowest.result',function (data) {
         console.log('Socket1 - vote.lowest.completed');
         console.log(data);
       });

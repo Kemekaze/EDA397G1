@@ -30,6 +30,7 @@ module.exports = function (socket, data, callback){
   var client = new github(data.auth);
   client.info(function(err, resp, client_data){
     if(resp.statusCode != 200 || err){
+      if(err) logger.error(err);
       callback(response.UNAUTHORIZED('Invalid username or password'));
     }else{
       Client.getByGithubId(client_data.id,function(err,c){
@@ -51,8 +52,8 @@ module.exports = function (socket, data, callback){
         }
         c.save(function(err,new_client){
           if(err){
+            logger.error(err);
             callback(response.SERVER_ERROR('Something went wrong'));
-            console.log(err);
           }else{
             socket.git.auth = true;
             socket.git.github = client;

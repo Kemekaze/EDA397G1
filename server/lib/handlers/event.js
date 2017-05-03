@@ -30,11 +30,11 @@ method.VOTE_RESULT = 'vote.result';
 method.room = function(){
   var self = this;
   self.ee.on(self.JOINED,function(room){
-    console.log('[Event]',self.JOINED);
+    logger.info('[Event]',self.JOINED);
     self.emit(self.CLIENTS,room);
   });
   self.ee.on(self.CLIENTS,function(room){
-    console.log('[Event]',self.CLIENTS);
+    logger.info('[Event]',self.CLIENTS);
     var clients = handler.room.clients(room);
     var phone_ids = []
     for (var id in clients) {
@@ -54,11 +54,11 @@ method.room = function(){
     });
   });
   self.ee.on(self.CREATED,function(room){
-    console.log('[Event]',self.CREATED);
+    logger.info('[Event]',self.CREATED);
     handler.socket.io.emit(self.CREATED, self.response.OK({}));
   });
   self.ee.on(self.STARTED,function(data){
-    console.log('[Event]',self.STARTED);
+    logger.info('[Event]',self.STARTED);
     var clients = handler.room.clients(data.room);
     for (var id in clients) {
       if(clients[id].id != data.host)
@@ -66,11 +66,11 @@ method.room = function(){
     }
   });
   self.ee.on(self.LEFT,function(data){
-    console.log('[Event]',self.LEFT);
+    logger.info('[Event]',self.LEFT);
     self.emit(self.CLIENTS,data.room);
   });
   self.ee.on(self.KICKED,function(data){
-    console.log('[Event]',self.KICKED);
+    logger.info('[Event]',self.KICKED);
     data.socket.emit(self.KICKED,self.response.OK({
       full_name: data.session.github.full_name,
       reason: data.reason
@@ -80,7 +80,7 @@ method.room = function(){
 method.vote = function(){
   var self = this;
   self.ee.on(self.VOTE_LOWEST_RESULT,function(room){
-    console.log('[Event]',self.VOTE_LOWEST_RESULT);
+    logger.info('[Event]',self.VOTE_LOWEST_RESULT);
     Session.findById(room,function(e,session){
       if(!e && session){
         var lowest_effort = 2;
@@ -117,21 +117,85 @@ method.vote = function(){
         session.github.lowest_effort.lowest_item = sortableVotes[0]._id;
         session.github.backlog_items[lookup[sortableVotes[0]._id].arr_id].effort_value = lowest_effort;
         session.github.backlog_items[lookup[sortableVotes[0]._id].arr_id].completed = true;
-
+        session.state = Session.nextIssue(session);
         session.save(function(e,newSession){
           if(!e){
             self.io.in(room).emit(self.VOTE_LOWEST_RESULT,self.response.OK({
                 item_id: newSession.github.lowest_effort.lowest_item,
                 effort: lowest_effort,
-                next_id: Session.nextIssue(newSession)
+                next_id: newSession.state
             }));
           }
         });
       }
     });
-
-
   });
-
-
+  self.ee.on(self.VOTE_ROUND_RESULT,function(room){
+    logger.info('[Event]',self.VOTE_ROUND_RESULT);
+    Session.findById(room,function(e,session){
+      if(!e && session){
+        var index = Session.findIssue(session,session.state);
+        if(index != -1){
+          var current_round = session.github.backlog_items[index].current_round;
+          var round_index = Session.findRound(session, index, current_round);
+          if(round_index != -1){
+            var votes = session.github.backlog_items[index].rounds[round_index].votes;
+            if(votes.length == session.clients_phone_id.length){
+              var same = true;
+              for (var v in votes) {
+                if(votes[0].vote != votes[v].vote) same = false;
+              }
+              if(same){
+                session.github.backlog_items[index].effort_value = votes[0].vote;
+                session.github.backlog_items[index].completed = true;
+                session.state = Session.nextIssue(session);
+                var id = session.github.backlog_items[index]._id;
+                session.save(function(e,newSession){
+                  if(!e){
+                    self.io.in(room).emit(self.VOTE_RESULT,self.response.OK({
+                        item_id: id,
+                        effort: votes[0].vote,
+                        next_id: newSession.state
+                    }));
+                  }
+                });
+              }else{
+                var id = new ObjectID();
+                session.github.backlog_items[index].current_round = id;
+                session.github.backlog_items[index].rounds.push({
+                  _id: id,
+                  votes:[]
+                });
+                session.save(function(e,newSession){
+                  if(!e){
+                    var phone_ids = []
+                    var phone_ids_lookup = {}
+                    for (var v in votes) {
+                      phone_ids.push(votes[v].phone_id);
+                      phone_ids_lookup[votes[v].phone_id] = votes[v].vote;
+                    }
+                    Client.find({
+                      'phone_id': { $in:phone_ids}
+                    },function(e,client_s){
+                      var d = [];
+                      for (var client in client_s) {
+                        d.push({
+                          vote: phone_ids_lookup[client_s[client].phone_id],
+                          user: {
+                            login: client_s[client].github.login,
+                            avatar: client_s[client].github.avatar
+                          }
+                        });
+                      }
+                      self.io.in(room).emit(self.VOTE_ROUND_RESULT,self.response.OK(d));
+                    });
+                  }
+                });
+              }
+            }
+          }
+        }
+      }
+    });
+  });
 }

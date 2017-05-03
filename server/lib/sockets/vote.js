@@ -53,16 +53,25 @@ module.exports = function (socket, data, callback){
           };
           var voted_count = 0;
           if(round_index == -1){
+            var id = new ObjectID();
+            session.github.backlog_items[index].current_round = id;
             session.github.backlog_items[index].rounds.push({
+              _id: id,
               votes:[
                 v
               ]
             });
             voted_count = 1;
           }else{
+            var votes = session.github.backlog_items[index].rounds[round_index].votes;
+            for (var vote in votes)
+              if(votes[vote].phone_id == socket.phone_id)
+                return callback(response.FORBIDDEN('You have already voted this round'))
+
             session.github.backlog_items[index].rounds[round_index].votes.push(v);
             voted_count =   session.github.backlog_items[index].rounds[round_index].votes.length;
           }
+          //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
           session.save(function(e,newSession){
             if(!e){
               if(voted_count == newSession.clients_phone_id.length){
@@ -70,6 +79,7 @@ module.exports = function (socket, data, callback){
               }
               callback(response.OK({}));
             }else{
+              logger.error(e);
               callback(response.SERVER_ERROR('Something went wrong'));
             }
           });
