@@ -46,6 +46,7 @@ module.exports = function (socket, data, callback){
           }
           callback(response.OK({}));
         }else{
+          logger.error(e);
           callback(response.SERVER_ERROR('Something went wrong'));
         }
       });

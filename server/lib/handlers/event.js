@@ -30,11 +30,11 @@ method.VOTE_RESULT = 'vote.result';
 method.room = function(){
   var self = this;
   self.ee.on(self.JOINED,function(room){
-    console.log('[Event]',self.JOINED);
+    logger.info('[Event]',self.JOINED);
     self.emit(self.CLIENTS,room);
   });
   self.ee.on(self.CLIENTS,function(room){
-    console.log('[Event]',self.CLIENTS);
+    logger.info('[Event]',self.CLIENTS);
     var clients = handler.room.clients(room);
     var phone_ids = []
     for (var id in clients) {
@@ -54,11 +54,11 @@ method.room = function(){
     });
   });
   self.ee.on(self.CREATED,function(room){
-    console.log('[Event]',self.CREATED);
+    logger.info('[Event]',self.CREATED);
     handler.socket.io.emit(self.CREATED, self.response.OK({}));
   });
   self.ee.on(self.STARTED,function(data){
-    console.log('[Event]',self.STARTED);
+    logger.info('[Event]',self.STARTED);
     var clients = handler.room.clients(data.room);
     for (var id in clients) {
       if(clients[id].id != data.host)
@@ -66,11 +66,11 @@ method.room = function(){
     }
   });
   self.ee.on(self.LEFT,function(data){
-    console.log('[Event]',self.LEFT);
+    logger.info('[Event]',self.LEFT);
     self.emit(self.CLIENTS,data.room);
   });
   self.ee.on(self.KICKED,function(data){
-    console.log('[Event]',self.KICKED);
+    logger.info('[Event]',self.KICKED);
     data.socket.emit(self.KICKED,self.response.OK({
       full_name: data.session.github.full_name,
       reason: data.reason
@@ -80,7 +80,7 @@ method.room = function(){
 method.vote = function(){
   var self = this;
   self.ee.on(self.VOTE_LOWEST_RESULT,function(room){
-    console.log('[Event]',self.VOTE_LOWEST_RESULT);
+    logger.info('[Event]',self.VOTE_LOWEST_RESULT);
     Session.findById(room,function(e,session){
       if(!e && session){
         var lowest_effort = 2;

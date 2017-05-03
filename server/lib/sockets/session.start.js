@@ -25,6 +25,7 @@ module.exports = function (socket, data, callback){
               handler.ev.emit(handler.ev.START,{room:room,host:socket.id});
               callback(response.OK({}));
             }else{
+              logger.error(e);
               callback(response.SERVER_ERROR('Something went wrong'));
             }
           });

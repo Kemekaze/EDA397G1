@@ -53,11 +53,13 @@ module.exports = function (socket, data, callback){
             }
          }
          callback(response.OK(rtn));
-      }else{
-         callback(response.FORBIDDEN('Something went wrong'));
-      }
+       }else{
+          if(i_error) logger.error(i_error);
+          callback(response.FORBIDDEN('Something went wrong'));
+       }
       });
     }else{
+      if(c_error) logger.error(c_error);
       callback(response.FORBIDDEN('Something went wrong'));
     }
   })

@@ -82,8 +82,8 @@ module.exports = function (socket, data, callback){
             }
             Client.findOne({phone_id: socket.phone_id},function(e,c){
               if(e){
+                logger.error(e);
                 callback(response.SERVER_ERROR('Something went wrong'));
-
               }else{
                 var session = new Session({
                     host: c.phone_id,
@@ -121,10 +121,12 @@ module.exports = function (socket, data, callback){
               }
             });
          }else{
+            if(i_error) logger.error(i_error);
             callback(response.FORBIDDEN('Something went wrong'));
          }
          });
        }else{
+         if(c_error) logger.error(c_error);
          callback(response.FORBIDDEN('Something went wrong'));
        }
      })

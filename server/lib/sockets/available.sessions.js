@@ -71,6 +71,7 @@ module.exports = function (socket, data, callback){
         }
       });
     }else{
+      logger.error(error);
       callback(response.FORBIDDEN('Something went wrong'));
     }
   });
