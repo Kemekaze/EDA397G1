@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.models.RoundVoteResult;
@@ -22,6 +23,8 @@ public class VoteActivity extends AppCompatActivity {
     final static String TAG = "VoteActivity";
     private NumberPicker effortPicker;
     private int selectedEffort;
+    private String referenceItemTitle;
+    private TextView referenceItemView;
 
     int[] effortValues = {0, 1, 2, 3, 4, 5, 8, 13, 20, 30, 50, 100, 200};
 
@@ -66,6 +69,13 @@ public class VoteActivity extends AppCompatActivity {
                 displayResults(debugRes );
             }
         });
+
+        //Get the reference item
+        Bundle b = getIntent().getExtras();
+        referenceItemTitle =   b.getString("id");
+        referenceItemView = (TextView) findViewById(R.id.referenceItemTitle);
+        referenceItemView.setText(referenceItemTitle);
+
     }
 
     public void displayResults(RoundVoteResult[] results){

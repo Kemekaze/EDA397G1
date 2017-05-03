@@ -15,11 +15,12 @@ public class BacklogItem implements Serializable{
     private int number;
     private String state;
     private String title;
+    private String id;
 
 
     private String body;
 
-    public BacklogItem(int businessValue, String cardId, int effortValue, String issueId, int number, String state, String title, String body) {
+    public BacklogItem(int businessValue, String cardId, int effortValue, String issueId, int number, String state, String title, String body, String id) {
         this.businessValue = businessValue;
         this.cardId = cardId;
         this.effortValue = effortValue;
@@ -28,6 +29,7 @@ public class BacklogItem implements Serializable{
         this.state = state;
         this.title = title;
         this.body = body;
+        this.id = id;
     }
 
 
@@ -63,6 +65,8 @@ public class BacklogItem implements Serializable{
         this.title = title;
     }
 
+    public void setId(String id) {this.id = id;}
+
     public int getBusinessValue() {
         return businessValue;
     }
@@ -90,5 +94,7 @@ public class BacklogItem implements Serializable{
     public String getTitle() {
         return title;
     }
+
+    public String getId(){return id;}
 
 }

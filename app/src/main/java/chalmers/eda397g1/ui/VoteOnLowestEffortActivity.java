@@ -11,12 +11,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.events.VoteOnLowestEffortEvent;
+import chalmers.eda397g1.events.VoteOnLowestEffortResultEvent;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
+import chalmers.eda397g1.events.RequestEvent;
+
+import chalmers.eda397g1.resources.Constants;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
@@ -67,11 +80,22 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                             Snackbar.LENGTH_LONG);
                     alert.show();
                 } else {
-                    startActivity(
-                    // TODO: Send the vote to server and wait for response. Refactor start of voteActivity to
-                        //    fire when response is received
 
-                            new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+                    // TODO: Send the vote to server and wait for response. Refactor start of voteActivity to
+                    //    fire when response is received
+
+                    JSONObject lowestEffortItem = new JSONObject();
+                    try {
+                        lowestEffortItem.put("item_id", selectedBacklogItem.getId());
+                        System.out.println(selectedBacklogItem.getId());
+                        RequestEvent requestEvent = new RequestEvent(Constants.SocketEvents.VOTE_LOWEST, lowestEffortItem);
+                        EventBus.getDefault().post(requestEvent);
+
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -114,11 +138,21 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         }
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onVoteOnLowestEffortResultEvent (VoteOnLowestEffortResultEvent event){
+        Log.i(TAG, "onVoteOnLowestEffortCompleted");
+
+        Intent intent = new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class);
+        Bundle b = new Bundle();
+        String title = event.getReferenceItemId();
+        b.putString("id", title);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+    //Tell someone when they have voted
     @Subscribe
-    public void onVoteOnLowestEffortCompleted (){
-        Log.i(TAG, "onLVoteOnLowestEffortCompleted");
-        //Here we need to start the next activity and pass the lowest effort item to it.
-        //new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class));
+    public void onEventVoteOnLowest(VoteOnLowestEffortEvent event){
+        //TODO Add code that locks the voting mechanism or creates a loading screen once one has voted.
     }
 
 }
