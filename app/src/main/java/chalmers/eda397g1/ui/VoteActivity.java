@@ -1,5 +1,6 @@
 package chalmers.eda397g1.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
@@ -18,7 +19,7 @@ import chalmers.eda397g1.ui.fragments.ResultsDialogFragment;
  * Created by Jesper Kjellqvist 03/04/17
  */
 
-public class VoteActivity extends AppCompatActivity {
+public class VoteActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     final static String TAG = "VoteActivity";
     private NumberPicker effortPicker;
     private int selectedEffort;
@@ -71,5 +72,11 @@ public class VoteActivity extends AppCompatActivity {
     public void displayResults(RoundVoteResult[] results){
         ResultsDialogFragment frag = ResultsDialogFragment.newInstance(results);
         frag.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        // The results dialog has been dismissed
+        Log.d(TAG, "onDismiss()");
     }
 }

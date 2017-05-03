@@ -1,5 +1,6 @@
 package chalmers.eda397g1.ui.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -68,5 +69,13 @@ public class ResultsDialogFragment extends DialogFragment {
         return b.create();
     }
 
-
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            // Make sure the activity handles it correctly when the dialog disappears
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
+    }
 }
