@@ -2,6 +2,7 @@ var response = lib.helpers.response;
 var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
+var Session = mongoose.model('Session');
 
 /**
  * Vote on lowest effort
@@ -53,7 +54,7 @@ module.exports = function (socket, data, callback){
           };
           var voted_count = 0;
           if(round_index == -1){
-            var id = new ObjectID();
+            var id = mongoose.Types.ObjectId();
             session.github.backlog_items[index].current_round = id;
             session.github.backlog_items[index].rounds.push({
               _id: id,
