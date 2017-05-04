@@ -147,6 +147,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         String referenceId = event.getReferenceItemId();
         String startItemId = event.getNextId();
         int referenceEffort = event.getLowestEffort();
+        b.putSerializable("session", session);
         b.putString("referenceId", referenceId);
         b.putString("startItemId",startItemId);
         b.putInt("referenceEffort",referenceEffort);

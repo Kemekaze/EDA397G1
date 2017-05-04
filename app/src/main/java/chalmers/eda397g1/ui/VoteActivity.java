@@ -80,7 +80,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         }
 
         currentItemTextView = (TextView) findViewById(R.id.currentItemTextView);
-        ((TextView) findViewById(R.id.refrenceItemTitle)).setText(referenceItem.getTitle());
+        ((TextView) findViewById(R.id.referenceItemTitle)).setText(referenceItem.getTitle());
         ((TextView) findViewById(R.id.refrenceItemBody)).setText(referenceItem.getBody());
         ((TextView) findViewById(R.id.refrenceText)).setText("Effort: "+ referenceEffort);
 
@@ -217,10 +217,5 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 displayResults(debugRes );
             }
         });
-    }
-
-    public void displayResults(RoundVoteResult[] results){
-        ResultsDialogFragment frag = ResultsDialogFragment.newInstance(results);
-        frag.show(getFragmentManager(), "dialog");
     }
 }
