@@ -5,16 +5,6 @@
     android:orientation="vertical"
     tools:context="chalmers.eda397g1.ui.fragments.ResultsDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="Round 2/5" />
-
     <ListView
         android:id="@+id/resultsList"
         android:layout_width="match_parent"

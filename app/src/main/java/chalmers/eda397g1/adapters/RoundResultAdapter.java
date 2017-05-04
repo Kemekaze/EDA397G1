@@ -1,8 +1,6 @@
 package chalmers.eda397g1.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import chalmers.eda397g1.R;
-import chalmers.eda397g1.models.RoundVoteResult;
+import chalmers.eda397g1.models.Vote;
 import chalmers.eda397g1.resources.DownloadImageTask;
 
 /**
@@ -28,7 +28,7 @@ public class RoundResultAdapter extends ArrayAdapter {
         public TextView result;
     }
 
-    public RoundResultAdapter(@NonNull Context context, @NonNull RoundVoteResult[] voteResults) {
+    public RoundResultAdapter(@NonNull Context context, @NonNull ArrayList<Vote> voteResults) {
         super(context, R.layout.listview_element_round_vote, voteResults);
         this.context = context;
     }
@@ -50,11 +50,11 @@ public class RoundResultAdapter extends ArrayAdapter {
 
         // Fill data
         ViewHolder holder = (ViewHolder) rowView.getTag();
-        RoundVoteResult result = (RoundVoteResult) getItem(position);
+        Vote result = (Vote) getItem(position);
         String name = result.getUser().getLogin();
         holder.name.setText(name);
 
-        String effort = Integer.toString(result.getVote());
+        String effort = Integer.toString(result.getEffort());
         holder.result.setText(effort);
 
         new DownloadImageTask(holder.avatar, context)

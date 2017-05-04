@@ -17,12 +17,16 @@ import chalmers.eda397g1.models.VoteRoundResult;
 public class VoteRoundResultEvent extends Event {
     private VoteRoundResult voteRoundResult;
 
+    /**
+     * Event that is fired when all votes for a round have been collected, but not all effort values
+     * are equal. Contains the result of the vote.
+     * @param args
+     */
     public VoteRoundResultEvent(Object... args) {
         super(args);
+        ArrayList<Vote> votes = new ArrayList<>();
 
-        List<Vote> votes = new ArrayList<>();
         JSONObject obj = (JSONObject) getData();
-
 
         JSONArray array = obj.optJSONArray("votes");
         for(int i = 0; i < array.length(); i++) {

@@ -43,13 +43,16 @@ module.exports = function (socket, data, callback){
           item_id: data.item_id
         });
         var voted_count = session.github.lowest_effort.votes.length;
+        //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
         session.save(function(e,newSession){
           if(!e){
+            logger.info(newSession.github.lowest_effort.toObject());
             if(voted_count == newSession.clients_phone_id.length){
                 handler.ev.emit(handler.ev.VOTE_LOWEST_RESULT,room);
             }
             callback(response.OK({}));
           }else{
+            logger.error(e);
             callback(response.SERVER_ERROR('Something went wrong'));
           }
         });

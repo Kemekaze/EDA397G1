@@ -20,11 +20,13 @@ module.exports = function (socket, data, callback){
       if(session.host == socket.phone_id){
         if(session.state == Session.STATE.LOBBY){
           session.state = Session.STATE.LOWEST_EFFORT;
+          //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
           session.save(function(e,newSession){
             if(!e){
               handler.ev.emit(handler.ev.START,{room:room,host:socket.id});
               callback(response.OK({}));
             }else{
+              logger.error(e);
               callback(response.SERVER_ERROR('Something went wrong'));
             }
           });

@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var path = require('path');
 var SocketHandler = module.exports = function(io,config) {
   var self = this;
-  self.dev = true;
   self.token = config.socketIO.token;
   self.clients = [];
   self.io = io;
@@ -23,7 +22,7 @@ method.setup = function(){
 
 //client connected
 method.clientConnected = function(socket){
-  if(this.dev) console.log('[Socket] connected:',socket.id);
+  logger.info('[Socket] connected:',socket.id);
   socket.git ={};
   socket.git.auth = false;
   socket.phone_id = null;
@@ -32,9 +31,9 @@ method.clientConnected = function(socket){
 //client disconnected
 method.clientDisconnected = function(socket){
   var self = this;
-  if(this.dev) console.log("[Socket] disconnected:", socket.id);
+  logger.info("[Socket] disconnected:", socket.id);
   if(socket.auth)
-    self.clients.splice(self.clients.indexOf(socket),1);  
+    self.clients.splice(self.clients.indexOf(socket),1);
 }
 //validate token
 method.validateToken = function(token){
@@ -43,12 +42,12 @@ method.validateToken = function(token){
 //socket events for client authentication
 method.authenticate = function(socket, cb) {
   if(this.validateToken(socket.handshake.query.token)){
-    if(this.dev)console.log("[Socket] authorized:", socket.id);
+    logger.info("[Socket] authorized:", socket.id);
     socket.auth = true;
     this.clientConnected(socket);
   }else{
     socket.auth = false;
-    if(this.dev) console.log("[Socket] unauthorized:", socket.id);
+    logger.info("[Socket] unauthorized:", socket.id);
     socket.disconnect('unauthorized');
   }
 
@@ -60,7 +59,7 @@ method.on = function(socket){
   var sockets = require('../sockets/');
   Object.keys(sockets).forEach(function(name){
     socket.on(name,function(content){
-      if(self.dev) console.log("[Socket]",name);
+      logger.info("[Socket]",name);
       sockets[name](socket, content,function(payload){
         socket.emit(name,payload);
       });

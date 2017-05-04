@@ -22,6 +22,7 @@ module.exports = function (socket, data, callback){
         for (var i= 0; i<session.clients_phone_id.length; i++) {
           if(session.clients_phone_id[i] == data.phone_id) session.clients_phone_id.splice(i,1);
         }
+        //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
         session.save(function(e,newSession){
           if(!e){
             var clients = handler.room.clients(room);
@@ -38,6 +39,7 @@ module.exports = function (socket, data, callback){
             }
             callback(response.OK({}));
           }else{
+            logger.error(e);
             callback(response.SERVER_ERROR('Something went wrong'));
           }
         });

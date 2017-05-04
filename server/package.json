@@ -12,7 +12,8 @@
     "mocha": "^3.2.0",
     "mongoose": "^4.9.3",
     "octonode": "^0.7.10",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "winston": "^2.3.1"
   },
   "scripts": {
     "test": "mocha"

@@ -17,13 +17,17 @@ import chalmers.eda397g1.models.VoteItemResult;
 public class VoteItemResultEvent extends Event {
     private VoteItemResult voteItemResult;
 
+    /**
+     * Event that is fired when a round for one item is over and the effort for this item has been
+     * decided.
+     * @param args
+     */
     public VoteItemResultEvent(Object... args) {
         super(args);
-        List<Vote> votes = new ArrayList<>();
         JSONObject obj = (JSONObject) getData();
 
-
-        voteItemResult = new VoteItemResult(obj.optInt("effort"),
+        voteItemResult = new VoteItemResult(
+                obj.optInt("effort"),
                 obj.optString("item_id"),
                 obj.optString("next_id"));
     }

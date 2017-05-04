@@ -12,16 +12,18 @@ var Client = mongoose.model('Client');
  *  {
  *     just a 200
  *  }
- *  vote.completed   // when all voted
- * {
- * votes:[{
+ *  vote.round.result   // when all voted
+ * [{
  *     effort: 2,
  *     user: {
  *    	 "login": "Kemekaze",
  *       "avatar": "https://avatars3.githubusercontent.com/u/5463135?v=3"
  *    }
- * }],
-   item_id: item_id,
+ * }]
+ * vote.result   // when all voted
+ * {
+ * effort: effort
+ * item_id: item_id,
  * next_id: next_id
  * }
 
@@ -30,9 +32,63 @@ var Client = mongoose.model('Client');
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
-  if(data.item_id  == null || data.effort == null)
+  if( (data.item_id  == null || typeof data.item_id !== 'string') &&
+     (data.effort == null || !Number.isInteger(data.effort)))
     return callback(response.BAD_REQUEST('Invalid request'));
 
+    var room = handler.room.getCurrentRoom(socket);
+    Session.findById(room,function(e,session){
+      if(!e && session){
+        if(session.state == data.item_id){
+          var index = Session.findIssue(session,data.item_id);
+          if(index == -1){
+            return callback(response.FORBIDDEN('Item not in the session'));
+          }
+          var current_round = session.github.backlog_items[index].current_round;
+          var round_index = Session.findRound(session, index, current_round);
 
+          var v = {
+            phone_id: socket.phone_id,
+            vote: data.effort
+          };
+          var voted_count = 0;
+          if(round_index == -1){
+            var id = new ObjectID();
+            session.github.backlog_items[index].current_round = id;
+            session.github.backlog_items[index].rounds.push({
+              _id: id,
+              votes:[
+                v
+              ]
+            });
+            voted_count = 1;
+          }else{
+            var votes = session.github.backlog_items[index].rounds[round_index].votes;
+            for (var vote in votes)
+              if(votes[vote].phone_id == socket.phone_id)
+                return callback(response.FORBIDDEN('You have already voted this round'))
 
+            session.github.backlog_items[index].rounds[round_index].votes.push(v);
+            voted_count =   session.github.backlog_items[index].rounds[round_index].votes.length;
+          }
+          //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
+          session.save(function(e,newSession){
+            if(!e){
+              if(voted_count == newSession.clients_phone_id.length){
+                  handler.ev.emit(handler.ev.VOTE_ROUND_RESULT,room);
+              }
+              callback(response.OK({}));
+            }else{
+              logger.error(e);
+              callback(response.SERVER_ERROR('Something went wrong'));
+            }
+          });
+
+        }else {
+          callback(response.FORBIDDEN('This is not the current round'));
+        }
+      }else{
+        callback(response.NOT_FOUND('Session could not be found'));
+      }
+    });
 };

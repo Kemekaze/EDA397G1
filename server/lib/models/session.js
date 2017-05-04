@@ -7,7 +7,7 @@ const SessionSchema = mongoose.Schema({
     required: true
   },
   state : {
-    type: Number,
+    type: mongoose.Schema.Types.Mixed,
     default: 0
   },
   clients_phone_id:[String],
@@ -63,7 +63,10 @@ const SessionSchema = mongoose.Schema({
           type: Boolean,
           default: false
         },
-        current_round:String,
+        current_round: {
+          type: String,
+          default: ''
+        },
         rounds: [{
             votes: [{
                  phone_id: {
@@ -114,4 +117,18 @@ module.exports.nextIssue = function(session){
     else return -1;
 });
   return items[0]._id;
+}
+module.exports.findIssue = function(session, item_id){
+  var items = session.github.backlog_items;
+  for (var item in items) {
+    if(items[item]._id == item_id) return item;
+  }
+  return -1;
+}
+module.exports.findRound = function(session, item, round_id){
+  var rounds = session.github.backlog_items[item].rounds;
+  for (var round in rounds) {
+    if(rounds[round]._id == round_id) return round;
+  }
+  return -1;
 }

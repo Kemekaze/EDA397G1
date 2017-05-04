@@ -50,6 +50,7 @@ module.exports = function (socket, data, callback){
         }
         handler.room.join(socket, data.game_id, function(joined){
           if(joined){
+            //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
             session.save(function(e,newSession){
               if(!e){
                 var obj = newSession.toObject();
@@ -68,6 +69,7 @@ module.exports = function (socket, data, callback){
                   callback(response.OK(obj));
                 });
               }else{
+                logger.error(e);
                 callback(response.SERVER_ERROR('Something went wrong'));
               }
             });

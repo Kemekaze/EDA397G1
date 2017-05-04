@@ -1,10 +1,12 @@
 package chalmers.eda397g1.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Martin on 2017-04-27.
  */
 
-public class Vote {
+public class Vote implements Serializable{
     private int effort;
     private User user;
 
