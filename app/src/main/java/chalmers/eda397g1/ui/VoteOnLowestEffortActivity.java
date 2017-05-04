@@ -114,15 +114,15 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
         Log.d(TAG, "onStart()");
-        //EventBus.getDefault().register(this);
-        //requestColumnCardsData();
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
     public void onStop() {
-        //EventBus.getDefault().unregister(this);
-        Log.d(TAG, "onStop()");
         super.onStop();
+        EventBus.getDefault().unregister(this);
+        Log.d(TAG, "onStop()");
     }
 
     private void setBacklogList(){
@@ -144,14 +144,19 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
         Intent intent = new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class);
         Bundle b = new Bundle();
-        String title = event.getReferenceItemId();
-        b.putString("id", title);
+        String referenceId = event.getReferenceItemId();
+        String startItemId = event.getNextId();
+        int referenceEffort = event.getLowestEffort();
+        b.putString("referenceId", referenceId);
+        b.putString("startItemId",startItemId);
+        b.putInt("referenceEffort",referenceEffort);
         intent.putExtras(b);
         startActivity(intent);
     }
     //Tell someone when they have voted
     @Subscribe
     public void onEventVoteOnLowest(VoteOnLowestEffortEvent event){
+        Log.i(TAG, "onEventVoteOnLowest");
         //TODO Add code that locks the voting mechanism or creates a loading screen once one has voted.
     }
 

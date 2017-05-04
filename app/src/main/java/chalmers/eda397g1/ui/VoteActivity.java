@@ -71,10 +71,10 @@ public class VoteActivity extends AppCompatActivity {
         });
 
         //Get the reference item
-        Bundle b = getIntent().getExtras();
-        referenceItemTitle =   b.getString("id");
-        referenceItemView = (TextView) findViewById(R.id.referenceItemTitle);
-        referenceItemView.setText(referenceItemTitle);
+        //Bundle b = getIntent().getExtras();
+        //referenceItemTitle =   b.getString("id");
+        //referenceItemView = (TextView) findViewById(R.id.referenceItemTitle);
+        //referenceItemView.setText(referenceItemTitle);
 
     }
 
