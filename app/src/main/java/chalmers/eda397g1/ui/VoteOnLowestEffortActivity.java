@@ -17,15 +17,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.adapters.LowestEffortAdapter;
+import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
 
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
 
-
     private RecyclerView mRecyclerView;
-    // private SomeAdapter mAdapter;
+    private LowestEffortAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Session session;
     private BacklogItem selectedBacklogItem;
@@ -41,8 +42,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //mAdapter = new SomeAdapter;
-        //mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new LowestEffortAdapter(listener);
+        mRecyclerView.setAdapter(mAdapter);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -54,6 +55,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         setBacklogList();
 
         final FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.button_vote);
+
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,5 +120,13 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             voteIssues.add(content);
         }
     }
+
+    private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+        @Override
+        public void recycleViewListClicked(View v, int position) {
+            Log.i("RecycleViewListClicked", "position: " + position);
+
+        }
+    };
 
 }
