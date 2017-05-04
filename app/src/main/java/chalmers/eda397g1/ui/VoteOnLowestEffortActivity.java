@@ -38,7 +38,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_on_lowest_effort);
         mRecyclerView = (RecyclerView) findViewById(R.id.available_items);
-        mEmptyView = (TextView) findViewById(R.id.empty_view);
+       // mEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -124,6 +124,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         @Override
         public void recycleViewListClicked(View v, int position) {
             Log.i("RecycleViewListClicked", "position: " + position);
+            selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
 
         }
     };

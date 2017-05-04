@@ -82,7 +82,7 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
         this.items = items;
         this.notifyDataSetChanged();
     }
-    public void addUser(BacklogItem item)
+    public void addItem(BacklogItem item)
     {
         this.items.add(item);
         this.notifyDataSetChanged();
