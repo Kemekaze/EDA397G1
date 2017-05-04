@@ -9,12 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.List;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.LowestEffortAdapter;
@@ -38,7 +33,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_on_lowest_effort);
         mRecyclerView = (RecyclerView) findViewById(R.id.available_items);
-       // mEmptyView = (TextView) findViewById(R.id.empty_view);
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -52,7 +47,18 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             throw new RuntimeException("No bundle!");
         }
 
-        setBacklogList();
+        // Temporary
+        mAdapter.addItems(session.getGithub().getBacklogItems());
+
+        if(mAdapter.getItemCount() == 0)
+        {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
 
         final FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.button_vote);
 
@@ -97,27 +103,12 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
         Log.d(TAG, "onStart()");
-        //EventBus.getDefault().register(this);
-        //requestColumnCardsData();
     }
 
     @Override
     public void onStop() {
-        //EventBus.getDefault().unregister(this);
         Log.d(TAG, "onStop()");
         super.onStop();
-    }
-
-    private void setBacklogList(){
-        mAdapter.addItems(session.getGithub().getBacklogItems());
-     /*   for(BacklogItem i : items){
-            String content = i.getTitle();
-            content += "\nBusiness Value: " + i.getBusinessValue();
-            Log.d(TAG, "Body: " + i.getBody());
-            if(!i.getBody().isEmpty())
-                content += "\n" + i.getBody();
-            voteIssues.add(content);
-        } */
     }
 
     private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
