@@ -30,14 +30,14 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        public TextView mBody;
+        public TextView mTitle;
         public TextView mValue;
         public View view;
         public ViewHolder(View v)
         {
             super(v);
-            this.mBody = (TextView) v.findViewById(R.id.body);
-            this.mValue = (TextView) v.findViewById(R.id.value);
+            this.mTitle = (TextView) v.findViewById(R.id.backlog_title);
+            this.mValue = (TextView) v.findViewById(R.id.backlog_value);
             this.view = v;
             this.view.setClickable(true);
             v.setOnClickListener(this);
@@ -65,8 +65,9 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
         final int pos = position;
         BacklogItem item = items.get(pos);
 
-        holder.mBody.setText(item.getBody());
-        holder.mValue.setText(item.getBusinessValue());
+        holder.mTitle.setText(item.getTitle());
+        String string;
+        holder.mValue.setText(string = String.valueOf(item.getBusinessValue()));
 
     }
 
