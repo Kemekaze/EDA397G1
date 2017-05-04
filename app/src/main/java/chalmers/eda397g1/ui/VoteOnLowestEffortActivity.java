@@ -71,7 +71,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             }
         });
 
-        //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
+      /*  //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
         issueListView = (ListView) findViewById(R.id.issueList);
         issueListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
@@ -90,7 +90,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 Log.d(TAG, "Select BacklogItem: " + i);
                 selectedBacklogItem = session.getGithub().getBacklogItems().get(i);
             }
-        });
+        }); */
     }
 
     @Override
@@ -109,16 +109,15 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     }
 
     private void setBacklogList(){
-        List<BacklogItem> items = session.getGithub().getBacklogItems();
-        voteIssues.clear();
-        for(BacklogItem i : items){
+        mAdapter.addItems(session.getGithub().getBacklogItems());
+     /*   for(BacklogItem i : items){
             String content = i.getTitle();
             content += "\nBusiness Value: " + i.getBusinessValue();
             Log.d(TAG, "Body: " + i.getBody());
             if(!i.getBody().isEmpty())
                 content += "\n" + i.getBody();
             voteIssues.add(content);
-        }
+        } */
     }
 
     private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
