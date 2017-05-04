@@ -40,8 +40,6 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
     private FloatingActionButton voteButton;
     private TextView currentItemTextView;
     private int selectedEffort;
-    private String referenceItemTitle;
-    private TextView referenceItemView;
     private Session session;
     private BacklogItem currentItem;
     private BacklogItem referenceItem;
@@ -61,17 +59,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         Bundle b = getIntent().getExtras();
         if(b != null) {
             session = (Session) b.getSerializable("session");
-            String startItem;
-            String referenceId;
-            if(DEBUG){
-                startItem = session.getGithub().getBacklogItems().get(0).getCardId();
-                referenceId = session.getGithub().getBacklogItems().get(0).getCardId();
-                referenceEffort = 2;
-            } else {
-                startItem = b.getString("startItemId");
-                referenceId = b.getString("referenceId");
-                referenceEffort = b.getInt("referenceEffort");
-            }
+            String startItem = b.getString("startItemId");
+            String referenceId = b.getString("referenceId");
+            referenceEffort = b.getInt("referenceEffort");
             currentItem = getBackLogItemById(startItem);
             referenceItem = getBackLogItemById(referenceId);
 
@@ -79,7 +69,8 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             throw new RuntimeException("No session passed!");
         }
 
-        currentItemTextView = (TextView) findViewById(R.id.currentItemTextView);
+        currentItemTextView = (TextView) findViewById(R.id.currentItemTitle);
+        currentItemTextView.setText(currentItem.getTitle());
         ((TextView) findViewById(R.id.referenceItemTitle)).setText(referenceItem.getTitle());
         ((TextView) findViewById(R.id.refrenceItemBody)).setText(referenceItem.getBody());
         ((TextView) findViewById(R.id.refrenceText)).setText("Effort: "+ referenceEffort);
@@ -102,24 +93,26 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
 
     @Subscribe
     public void onReceiveRoundResults(VoteRoundResultEvent event){
+        Log.d(TAG, "Receive Round Result");
         ArrayList<Vote> votes = event.getVoteRoundResult().getVotes();
         displayResults(votes);
     }
 
     @Subscribe
     public void onReceiveItemResult(VoteItemResultEvent event){
+        Log.d(TAG, "Receive Item Result");
         int effort = event.getVoteItemResult().getEffort();
         String currentId = event.getVoteItemResult().getItemId();
         String nextId = event.getVoteItemResult().getNextId();
         //NOTE: This may need to be currentItem.getIssueId()
-        if(currentId.equals(currentItem.getCardId()))
+        if(currentId.equals(currentItem.getId()))
             throw new RuntimeException("Wrong itemID!");
         currentItem = getBackLogItemById(nextId);
     }
 
     private BacklogItem getBackLogItemById(String id) {
         for(BacklogItem b: session.getGithub().getBacklogItems()){
-            if(b.getCardId().equals(id))
+            if(b.getId().equals(id))
                 return b;
         }
         throw new RuntimeException("Could not find next BacklogItem!");
@@ -170,6 +163,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         });
     }
 
+
     /**
      * Initializes the vote button.
      */
@@ -183,16 +177,17 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 effortPicker.setEnabled(false);
                 JSONObject query = new JSONObject();
                 try {
-                    query.putOpt("item_id", currentItem.getCardId());
+                    query.putOpt("item_id", currentItem.getId());
                     query.putOpt("effort", Integer.toString(selectedEffort));
                 }
                 catch (JSONException e){
                     e.printStackTrace();
                 }
+                Log.d(TAG, query.toString());
 
                 EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.VOTE, query));
 
-                // DEBUG
+/*                // DEBUG
                 ArrayList<Vote> debugRes = new ArrayList<>();
                 debugRes.add( new Vote( 42, new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
                 debugRes.add( new Vote( 1, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
@@ -214,7 +209,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 debugRes.add( new Vote( 6, new User("Testuser G ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
                 debugRes.add( new Vote( 6, new User("Testuser H ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
 
-                displayResults(debugRes );
+                displayResults(debugRes );*/
             }
         });
     }
