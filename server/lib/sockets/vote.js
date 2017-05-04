@@ -54,7 +54,7 @@ module.exports = function (socket, data, callback){
           };
           var voted_count = 0;
           if(round_index == -1){
-            var id = mongoose.Types.ObjectId();
+            var id = new mongoose.Types.ObjectId();
             session.github.backlog_items[index].current_round = id;
             session.github.backlog_items[index].rounds.push({
               _id: id,

@@ -160,7 +160,7 @@ method.vote = function(){
                   }
                 });
               }else{
-                var id = new ObjectID();
+                var id = new mongoose.Types.ObjectId();
                 session.github.backlog_items[index].current_round = id;
                 session.github.backlog_items[index].rounds.push({
                   _id: id,
