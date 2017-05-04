@@ -111,7 +111,7 @@ module.exports.nextIssue = function(session){
   var items = session.github.backlog_items;
   items.sort(function (a, b) {
     if(a.completed === b.completed)
-      return a.business_value-b.business_value;
+      return b.business_value-a.business_value;
     else if(a.completed)
       return 1;
     else return -1;

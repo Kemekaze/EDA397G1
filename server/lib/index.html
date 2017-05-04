@@ -231,6 +231,7 @@
       });
       socket2.on('session.join',function(data){
         console.log('Socket2 - session.join');
+        //socket2.emit('session.leave');
         console.log(data);
         var items = data.data.github.backlog_items
         vote_lowest = items[Math.floor(Math.random()*items.length)]._id;
@@ -241,6 +242,10 @@
         console.log('Socket1 - session.clients');
         console.log(data);
       });*/
+      socket2.on('session.leave',function (data) {
+        console.log('Socket2 - session.leave');
+        console.log(data);
+      });
       socket.on('session.start',function (data) {
         console.log('Socket1 - session.start');
         console.log(data);
@@ -257,7 +262,21 @@
         socket2.emit('vote.lowest',{item_id: vote_lowest});
       });
       socket.on('vote.lowest.result',function (data) {
-        console.log('Socket1 - vote.lowest.completed');
+        console.log('Socket1 - vote.lowest.result');
+        console.log(data);
+        socket.emit('vote',{item_id:data.data.next_id, effort: 100});
+        socket2.emit('vote',{item_id:data.data.next_id, effort: 100});
+      });
+      socket.on('vote',function (data) {
+        console.log('Socket1 - vote');
+        console.log(data);
+      });
+      socket.on('vote.round.result',function (data) {
+        console.log('Socket1 - vote.round.result');
+        console.log(data);
+      });
+      socket.on('vote.result',function (data) {
+        console.log('Socket1 - vote.result');
         console.log(data);
       });
     </script>

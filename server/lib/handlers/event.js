@@ -134,7 +134,7 @@ method.vote = function(){
     logger.info('[Event]',self.VOTE_ROUND_RESULT);
     Session.findById(room,function(e,session){
       if(!e && session){
-        var index = Session.findIssue(session,session.state);
+        var index = Session.findIssue(session,session.state.toString());
         if(index != -1){
           var current_round = session.github.backlog_items[index].current_round;
           var round_index = Session.findRound(session, index, current_round);
@@ -142,14 +142,15 @@ method.vote = function(){
             var votes = session.github.backlog_items[index].rounds[round_index].votes;
             if(votes.length == session.clients_phone_id.length){
               var same = true;
-              for (var v in votes) {
-                if(votes[0].vote != votes[v].vote) same = false;
+              var v_obj = votes.toObject();
+              for (var v in v_obj) {
+                if(v_obj[0].vote != v_obj[v].vote) same = false;
               }
               if(same){
                 session.github.backlog_items[index].effort_value = votes[0].vote;
                 session.github.backlog_items[index].completed = true;
-                session.state = Session.nextIssue(session);
                 var id = session.github.backlog_items[index]._id;
+                session.state = Session.nextIssue(session);
                 session.save(function(e,newSession){
                   if(!e){
                     self.io.in(room).emit(self.VOTE_RESULT,self.response.OK({
