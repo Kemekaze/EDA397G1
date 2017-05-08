@@ -103,16 +103,16 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
             if(mViewFlipper.getDisplayedChild() == 0)
             {
-                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.in_from_left));
-                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.out_from_left));
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
 
                 mViewFlipper.showNext();
             }
 
             else
             {
-                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.in_from_right));
-                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.out_from_right));
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
 
                 mViewFlipper.showPrevious();
             }
