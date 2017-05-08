@@ -30,6 +30,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private BacklogItem selectedBacklogItem;
     private TextView mEmptyView;
     private Context mContext;
+    private ViewFlipper pViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,6 +45,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         mAdapter = new LowestEffortAdapter(listener);
         mRecyclerView.setAdapter(mAdapter);
         mContext = this;
+        pViewFlipper = null;
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -101,6 +103,15 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         public void recycleViewFlipperListClicked(View v, int position, ViewFlipper mViewFlipper) {
             Log.i("RecycleViewListClicked", "position: " + position);
             selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
+
+            if(pViewFlipper != null)
+            {
+                pViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                pViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                pViewFlipper.showPrevious();
+            }
+
             if(mViewFlipper.getDisplayedChild() == 0)
             {
                 mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
@@ -116,6 +127,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
                 mViewFlipper.showPrevious();
             }
+
+            pViewFlipper = mViewFlipper;
 
         }
     };
