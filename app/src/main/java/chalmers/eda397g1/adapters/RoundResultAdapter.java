@@ -40,7 +40,7 @@ public class RoundResultAdapter extends ArrayAdapter {
         // Reuse old view for better performance.
         if(rowView == null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.listview_element_round_result, parent);
+            rowView = inflater.inflate(R.layout.listview_element_round_result, null);
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.avatar = (ImageView) rowView.findViewById(R.id.avatar);
             viewHolder.name = (TextView) rowView.findViewById(R.id.player_name);
