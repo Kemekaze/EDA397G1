@@ -5,12 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import chalmers.eda397g1.R;
-import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
+import chalmers.eda397g1.interfaces.RecyclerViewFlipperClickListener;
 import chalmers.eda397g1.models.BacklogItem;
 
 /**
@@ -21,9 +22,9 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
 {
     private String TAG = "LowestEffortAdapter";
     private List<BacklogItem> items = new ArrayList<>();
-    private static RecyclerViewClickListener itemListener;
+    private static RecyclerViewFlipperClickListener itemListener;
 
-    public LowestEffortAdapter(RecyclerViewClickListener itemListener)
+    public LowestEffortAdapter(RecyclerViewFlipperClickListener itemListener)
     {
         this.itemListener = itemListener;
     }
@@ -32,12 +33,14 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
     {
         public TextView mTitle;
         public TextView mValue;
+        public ViewFlipper mViewFlipper;
         public View view;
         public ViewHolder(View v)
         {
             super(v);
             this.mTitle = (TextView) v.findViewById(R.id.backlog_title);
             this.mValue = (TextView) v.findViewById(R.id.backlog_value);
+            this.mViewFlipper = (ViewFlipper) v.findViewById(R.id.view_flip);
             this.view = v;
             this.view.setClickable(true);
             v.setOnClickListener(this);
@@ -46,7 +49,7 @@ public class LowestEffortAdapter extends RecyclerView.Adapter<LowestEffortAdapte
         @Override
         public void onClick(View v)
         {
-            itemListener.recycleViewListClicked(v, this.getAdapterPosition());
+            itemListener.recycleViewFlipperListClicked(v, this.getAdapterPosition(), mViewFlipper);
         }
     }
 

@@ -16,7 +16,7 @@ import android.widget.ViewFlipper;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.LowestEffortAdapter;
-import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
+import chalmers.eda397g1.interfaces.RecyclerViewFlipperClickListener;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
 
@@ -30,7 +30,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private BacklogItem selectedBacklogItem;
     private TextView mEmptyView;
     private Context mContext;
-    private ViewFlipper mViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,7 +44,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         mAdapter = new LowestEffortAdapter(listener);
         mRecyclerView.setAdapter(mAdapter);
         mContext = this;
-        mViewFlipper = (ViewFlipper) this.findViewById(R.id.view_flip);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -98,9 +96,9 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+    private RecyclerViewFlipperClickListener listener = new RecyclerViewFlipperClickListener() {
         @Override
-        public void recycleViewListClicked(View v, int position) {
+        public void recycleViewFlipperListClicked(View v, int position, ViewFlipper mViewFlipper) {
             Log.i("RecycleViewListClicked", "position: " + position);
             selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
             if(mViewFlipper.getDisplayedChild() == 0)
