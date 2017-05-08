@@ -29,6 +29,7 @@ import chalmers.eda397g1.resources.Constants;
 import chalmers.eda397g1.ui.fragments.ResultsDialogFragment;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by Jesper Kjellqvist 03/04/17
@@ -98,16 +99,18 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         displayResults(votes);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onReceiveItemResult(VoteItemResultEvent event){
-        Log.d(TAG, "Receive Item Result");
+        Log.d(TAG, "onReceiveItemResult()");
         int effort = event.getVoteItemResult().getEffort();
         String currentId = event.getVoteItemResult().getItemId();
         String nextId = event.getVoteItemResult().getNextId();
-        //NOTE: This may need to be currentItem.getIssueId()
-        if(currentId.equals(currentItem.getId()))
+        if(!currentId.equals(currentItem.getId()))
             throw new RuntimeException("Wrong itemID!");
         currentItem = getBackLogItemById(nextId);
+        voteButton.setEnabled(true);
+        effortPicker.setEnabled(true);
+        currentItemTextView.setText(currentItem.getTitle());
     }
 
     private BacklogItem getBackLogItemById(String id) {
