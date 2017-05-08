@@ -2,6 +2,7 @@ package chalmers.eda397g1.ui;
 
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
     private BacklogItem currentItem;
     private BacklogItem referenceItem;
     private int referenceEffort;
+    private int itemsLeft;
 
     int[] effortValues = {0, 1, 2, 3, 4, 5, 8, 13, 20, 30, 50, 100, 200};
 
@@ -69,6 +71,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         } else {
             throw new RuntimeException("No session passed!");
         }
+
+        // Items that are left to vote for minus the reference item.
+        itemsLeft = session.getGithub().getBacklogItems().size() - 1;
 
         currentItemTextView = (TextView) findViewById(R.id.currentItemTitle);
         currentItemTextView.setText(currentItem.getTitle());
@@ -107,10 +112,19 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         String nextId = event.getVoteItemResult().getNextId();
         if(!currentId.equals(currentItem.getId()))
             throw new RuntimeException("Wrong itemID!");
-        currentItem = getBackLogItemById(nextId);
-        voteButton.setEnabled(true);
-        effortPicker.setEnabled(true);
-        currentItemTextView.setText(currentItem.getTitle());
+        currentItem.setEffortValue(effort);
+        itemsLeft--;
+        if(itemsLeft > 0) {
+            Snackbar.make(voteButton, "Chosen Effort: "+ effort, Snackbar.LENGTH_LONG).show();
+            currentItem = getBackLogItemById(nextId);
+            voteButton.setEnabled(true);
+            effortPicker.setEnabled(true);
+            currentItemTextView.setText(currentItem.getTitle());
+        } else {
+            // TODO: Replace this by the call to show the final result!
+            Snackbar sb = Snackbar.make(voteButton, "All Votes Done!", Snackbar.LENGTH_LONG);
+            sb.show();
+        }
     }
 
     private BacklogItem getBackLogItemById(String id) {
