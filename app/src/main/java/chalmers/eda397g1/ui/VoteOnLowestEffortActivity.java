@@ -137,7 +137,10 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             }
 
             if(pViewFlipper == mViewFlipper)
+            {
                 pViewFlipper = null;
+                selectedBacklogItem = null;
+            }
 
             else
                 pViewFlipper = mViewFlipper;
