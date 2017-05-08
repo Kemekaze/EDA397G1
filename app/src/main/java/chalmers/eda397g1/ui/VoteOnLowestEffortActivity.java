@@ -2,6 +2,7 @@ package chalmers.eda397g1.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 
 import chalmers.eda397g1.R;
@@ -35,10 +38,12 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
 
 
-    ListView issueListView;
+    private ListView issueListView;
+    private ProgressBar spinner;
     private List<String> voteIssues = new ArrayList<>();
     private Session session;
     private BacklogItem selectedBacklogItem;
+    private ArrayAdapter<String> voteListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         issueListView = (ListView) findViewById(R.id.issueList);
         issueListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
+        voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
         issueListView.setAdapter(voteListAdapter);
         //new ArrayAdapter<String>(this, R.layout.)
@@ -108,6 +113,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 selectedBacklogItem = session.getGithub().getBacklogItems().get(i);
             }
         });
+        spinner = (ProgressBar) findViewById(R.id.loadingSpinner);
     }
 
     @Override
@@ -115,7 +121,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart()");
         EventBus.getDefault().register(this);
-
     }
 
     @Override
@@ -152,13 +157,19 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         b.putString("startItemId",startItemId);
         b.putInt("referenceEffort",referenceEffort);
         intent.putExtras(b);
+        Log.d(TAG, "Spinner gone, issueList enabled");
+        spinner.setVisibility(View.GONE); // reset spinner
+        issueListView.setEnabled(true); // reset list
         startActivity(intent);
     }
     //Tell someone when they have voted
-    @Subscribe
+    @Subscribe (threadMode = ThreadMode.MainThread)
     public void onEventVoteOnLowest(VoteOnLowestEffortEvent event){
         Log.i(TAG, "onEventVoteOnLowest");
-        //TODO Add code that locks the voting mechanism or creates a loading screen once one has voted.
+
+        Log.d(TAG, "Spinner visible, issueList disabled");
+        issueListView.setEnabled(false);
+        spinner.setVisibility(View.VISIBLE);
     }
 
 }
