@@ -112,6 +112,14 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 pViewFlipper.showPrevious();
             }
 
+            if(pViewFlipper == mViewFlipper)
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                mViewFlipper.showPrevious();
+            }
+
             if(mViewFlipper.getDisplayedChild() == 0)
             {
                 mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
@@ -128,7 +136,11 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
                 mViewFlipper.showPrevious();
             }
 
-            pViewFlipper = mViewFlipper;
+            if(pViewFlipper == mViewFlipper)
+                pViewFlipper = null;
+
+            else
+                pViewFlipper = mViewFlipper;
 
         }
     };
