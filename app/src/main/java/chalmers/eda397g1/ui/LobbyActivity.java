@@ -13,8 +13,6 @@ import android.view.View;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.LobbyAdapter;
-import chalmers.eda397g1.events.CreateSessionEvent;
-import chalmers.eda397g1.events.JoinSessionEvent;
 import chalmers.eda397g1.events.KickedEvent;
 import chalmers.eda397g1.events.LobbyUpdateEvent;
 import chalmers.eda397g1.events.RequestEvent;

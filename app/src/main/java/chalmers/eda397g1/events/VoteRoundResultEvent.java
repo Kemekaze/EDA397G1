@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.models.Vote;

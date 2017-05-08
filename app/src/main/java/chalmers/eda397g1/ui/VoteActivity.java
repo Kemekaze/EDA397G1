@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +23,6 @@ import chalmers.eda397g1.events.VoteItemResultEvent;
 import chalmers.eda397g1.events.VoteRoundResultEvent;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
-import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.models.Vote;
 import chalmers.eda397g1.resources.Constants;
 import chalmers.eda397g1.ui.fragments.ResultsDialogFragment;

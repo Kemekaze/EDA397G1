@@ -2,9 +2,6 @@ package chalmers.eda397g1.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import chalmers.eda397g1.R;
 

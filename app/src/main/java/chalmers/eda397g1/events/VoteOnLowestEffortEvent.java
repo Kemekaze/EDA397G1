@@ -1,7 +1,5 @@
 package chalmers.eda397g1.events;
 
-import chalmers.eda397g1.models.BacklogItem;
-
 /**
  * Created by Martin on 2017-04-11.
  */
