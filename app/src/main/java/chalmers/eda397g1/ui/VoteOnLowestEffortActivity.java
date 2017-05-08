@@ -1,5 +1,6 @@
 package chalmers.eda397g1.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.LowestEffortAdapter;
@@ -26,6 +29,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private Session session;
     private BacklogItem selectedBacklogItem;
     private TextView mEmptyView;
+    private Context mContext;
+    private ViewFlipper mViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +44,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new LowestEffortAdapter(listener);
         mRecyclerView.setAdapter(mAdapter);
+        mContext = this;
+        mViewFlipper = (ViewFlipper) this.findViewById(R.id.view_flip);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -77,26 +84,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             }
         });
 
-      /*  //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
-        issueListView = (ListView) findViewById(R.id.issueList);
-        issueListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        ArrayAdapter<String> voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
-        issueListView.setAdapter(voteListAdapter);
-        //new ArrayAdapter<String>(this, R.layout.)
-
-//        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-//                android.R.layout.simple_spinner_item, projectNames);
-
-
-        issueListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "Select BacklogItem: " + i);
-                selectedBacklogItem = session.getGithub().getBacklogItems().get(i);
-            }
-        }); */
     }
 
     @Override
@@ -116,6 +103,21 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         public void recycleViewListClicked(View v, int position) {
             Log.i("RecycleViewListClicked", "position: " + position);
             selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
+            if(mViewFlipper.getDisplayedChild() == 0)
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.in_from_left));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.out_from_left));
+
+                mViewFlipper.showNext();
+            }
+
+            else
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.in_from_right));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.out_from_right));
+
+                mViewFlipper.showPrevious();
+            }
 
         }
     };

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<ViewFlipper
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/view_flip"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<android.support.v7.widget.CardView
     android:id="@+id/itemCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,6 +14,7 @@
     card_view:cardElevation="5dp"
     android:layout_margin="5dp">
 
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,4 +44,33 @@
             android:layout_centerVertical="true"/>
 
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/itemCardBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp"
+        android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="lol"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</ViewFlipper>
