@@ -102,6 +102,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Subscribe (threadMode = ThreadMode.MainThread, sticky = true)
     public void onLobbyUpdateEvent(LobbyUpdateEvent event) {
         Log.i(TAG, "onLobbyUpdateEvent");
+        Log.d(TAG, "event contains nr users: " + event.getUsers().size());
         mAdapter.addUsers(event.getUsers());
     }
 
