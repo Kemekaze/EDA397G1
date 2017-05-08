@@ -18,6 +18,11 @@
         android:scrollbarThumbVertical="@android:color/holo_orange_light"
         />
 
+    <include android:id="@+id/loadingSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_spinner" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab4"
         android:layout_width="wrap_content"
