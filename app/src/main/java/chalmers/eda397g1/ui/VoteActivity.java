@@ -121,13 +121,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             effortPicker.setEnabled(true);
             currentItemTextView.setText(currentItem.getTitle());
         } else {
-
-            Intent intent = new Intent(VoteActivity.this,VoteResultsActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("Session",session);
-            intent.putExtras(b);
-            startActivity(intent);
-
+            // TODO: Replace this by the call to show the final result!
+            Snackbar sb = Snackbar.make(voteButton, "All Votes Done!", Snackbar.LENGTH_LONG);
+            sb.show();
         }
     }
 

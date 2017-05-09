@@ -147,6 +147,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_LEAVE, eventLeaveSession);
 
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
+        socket.on(Constants.SocketEvents.SESSION_STARTED, eventStartedGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
         socket.on(Constants.SocketEvents.VOTE_LOWEST, eventVoteOnLowest);
         socket.on(Constants.SocketEvents.VOTE_LOWEST_RESULT, eventVoteOnLowestResult);
