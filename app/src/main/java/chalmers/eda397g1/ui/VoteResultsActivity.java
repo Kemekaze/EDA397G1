@@ -20,8 +20,8 @@ public class VoteResultsActivity extends AppCompatActivity {
     ListView voteResultsView;
     LinearLayout voteResultsRow;
     TextView businessValueView = (TextView) findViewById(R.id.businessValue);
-    TextView EffortView;
-    TextView IssueNameView;
+    TextView EffortView = (TextView) findViewById(R.id.effort);
+    TextView IssueNameView = (TextView) findViewById(R.id.issueName);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +58,7 @@ public class VoteResultsActivity extends AppCompatActivity {
 
 
             businessValueView.setText(templist.get(0));
-            EffortView = (TextView) findViewById(R.id.effort);
             EffortView.setText(templist.get(1));
-            IssueNameView = (TextView) findViewById(R.id.issueName);
             IssueNameView.setText(templist.get(2));
 
             voteResultsView.addView(voteResultsRow);
