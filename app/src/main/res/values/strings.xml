@@ -26,4 +26,6 @@
     <string name="comment">Comment</string>
     <string name="no_data_available">No available sessions</string>
     <string name="choose_priority">Pick effort</string>
+    <string name="no_items_available">No available items</string>
+    <string name="sign_out">Sign out</string>
 </resources>
