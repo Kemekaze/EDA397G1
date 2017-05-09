@@ -17,8 +17,9 @@
     <include layout="@layout/activity_vote_on_lowest_effort_content" />
 
     <include android:id="@+id/loadingSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+             android:layout_gravity="center"
         layout="@layout/loading_spinner" />
 
     <android.support.design.widget.FloatingActionButton
