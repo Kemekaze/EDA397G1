@@ -55,6 +55,7 @@ method.room = function(){
   });
   self.ee.on(self.CREATED,function(room){
     logger.info('[Event]',self.CREATED);
+    self.emit(self.CLIENTS,room);
     handler.socket.io.emit(self.CREATED, self.response.OK({}));
   });
   self.ee.on(self.STARTED,function(data){
