@@ -49,6 +49,8 @@ public class ListViewAdapters extends ArrayAdapter {
 
         BacklogItem b = (BacklogItem) getItem(position);
         businessValue.setText(Integer.toString(b.getBusinessValue()));
+        effort.setText(Integer.toString(b.getEffortValue()));
+        issueName.setText(b.getTitle());
 
 return v;
     }

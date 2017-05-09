@@ -35,18 +35,7 @@ public class VoteResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_results);
 
-
         ListView listView=(ListView)findViewById(R.id.listView1);
-
-        list=new ArrayList<HashMap<String,String>>();
-
-        HashMap<String,String> headlines=new HashMap<String, String>();
-        headlines.put(BUSINESS_VALUE_COLUMN, "BV");
-        headlines.put(EFFORT_COLUMN, "EFF");
-        headlines.put(ISSUE_NAME_COLUMN, "IssueName");
-
-        list.add(headlines);
-
 
         //Get stuff from server
 
