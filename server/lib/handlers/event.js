@@ -29,9 +29,9 @@ method.VOTE_RESULT = 'vote.result';
 
 method.room = function(){
   var self = this;
-  self.ee.on(self.JOINED,function(room){
+  self.ee.on(self.JOINED,function(data){
     logger.info('[Event]',self.JOINED);
-    self.emit(self.CLIENTS,room);
+    self.emit(self.CLIENTS,data.room);
   });
   self.ee.on(self.CLIENTS,function(room){
     logger.info('[Event]',self.CLIENTS);
@@ -53,9 +53,9 @@ method.room = function(){
       self.io.in(room).emit(self.CLIENTS,self.response.OK(d));
     });
   });
-  self.ee.on(self.CREATED,function(room){
+  self.ee.on(self.CREATED,function(data){
     logger.info('[Event]',self.CREATED);
-    self.emit(self.CLIENTS,room);
+    self.emit(self.CLIENTS,data.room);
     handler.socket.io.emit(self.CREATED, self.response.OK({}));
   });
   self.ee.on(self.STARTED,function(data){
