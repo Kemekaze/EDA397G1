@@ -1,6 +1,7 @@
 package chalmers.eda397g1.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.util.Comparator;
 import android.widget.TextView;
 
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.events.GameCompletedEvent;
 import chalmers.eda397g1.events.RequestEvent;
 import chalmers.eda397g1.events.VoteItemResultEvent;
 import chalmers.eda397g1.events.VoteRoundResultEvent;
@@ -217,5 +219,15 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 displayResults(debugRes );
             }
         });
+    }
+
+    @Subscribe
+    public void onGameCompleted(GameCompletedEvent event){
+        Intent intent = new Intent(VoteActivity.this,VoteResultsActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("Session",session);
+        intent.putExtras(b);
+        startActivity(intent);
+
     }
 }

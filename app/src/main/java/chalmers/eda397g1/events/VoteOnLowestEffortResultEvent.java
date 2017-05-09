@@ -7,6 +7,8 @@ import org.json.JSONObject;
  * Created by Martin on 2017-04-27.
  */
 
+//This event is fired when the voting on the item with the lowest effort is done.
+
 public class VoteOnLowestEffortResultEvent extends Event {
     private final String TAG = "VoteOnLow..Comp..Event:";
     private String referenceItemId;

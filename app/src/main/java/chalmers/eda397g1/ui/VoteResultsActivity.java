@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.ListViewAdapters;
+import chalmers.eda397g1.models.Session;
 
 import static chalmers.eda397g1.resources.Constants.BUSINESS_VALUE_COLUMN;
 import static chalmers.eda397g1.resources.Constants.EFFORT_COLUMN;
@@ -43,68 +44,26 @@ public class VoteResultsActivity extends AppCompatActivity {
 
         list=new ArrayList<HashMap<String,String>>();
 
-        HashMap<String,String> temp=new HashMap<String, String>();
-        temp.put(BUSINESS_VALUE_COLUMN, "BV");
-        temp.put(EFFORT_COLUMN, "EFF");
-        temp.put(ISSUE_NAME_COLUMN, "IssueName");
+        HashMap<String,String> headlines=new HashMap<String, String>();
+        headlines.put(BUSINESS_VALUE_COLUMN, "BV");
+        headlines.put(EFFORT_COLUMN, "EFF");
+        headlines.put(ISSUE_NAME_COLUMN, "IssueName");
 
-        list.add(temp);
+        list.add(headlines);
 
 
-        HashMap<String,String> temp2=new HashMap<String, String>();
-        temp2.put(BUSINESS_VALUE_COLUMN, "59");
-        temp2.put(EFFORT_COLUMN, "20000");
-        temp2.put(ISSUE_NAME_COLUMN, "Bajsa jättelite");
+        //Get stuff from server
 
-        list.add(temp2);
+       Bundle b = getIntent().getExtras();
+        Session session = (Session) b.get("Session");
+
+        session
+
+
 
         ListViewAdapters adapter=new ListViewAdapters(this, list);
         listView.setAdapter(adapter);
 
-        /*
-        voteResultsView = (ListView) findViewById(R.id.activity_vote_results);
 
-        // hard-coded list for offline try
-        List<ArrayList<String>> voteResultsList = new ArrayList<>();
-        ArrayList<String> firstIssue = new ArrayList<>();
-        firstIssue.add("3");
-        firstIssue.add("5");
-        firstIssue.add("Title of issue 1");
-        ArrayList<String> secondIssue = new ArrayList<>();
-        secondIssue.add("3");
-        secondIssue.add("5");
-        secondIssue.add("Title of issue 2");
-        ArrayList<String> thirdIssue = new ArrayList<>();
-        thirdIssue.add("3");
-        thirdIssue.add("5");
-        thirdIssue.add("Title of issue 3");
-        voteResultsList.add(firstIssue);
-        voteResultsList.add(secondIssue);
-        voteResultsList.add(thirdIssue);
-
-        //setting an adapter on voteResultsView
-        ArrayAdapter voteResultsAdapter = new ArrayAdapter<>(this, R.layout.activity_vote_results, voteResultsList);
-        voteResultsView.setAdapter(voteResultsAdapter);
-
-        for(int i=0; i < voteResultsList.size(); i++) {
-
-            voteResultsRow = (ListView) findViewById(R.id.voteResultsRow);
-            ArrayList<String> templist = voteResultsList.get(i);
-
-            //Create inflater to add things to the layout.
-            LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            voteResultsView = (ListView) inflater.inflate(R.layout.vote_results_row,null);
-
-            //voteResultsView.addView(voteResultsRow);
-
-            businessValueView = (TextView) findViewById(R.id.businessValue);
-            effortView = (TextView) findViewById(R.id.effort);
-            issueNameView= (TextView) findViewById(R.id.issueName);
-            businessValueView.setText(templist.get(0));
-            effortView.setText(templist.get(1));
-            issueNameView.setText(templist.get(2));
-
-
-        }*/
     }
 }
