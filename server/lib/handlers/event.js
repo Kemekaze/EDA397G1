@@ -76,6 +76,7 @@ method.room = function(){
       full_name: data.session.github.full_name,
       reason: data.reason
     }));
+    self.emit(self.CLIENTS,data.room);
   });
 }
 method.vote = function(){

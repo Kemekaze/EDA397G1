@@ -29,6 +29,7 @@ module.exports = function (socket, data, callback){
               if(clients[id].phone_id == data.phone_id){
                 clients[id].leave(room);
                 handler.ev.emit(handler.ev.KICKED,{
+                  room: room,
                   session:newSession,
                   socket:clients[id],
                   reason: 'You have been kicked'
