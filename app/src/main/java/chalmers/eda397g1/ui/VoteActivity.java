@@ -121,9 +121,13 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             effortPicker.setEnabled(true);
             currentItemTextView.setText(currentItem.getTitle());
         } else {
-            // TODO: Replace this by the call to show the final result!
-            Snackbar sb = Snackbar.make(voteButton, "All Votes Done!", Snackbar.LENGTH_LONG);
-            sb.show();
+
+            Intent intent = new Intent(VoteActivity.this,VoteResultsActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("Session",session);
+            intent.putExtras(b);
+            startActivity(intent);
+
         }
     }
 
@@ -204,40 +208,8 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
 
                 EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.VOTE, query));
 
-/*                // DEBUG
-                ArrayList<Vote> debugRes = new ArrayList<>();
-                debugRes.add( new Vote( 42, new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 1, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 2, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 3, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 4, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 5, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 7, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 8, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 9, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 10, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser A ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser B ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser C ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser D ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser E ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser F ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser G ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser H ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-
-                displayResults(debugRes );*/
             }
         });
     }
 
-    @Subscribe
-    public void onGameCompleted(GameCompletedEvent event){
-        Intent intent = new Intent(VoteActivity.this,VoteResultsActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("Session",session);
-        intent.putExtras(b);
-        startActivity(intent);
-
-    }
 }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.adapters.ListViewAdapters;
+import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
 
 import static chalmers.eda397g1.resources.Constants.BUSINESS_VALUE_COLUMN;
@@ -26,11 +27,6 @@ public class VoteResultsActivity extends AppCompatActivity {
 
     //intended to display user stories/issues to be solved, and their voted values
 
-    ListView voteResultsView;
-    ListView voteResultsRow;
-    TextView businessValueView;
-    TextView effortView;
-    TextView issueNameView;
 
     private ArrayList<HashMap<String, String>> list;
 
@@ -57,12 +53,14 @@ public class VoteResultsActivity extends AppCompatActivity {
        Bundle b = getIntent().getExtras();
         Session session = (Session) b.get("Session");
 
-        session
+        ArrayList<BacklogItem> backlogItemList = session.getGithub().getBacklogItems();
 
-
-
-        ListViewAdapters adapter=new ListViewAdapters(this, list);
+        ListViewAdapters adapter=new ListViewAdapters(this, backlogItemList);
         listView.setAdapter(adapter);
+
+
+
+
 
 
     }
