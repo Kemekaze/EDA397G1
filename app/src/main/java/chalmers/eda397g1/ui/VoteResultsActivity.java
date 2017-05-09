@@ -1,9 +1,12 @@
 package chalmers.eda397g1.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -46,6 +49,16 @@ public class VoteResultsActivity extends AppCompatActivity {
 
         ListViewAdapters adapter=new ListViewAdapters(this, backlogItemList);
         listView.setAdapter(adapter);
+
+        FloatingActionButton restartButton = (FloatingActionButton) findViewById(R.id.restart_button);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                //Temporary
+                startActivity(new Intent(VoteResultsActivity.this, LoginActivity.class));
+            }
+        });
 
 
 

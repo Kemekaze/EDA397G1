@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out_item:
-                Toast.makeText(getApplicationContext(), "Sign out here", Toast.LENGTH_LONG).show();
                 EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SIGNOUT));
                 return true;
             default:

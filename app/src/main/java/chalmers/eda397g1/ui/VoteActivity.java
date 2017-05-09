@@ -84,7 +84,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         currentItemTextView = (TextView) findViewById(R.id.currentItemTitle);
         currentItemTextView.setText(currentItem.getTitle());
         ((TextView) findViewById(R.id.referenceItemTitle)).setText(referenceItem.getTitle());
-        ((TextView) findViewById(R.id.refrenceItemBody)).setText(referenceItem.getBody());
+        //((TextView) findViewById(R.id.refrenceItemBody)).setText(referenceItem.getBody());
         ((TextView) findViewById(R.id.refrenceText)).setText("Effort: "+ referenceEffort);
 
         setupEffortPicker();
