@@ -198,7 +198,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         intent.putExtras(b);
         Log.d(TAG, "Spinner gone, mRecyclerView enabled");
         spinner.setVisibility(View.GONE); // reset spinner
-        mRecyclerView.setEnabled(true); // reset list
+        mRecyclerView.setVisibility(View.VISIBLE); // reset list
         startActivity(intent);
     }
     //Tell someone when they have voted
@@ -207,7 +207,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         Log.i(TAG, "onEventVoteOnLowest");
 
         Log.d(TAG, "Spinner visible, mRecyclerView disabled");
-        mRecyclerView.setEnabled(false);
+        mRecyclerView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
     }
 
