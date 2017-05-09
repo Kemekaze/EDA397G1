@@ -140,7 +140,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onVoteOnLowestEffortResultEvent (VoteOnLowestEffortResultEvent event){
-        Log.i(TAG, "onVoteOnLowestEffortCompleted");
+        Log.i(TAG, "onVoteOnLowestEffortResultEvent");
 
         Intent intent = new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class);
         Bundle b = new Bundle();
