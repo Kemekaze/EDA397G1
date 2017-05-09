@@ -132,6 +132,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             b.putSerializable("Session",session);
             intent.putExtras(b);
             startActivity(intent);
+            finish();
         }
     }
 
