@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +24,18 @@ import chalmers.eda397g1.adapters.AvailableGamesAdapter;
 import chalmers.eda397g1.events.AvailableSessionsEvent;
 import chalmers.eda397g1.events.JoinSessionEvent;
 import chalmers.eda397g1.events.RequestEvent;
+import chalmers.eda397g1.events.SignedoutEvent;
 import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.models.AvailSession;
+import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.resources.Constants;
+import chalmers.eda397g1.resources.DownloadImageTask;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+
+import static chalmers.eda397g1.R.id.availSession;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity{
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView mEmptyView;
+    private User user;
 
 
     @Override
@@ -47,6 +54,13 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            user = (User) b.getSerializable("user");
+        } else {
+            throw new RuntimeException("No user from login");
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.availabe_games);
         mEmptyView = (TextView) findViewById(R.id.empty_view);
@@ -77,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.sign_out_item:
                 Toast.makeText(getApplicationContext(), "Sign out here", Toast.LENGTH_LONG).show();
-                //Add sign out event here.....
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SIGNOUT));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -88,6 +102,11 @@ public class MainActivity extends AppCompatActivity{
     public void onStart(){
         super.onStart();
         EventBus.getDefault().register(this);
+        TextView userName = (TextView) findViewById(R.id.user_name);
+        userName.setText(user.getLogin());
+        ImageView userAvatar = (ImageView) findViewById(R.id.user_avatar);
+        new DownloadImageTask(userAvatar, getApplicationContext())
+                .execute(user.getUri());
     }
 
     @Override
@@ -154,4 +173,10 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onSignedoutEvent(SignedoutEvent event) {
+        Log.i(TAG, "onSignedoutEvent");
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 }

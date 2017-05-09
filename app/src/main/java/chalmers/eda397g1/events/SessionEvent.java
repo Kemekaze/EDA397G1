@@ -31,7 +31,7 @@ public class SessionEvent extends Event{
             JSONObject github = root.getJSONObject("github");
             JSONObject user = root.getJSONObject("host");
 
-            List<BacklogItem> backlogItems = new ArrayList<>();
+            ArrayList<BacklogItem> backlogItems = new ArrayList<>();
 
             JSONArray backlogArr = github.getJSONArray("backlog_items");
 

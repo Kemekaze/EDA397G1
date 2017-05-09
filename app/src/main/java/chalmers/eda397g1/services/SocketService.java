@@ -34,6 +34,7 @@ import chalmers.eda397g1.events.LoginEvent;
 import chalmers.eda397g1.events.ProjectColumnsEvent;
 import chalmers.eda397g1.events.ReposProjectsEvent;
 import chalmers.eda397g1.events.RequestEvent;
+import chalmers.eda397g1.events.SignedoutEvent;
 import chalmers.eda397g1.events.StartGameEvent;
 import chalmers.eda397g1.events.UserProjectsEvent;
 import chalmers.eda397g1.events.VoteItemResultEvent;
@@ -129,6 +130,7 @@ public class SocketService extends Service {
         //Authorization
         socket.on(Constants.SocketEvents.AUTHORIZED, eventAuthorized);
         socket.on(Constants.SocketEvents.UNAUTHORIZED, eventUnauthorized);
+        socket.on(Constants.SocketEvents.SIGNOUT, eventSignedout);
         //Thirdparty athentication
         socket.on(Constants.SocketEvents.AUTHENTICATE_AUTOLOGIN, eventAuthenticatedAutoLogin);
         socket.on(Constants.SocketEvents.AUTHENTICATE_GITHUB, eventAuthenticatedGithub);
@@ -147,6 +149,7 @@ public class SocketService extends Service {
         socket.on(Constants.SocketEvents.SESSION_LEAVE, eventLeaveSession);
 
         socket.on(Constants.SocketEvents.SESSION_START, eventStartGame);
+        socket.on(Constants.SocketEvents.SESSION_STARTED, eventStartedGame);
         socket.on(Constants.SocketEvents.SESSION_CLIENTS, eventSessionClientsEvent);
         socket.on(Constants.SocketEvents.VOTE_LOWEST, eventVoteOnLowest);
         socket.on(Constants.SocketEvents.VOTE_LOWEST_RESULT, eventVoteOnLowestResult);
@@ -439,6 +442,17 @@ public class SocketService extends Service {
                 Log.i(TAG,  args[i].toString());
             }
             EventBus.getDefault().post(new VoteItemResultEvent(args));
+        }
+    };
+
+    private Emitter.Listener eventSignedout = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.i(TAG, "eventSignedout()");
+            for(int i = 0; i < args.length; i++) {
+                Log.i(TAG,  args[i].toString());
+            }
+            EventBus.getDefault().post(new SignedoutEvent(args));
         }
     };
 

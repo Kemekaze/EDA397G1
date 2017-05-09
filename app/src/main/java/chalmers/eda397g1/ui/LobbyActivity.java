@@ -145,6 +145,7 @@ public class LobbyActivity extends AppCompatActivity {
         b.putSerializable("session", session);
         intent.putExtras(b);
         startActivity(intent);
+        finish();
     }
     @Override
     public void onBackPressed() {

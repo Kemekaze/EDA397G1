@@ -1,6 +1,7 @@
 package chalmers.eda397g1.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +16,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import chalmers.eda397g1.R;
+import chalmers.eda397g1.events.GameCompletedEvent;
 import chalmers.eda397g1.events.RequestEvent;
 import chalmers.eda397g1.events.VoteItemResultEvent;
 import chalmers.eda397g1.events.VoteRoundResultEvent;
@@ -45,6 +49,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
     private BacklogItem referenceItem;
     private int referenceEffort;
     private int itemsLeft;
+    private ProgressBar spinner;
 
     int[] effortValues = {0, 1, 2, 3, 4, 5, 8, 13, 20, 30, 50, 100, 200};
 
@@ -70,6 +75,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             throw new RuntimeException("No session passed!");
         }
 
+        // Set reference effort.
+        referenceItem.setEffortValue(referenceEffort);
+
         // Items that are left to vote for minus the reference item.
         itemsLeft = session.getGithub().getBacklogItems().size() - 1;
 
@@ -81,6 +89,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
 
         setupEffortPicker();
         setupVoteButton();
+        spinner = (ProgressBar) findViewById(R.id.loadingSpinnerVote);
     }
 
     @Override
@@ -95,9 +104,10 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
+    @Subscribe (threadMode = ThreadMode.MainThread)
     public void onReceiveRoundResults(VoteRoundResultEvent event){
         Log.d(TAG, "Receive Round Result");
+        spinner.setVisibility(View.GONE);
         ArrayList<Vote> votes = event.getVoteRoundResult().getVotes();
         displayResults(votes);
     }
@@ -112,6 +122,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             throw new RuntimeException("Wrong itemID!");
         currentItem.setEffortValue(effort);
         itemsLeft--;
+        spinner.setVisibility(View.GONE);
         if(itemsLeft > 0) {
             Snackbar.make(voteButton, "Chosen Effort: "+ effort, Snackbar.LENGTH_LONG).show();
             currentItem = getBackLogItemById(nextId);
@@ -119,9 +130,12 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             effortPicker.setEnabled(true);
             currentItemTextView.setText(currentItem.getTitle());
         } else {
-            // TODO: Replace this by the call to show the final result!
-            Snackbar sb = Snackbar.make(voteButton, "All Votes Done!", Snackbar.LENGTH_LONG);
-            sb.show();
+            Intent intent = new Intent(VoteActivity.this,VoteResultsActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("Session",session);
+            intent.putExtras(b);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -190,6 +204,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             public void onClick(View view) {
                 voteButton.setEnabled(false);
                 effortPicker.setEnabled(false);
+                spinner.setVisibility(View.VISIBLE);
                 JSONObject query = new JSONObject();
                 try {
                     query.putOpt("item_id", currentItem.getId());
@@ -202,30 +217,8 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
 
                 EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.VOTE, query));
 
-/*                // DEBUG
-                ArrayList<Vote> debugRes = new ArrayList<>();
-                debugRes.add( new Vote( 42, new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 1, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 2, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 3, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 4, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 5, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 7, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 8, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 9, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 10, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser A ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser B ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser C ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser D ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser E ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser F ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser G ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser H ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-
-                displayResults(debugRes );*/
             }
         });
     }
+
 }

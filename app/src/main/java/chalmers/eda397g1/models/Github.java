@@ -1,6 +1,7 @@
 package chalmers.eda397g1.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,13 +9,13 @@ import java.util.List;
  */
 
 public class Github implements Serializable {
-    private List<BacklogItem> backlogItems;
+    private ArrayList<BacklogItem> backlogItems;
     private String columnId;
     private String fullName;
     private String projectId;
     private String repoId;
 
-    public Github(List<BacklogItem> backlogItems, String columnId, String fullName, String projectId, String repoId) {
+    public Github(ArrayList<BacklogItem> backlogItems, String columnId, String fullName, String projectId, String repoId) {
         this.backlogItems = backlogItems;
         this.columnId = columnId;
         this.fullName = fullName;
@@ -22,11 +23,11 @@ public class Github implements Serializable {
         this.repoId = repoId;
     }
 
-    public List<BacklogItem> getBacklogItems() {
+    public ArrayList<BacklogItem> getBacklogItems() {
         return backlogItems;
     }
 
-    public void setBacklogItems(List<BacklogItem> backlogItems) {
+    public void setBacklogItems(ArrayList<BacklogItem> backlogItems) {
         this.backlogItems = backlogItems;
     }
 

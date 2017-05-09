@@ -17,6 +17,11 @@
         app:elevation="12dp"
         app:srcCompat="@drawable/ic_arrow_forward_black_24dp"/>
 
+    <include android:id="@+id/loadingSpinnerVote"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_spinner" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
