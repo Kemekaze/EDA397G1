@@ -122,6 +122,8 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             // TODO: Replace this by the call to show the final result!
             Snackbar sb = Snackbar.make(voteButton, "All Votes Done!", Snackbar.LENGTH_LONG);
             sb.show();
+            // Uncomment this when the next activity is started!
+            //finish();
         }
     }
 
