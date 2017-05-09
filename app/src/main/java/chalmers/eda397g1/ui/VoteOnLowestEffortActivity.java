@@ -1,27 +1,30 @@
 package chalmers.eda397g1.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.events.VoteOnLowestEffortEvent;
 import chalmers.eda397g1.events.VoteOnLowestEffortResultEvent;
+import chalmers.eda397g1.adapters.LowestEffortAdapter;
+import chalmers.eda397g1.interfaces.RecyclerViewFlipperClickListener;
 import chalmers.eda397g1.models.BacklogItem;
 import chalmers.eda397g1.models.Session;
 import chalmers.eda397g1.events.RequestEvent;
@@ -35,18 +38,31 @@ import de.greenrobot.event.ThreadMode;
 public class VoteOnLowestEffortActivity extends AppCompatActivity {
     private static final String TAG = "VoteOnLow..Activity";
 
-
-    private ListView issueListView;
     private ProgressBar spinner;
-    private List<String> voteIssues = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private LowestEffortAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private Session session;
     private BacklogItem selectedBacklogItem;
-    private ArrayAdapter<String> voteListAdapter;
+    private TextView mEmptyView;
+    private Context mContext;
+    private ViewFlipper pViewFlipper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_on_lowest_effort);
+        mRecyclerView = (RecyclerView) findViewById(R.id.available_items);
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new LowestEffortAdapter(listener);
+        mRecyclerView.setAdapter(mAdapter);
+        mContext = this;
+        pViewFlipper = null;
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             session = (Session) b.getSerializable("session");
@@ -54,28 +70,24 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             throw new RuntimeException("No bundle!");
         }
 
-        setBacklogList();
+        // Temporary
+        mAdapter.addItems(session.getGithub().getBacklogItems());
 
-        // Temporary vote button
-        final FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.fab4);
+        if(mAdapter.getItemCount() == 0)
+        {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
 
-        //finds the list in the activity, creates an adapter and sets the adapter and the hardcoded data to it
-        issueListView = (ListView) findViewById(R.id.issueList);
-        issueListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        final FloatingActionButton voteButton = (FloatingActionButton) findViewById(R.id.button_vote);
 
-        voteListAdapter = new ArrayAdapter<String>(VoteOnLowestEffortActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, voteIssues);
-        issueListView.setAdapter(voteListAdapter);
-        //new ArrayAdapter<String>(this, R.layout.)
-
-//        final ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(ChooseRepoProjectActivity.this,
-//                android.R.layout.simple_spinner_item, projectNames);
-
-        // Initialize voteButton
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Send vote to server and wait for answer to go to next activity
                 if(selectedBacklogItem == null){
                     Snackbar alert = Snackbar.make(
                             voteButton,
@@ -103,14 +115,6 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
             }
         });
 
-
-        issueListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "Select BacklogItem: " + i);
-                selectedBacklogItem = session.getGithub().getBacklogItems().get(i);
-            }
-        });
         spinner = (ProgressBar) findViewById(R.id.loadingSpinner);
     }
 
@@ -128,18 +132,55 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         Log.d(TAG, "onStop()");
     }
 
-    private void setBacklogList(){
-        List<BacklogItem> items = session.getGithub().getBacklogItems();
-        voteIssues.clear();
-        for(BacklogItem i : items){
-            String content = i.getTitle();
-            content += "\nBusiness Value: " + i.getBusinessValue();
-            Log.d(TAG, "Body: " + i.getBody());
-            if(!i.getBody().isEmpty())
-                content += "\n" + i.getBody();
-            voteIssues.add(content);
+    private RecyclerViewFlipperClickListener listener = new RecyclerViewFlipperClickListener() {
+        @Override
+        public void recycleViewFlipperListClicked(View v, int position, ViewFlipper mViewFlipper) {
+            Log.i("RecycleViewListClicked", "position: " + position);
+            selectedBacklogItem = session.getGithub().getBacklogItems().get(position);
+
+            if(pViewFlipper != null)
+            {
+                pViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                pViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                pViewFlipper.showPrevious();
+            }
+
+            if(pViewFlipper == mViewFlipper)
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                mViewFlipper.showPrevious();
+            }
+
+            if(mViewFlipper.getDisplayedChild() == 0)
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                mViewFlipper.showNext();
+            }
+
+            else
+            {
+                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.grow_from_middle));
+                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle));
+
+                mViewFlipper.showPrevious();
+            }
+
+            if(pViewFlipper == mViewFlipper)
+            {
+                pViewFlipper = null;
+                selectedBacklogItem = null;
+            }
+
+            else
+                pViewFlipper = mViewFlipper;
+
         }
-    }
+    };
 
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onVoteOnLowestEffortResultEvent (VoteOnLowestEffortResultEvent event){
@@ -155,9 +196,9 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         b.putString("startItemId",startItemId);
         b.putInt("referenceEffort",referenceEffort);
         intent.putExtras(b);
-        Log.d(TAG, "Spinner gone, issueList enabled");
+        Log.d(TAG, "Spinner gone, mRecyclerView enabled");
         spinner.setVisibility(View.GONE); // reset spinner
-        issueListView.setEnabled(true); // reset list
+        mRecyclerView.setEnabled(true); // reset list
         startActivity(intent);
     }
     //Tell someone when they have voted
@@ -165,8 +206,8 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
     public void onEventVoteOnLowest(VoteOnLowestEffortEvent event){
         Log.i(TAG, "onEventVoteOnLowest");
 
-        Log.d(TAG, "Spinner visible, issueList disabled");
-        issueListView.setEnabled(false);
+        Log.d(TAG, "Spinner visible, mRecyclerView disabled");
+        mRecyclerView.setEnabled(false);
         spinner.setVisibility(View.VISIBLE);
     }
 
