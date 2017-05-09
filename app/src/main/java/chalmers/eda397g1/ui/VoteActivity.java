@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import chalmers.eda397g1.R;
@@ -47,6 +49,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
     private BacklogItem referenceItem;
     private int referenceEffort;
     private int itemsLeft;
+    private ProgressBar spinner;
 
     int[] effortValues = {0, 1, 2, 3, 4, 5, 8, 13, 20, 30, 50, 100, 200};
 
@@ -83,6 +86,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
 
         setupEffortPicker();
         setupVoteButton();
+        spinner = (ProgressBar) findViewById(R.id.loadingSpinnerVote);
     }
 
     @Override
@@ -97,9 +101,10 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
+    @Subscribe (threadMode = ThreadMode.MainThread)
     public void onReceiveRoundResults(VoteRoundResultEvent event){
         Log.d(TAG, "Receive Round Result");
+        spinner.setVisibility(View.GONE);
         ArrayList<Vote> votes = event.getVoteRoundResult().getVotes();
         displayResults(votes);
     }
@@ -114,6 +119,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             throw new RuntimeException("Wrong itemID!");
         currentItem.setEffortValue(effort);
         itemsLeft--;
+        spinner.setVisibility(View.GONE);
         if(itemsLeft > 0) {
             Snackbar.make(voteButton, "Chosen Effort: "+ effort, Snackbar.LENGTH_LONG).show();
             currentItem = getBackLogItemById(nextId);
@@ -194,6 +200,7 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             public void onClick(View view) {
                 voteButton.setEnabled(false);
                 effortPicker.setEnabled(false);
+                spinner.setVisibility(View.VISIBLE);
                 JSONObject query = new JSONObject();
                 try {
                     query.putOpt("item_id", currentItem.getId());
