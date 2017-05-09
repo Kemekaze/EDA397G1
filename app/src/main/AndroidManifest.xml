@@ -21,6 +21,10 @@
         <activity
             android:name=".ui.VoteResultsActivity"
             android:label="Final Results">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
         </activity>
 
         <activity
@@ -31,6 +35,7 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login">
+
         </activity>
 
         <activity
@@ -53,10 +58,6 @@
             android:name=".ui.SplashScreen"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
 
         </activity>
 
