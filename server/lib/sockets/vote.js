@@ -2,7 +2,7 @@ var response = lib.helpers.response;
 var github = lib.api.github;
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
-
+var Session = mongoose.model('Session');
 /**
  * Vote on lowest effort
  * @param {String} data.item_id
@@ -46,35 +46,22 @@ module.exports = function (socket, data, callback){
           }
           var current_round = session.github.backlog_items[index].current_round;
           var round_index = Session.findRound(session, index, current_round);
-
+          var votes = session.github.backlog_items[index].rounds[round_index].votes;
+          for (var vote in votes)
+            if(votes[vote].phone_id == socket.phone_id)
+              return callback(response.FORBIDDEN('You have already voted this round'));
           var v = {
             phone_id: socket.phone_id,
             vote: data.effort
           };
-          var voted_count = 0;
-          if(round_index == -1){
-            var id = new ObjectID();
-            session.github.backlog_items[index].current_round = id;
-            session.github.backlog_items[index].rounds.push({
-              _id: id,
-              votes:[
-                v
-              ]
-            });
-            voted_count = 1;
-          }else{
-            var votes = session.github.backlog_items[index].rounds[round_index].votes;
-            for (var vote in votes)
-              if(votes[vote].phone_id == socket.phone_id)
-                return callback(response.FORBIDDEN('You have already voted this round'))
-
-            session.github.backlog_items[index].rounds[round_index].votes.push(v);
-            voted_count =   session.github.backlog_items[index].rounds[round_index].votes.length;
-          }
-          //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
-          session.save(function(e,newSession){
+          //session.github.backlog_items[index].rounds[round_index].votes.push(v);
+          //var voted_count = session.github.backlog_items[index].rounds[round_index].votes.length;
+          var obj = {};
+          obj['github.backlog_items.'+index+'.rounds.'+round_index+'.votes'] = v;
+          Session.findByIdAndUpdate(session._id, {$push: obj}, {new: true}, function(e,newSession){
+          //session.save(function(e,newSession){
             if(!e){
-              if(voted_count == newSession.clients_phone_id.length){
+              if(newSession.github.backlog_items[index].rounds[round_index].votes.length == newSession.clients_phone_id.length){
                   handler.ev.emit(handler.ev.VOTE_ROUND_RESULT,room);
               }
               callback(response.OK({}));
@@ -91,4 +78,6 @@ module.exports = function (socket, data, callback){
         callback(response.NOT_FOUND('Session could not be found'));
       }
     });
+
+
 };

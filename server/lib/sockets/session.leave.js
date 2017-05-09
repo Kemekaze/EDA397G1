@@ -23,8 +23,7 @@ module.exports = function (socket, data, callback){
       for (var i= 0; i<session.clients_phone_id.length; i++) {
         if(session.clients_phone_id[i] == socket.phone_id) session.clients_phone_id.splice(i,1);
       }
-      //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
-      session.save(function(e,newSession){
+      Session.findByIdAndUpdate(session._id, {$pull:{clients_phone_id:socket.phone_id}}, {new: true}, function(e,newSession){
         if(!e){
           socket.leave(room);
           if(handler.room.exists(room)){

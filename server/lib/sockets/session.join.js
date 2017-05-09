@@ -45,13 +45,9 @@ module.exports = function (socket, data, callback){
   Session.findById(data.game_id,function(e,session){
     if(!e){
       if(session.state == Session.STATE.LOBBY){
-        if(!Session.inSession(session,socket.phone_id)){
-          session.clients_phone_id.push(socket.phone_id);
-        }
         handler.room.join(socket, data.game_id, function(joined){
           if(joined){
-            //TODO fix async opperations with findByIdAndUpdate with $push, $set etc
-            session.save(function(e,newSession){
+            Session.findByIdAndUpdate(session._id, {$push:{clients_phone_id:socket.phone_id}}, {new: true}, function(e,newSession){
               if(!e){
                 var obj = newSession.toObject();
                 obj.isHost = (obj.host == socket.phone_id);

@@ -1,8 +1,5 @@
 package chalmers.eda397g1.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Martin on 2017-04-27.
  */

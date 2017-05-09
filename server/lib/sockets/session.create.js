@@ -65,6 +65,7 @@ module.exports = function (socket, data, callback){
                        name: l.name
                      });
                    }
+                   var cr = new mongoose.Types.ObjectId();
                    var obj = {
                      card_id: c.id,
                      issue_id: i.id,
@@ -74,7 +75,11 @@ module.exports = function (socket, data, callback){
                      state: i.state,
                      business_value: bv--,
                      effort_value: -1,
-                     votes:[]
+                     current_round: cr,
+                     rounds:[{
+                       _id: cr,
+                       votes:[]
+                     }]
                    };
                    items.push(obj)
                  }
