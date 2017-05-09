@@ -75,6 +75,9 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
             throw new RuntimeException("No session passed!");
         }
 
+        // Set reference effort.
+        referenceItem.setEffortValue(referenceEffort);
+
         // Items that are left to vote for minus the reference item.
         itemsLeft = session.getGithub().getBacklogItems().size() - 1;
 
