@@ -72,5 +72,12 @@ public class Constants {
         //When all the rounds are completed and an effort for the item is set
         public static final String VOTE_RESULT = "vote.result";
         /********* END FROM SERVER ONLY ********/
+
+
     }
+    //Constants for the final result screen columns
+    public static final String BUSINESS_VALUE_COLUMN="Businessvalue column";
+    public static final String EFFORT_COLUMN="Effort column";
+    public static final String ISSUE_NAME_COLUMN="Issuename column";
+
 }

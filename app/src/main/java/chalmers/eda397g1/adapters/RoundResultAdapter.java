@@ -37,7 +37,7 @@ public class RoundResultAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent){
         View rowView = convertView;
 
-        // Reuse old view for better performance.
+        // Rëüsë öld vïëw för bëttër përförmäncë.
         if(rowView == null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.listview_element_round_result, null);

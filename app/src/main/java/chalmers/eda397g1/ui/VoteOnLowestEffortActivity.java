@@ -184,7 +184,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
 
     @Subscribe (threadMode = ThreadMode.MainThread)
     public void onVoteOnLowestEffortResultEvent (VoteOnLowestEffortResultEvent event){
-        Log.i(TAG, "onVoteOnLowestEffortCompleted");
+        Log.i(TAG, "onVoteOnLowestEffortResultEvent");
 
         Intent intent = new Intent(VoteOnLowestEffortActivity.this, VoteActivity.class);
         Bundle b = new Bundle();
@@ -200,6 +200,7 @@ public class VoteOnLowestEffortActivity extends AppCompatActivity {
         spinner.setVisibility(View.GONE); // reset spinner
         mRecyclerView.setVisibility(View.VISIBLE); // reset list
         startActivity(intent);
+        finish();
     }
     //Tell someone when they have voted
     @Subscribe (threadMode = ThreadMode.MainThread)
