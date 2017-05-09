@@ -15,7 +15,7 @@ var Session = mongoose.model('Session');
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
-  Client.remove({phone_id: socket.phone_id},function(e){
+  Client.remove({phone_id: socket.phone_id},function(err){
     if(!err){
       socket.git.auth = false;
       callback(response.OK({}));
