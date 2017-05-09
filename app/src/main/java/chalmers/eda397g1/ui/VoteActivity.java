@@ -203,30 +203,6 @@ public class VoteActivity extends AppCompatActivity implements DialogInterface.O
                 Log.d(TAG, query.toString());
 
                 EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.VOTE, query));
-
-/*                // DEBUG
-                ArrayList<Vote> debugRes = new ArrayList<>();
-                debugRes.add( new Vote( 42, new User("Testuser", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 1, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 2, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 3, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 4, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 5, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 7, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 8, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 9, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 10, new User("Testuser 2 ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser A ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser B ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser C ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser D ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser E ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser F ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser G ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-                debugRes.add( new Vote( 6, new User("Testuser H ", "https://avatars0.githubusercontent.com/u/20209140?v=3")));
-
-                displayResults(debugRes );*/
             }
         });
     }
