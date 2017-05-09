@@ -21,7 +21,7 @@ module.exports = function (socket, data, callback){
         if(session.state == Session.STATE.LOBBY){
           Session.findByIdAndUpdate(session._id, {$set:{state: Session.STATE.LOWEST_EFFORT}}, {new: true}, function(e,newSession){
             if(!e){
-              handler.ev.emit(handler.ev.START,{room:room,host:socket.id});
+              handler.ev.emit(handler.ev.STARTED,{room:room,host:socket.id});
               callback(response.OK({}));
             }else{
               logger.error(e);
