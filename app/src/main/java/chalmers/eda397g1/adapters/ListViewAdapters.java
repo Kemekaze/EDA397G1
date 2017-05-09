@@ -1,6 +1,7 @@
 package chalmers.eda397g1.adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,33 +27,35 @@ public class ListViewAdapters extends ArrayAdapter {
 
     public ArrayList<BacklogItem> list;
     Activity activity;
-    TextView txtFirst;
-    TextView txtSecond;
-    TextView txtThird;
 
+    private static class ViewHolder{
+        TextView businessValue;
+        TextView effort;
+        TextView issueName;
+    }
     public ListViewAdapters(Activity activity, ArrayList<BacklogItem> list){
         super(activity, R.layout.vote_results_row, list);
         this.activity=activity;
         this.list=list;
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View v = inflater.inflate(R.layout.vote_results_row,null);
-        TextView businessValue = (TextView) v.findViewById(R.id.businessValue);
-        TextView effort = (TextView) v.findViewById(R.id.effort);
-        TextView issueName = (TextView) v.findViewById(R.id.issueName);
-
+        View rowView = convertView;
+        if(rowView ==  null){
+            LayoutInflater inflater = activity.getLayoutInflater();
+            rowView = inflater.inflate(R.layout.vote_results_row,null);
+            ViewHolder holder = new ViewHolder();
+            holder.businessValue = (TextView) rowView.findViewById(R.id.businessValue);
+            holder.effort = (TextView) rowView.findViewById(R.id.effort);
+            holder.issueName = (TextView) rowView.findViewById(R.id.issueName);
+            rowView.setTag(holder);
+        }
+        ViewHolder holder = (ViewHolder) rowView.getTag();
         BacklogItem b = (BacklogItem) getItem(position);
-        businessValue.setText(Integer.toString(b.getBusinessValue()));
-        effort.setText(Integer.toString(b.getEffortValue()));
-        issueName.setText(b.getTitle());
-
-return v;
+        holder.businessValue.setText(Integer.toString(b.getBusinessValue()));
+        holder.issueName.setText(b.getTitle());
+        holder.effort.setText(Integer.toString(b.getEffortValue()));
+        return rowView;
     }
 }
 
