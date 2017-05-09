@@ -17,4 +17,8 @@ public class LoginEvent extends Event {
         JSONObject obj = (JSONObject) getData();
         user = new User(obj.optString("login"), obj.optString("avatar_url"));
     }
+
+    public User getUser() {
+        return user;
+    }
 }

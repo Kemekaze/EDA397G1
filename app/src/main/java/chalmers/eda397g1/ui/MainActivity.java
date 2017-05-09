@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -23,10 +24,14 @@ import chalmers.eda397g1.events.RequestEvent;
 import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.models.AvailSession;
+import chalmers.eda397g1.models.User;
 import chalmers.eda397g1.resources.Constants;
+import chalmers.eda397g1.resources.DownloadImageTask;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+
+import static chalmers.eda397g1.R.id.availSession;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity{
     private AvailableGamesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView mEmptyView;
+    private User user;
 
 
     @Override
@@ -44,6 +50,13 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            user = (User) b.getSerializable("user");
+        } else {
+            throw new RuntimeException("No user from login");
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.availabe_games);
         mEmptyView = (TextView) findViewById(R.id.empty_view);
@@ -67,6 +80,11 @@ public class MainActivity extends AppCompatActivity{
     public void onStart(){
         super.onStart();
         EventBus.getDefault().register(this);
+        TextView userName = (TextView) findViewById(R.id.user_name);
+        userName.setText(user.getLogin());
+        ImageView userAvatar = (ImageView) findViewById(R.id.user_avatar);
+        new DownloadImageTask(userAvatar, getApplicationContext())
+                .execute(user.getUri());
     }
 
     @Override
