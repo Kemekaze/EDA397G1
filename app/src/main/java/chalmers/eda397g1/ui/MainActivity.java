@@ -23,6 +23,7 @@ import chalmers.eda397g1.adapters.AvailableGamesAdapter;
 import chalmers.eda397g1.events.AvailableSessionsEvent;
 import chalmers.eda397g1.events.JoinSessionEvent;
 import chalmers.eda397g1.events.RequestEvent;
+import chalmers.eda397g1.events.SignedoutEvent;
 import chalmers.eda397g1.interfaces.RecyclerViewClickListener;
 import chalmers.eda397g1.R;
 import chalmers.eda397g1.models.AvailSession;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.sign_out_item:
                 Toast.makeText(getApplicationContext(), "Sign out here", Toast.LENGTH_LONG).show();
-                //Add sign out event here.....
+                EventBus.getDefault().post(new RequestEvent(Constants.SocketEvents.SIGNOUT));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -154,4 +155,10 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    @Subscribe (threadMode = ThreadMode.MainThread)
+    public void onSignedoutEvent(SignedoutEvent event) {
+        Log.i(TAG, "onSignedoutEvent");
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
