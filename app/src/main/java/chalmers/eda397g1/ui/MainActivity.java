@@ -178,5 +178,6 @@ public class MainActivity extends AppCompatActivity{
         Log.i(TAG, "onSignedoutEvent");
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 }
