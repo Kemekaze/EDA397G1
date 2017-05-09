@@ -25,14 +25,12 @@ public class VoteRoundResultEvent extends Event {
         super(args);
         ArrayList<Vote> votes = new ArrayList<>();
 
-        JSONObject obj = (JSONObject) getData();
-
-        JSONArray array = obj.optJSONArray("votes");
+        JSONArray array = (JSONArray) getData();
         for(int i = 0; i < array.length(); i++) {
-            JSONObject vote = array.optJSONObject(i);
-            JSONObject user = vote.optJSONObject("user");
+            JSONObject element = array.optJSONObject(i);
+            JSONObject user = element.optJSONObject("user");
 
-            votes.add(new Vote(vote.optInt("effort"),
+            votes.add(new Vote(element.optInt("vote"),
                     new User(user.optString("login"),
                             user.optString("avatar"))));
         }
