@@ -56,7 +56,8 @@ public class VoteResultsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 //Temporary
-                startActivity(new Intent(VoteResultsActivity.this, LoginActivity.class));
+                //startActivity(new Intent(VoteResultsActivity.this, LoginActivity.class));
+                finish();
             }
         });
 

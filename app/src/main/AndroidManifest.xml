@@ -47,11 +47,6 @@
         </activity>
 
         <activity
-            android:name=".ui.DisplayRoundResultsActivity"
-            android:label="Round Results">
-        </activity>
-
-        <activity
             android:name=".ui.SplashScreen"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
             <intent-filter>
