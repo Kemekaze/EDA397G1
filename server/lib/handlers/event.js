@@ -26,6 +26,7 @@ method.CLIENTS = 'session.clients';
 method.VOTE_LOWEST_RESULT = 'vote.lowest.result';
 method.VOTE_ROUND_RESULT = 'vote.round.result';
 method.VOTE_RESULT = 'vote.result';
+method.RESULT = 'session.result';
 
 method.room = function(){
   var self = this;
@@ -155,11 +156,25 @@ method.vote = function(){
                 session.state = Session.nextIssue(session);
                 session.save(function(e,newSession){
                   if(!e){
+                    var completed = true;
+                    for (var b_item in newSession.github.backlog_items) {
+                      completed = completed && newSession.github.backlog_items[b_item].completed;
+                    }
                     self.io.in(room).emit(self.VOTE_RESULT,self.response.OK({
                         item_id: id,
                         effort: votes[0].vote,
                         next_id: newSession.state
                     }));
+                    if(completed){
+                      var _session = newSession.toObject();
+                      self.io.in(room).emit(self.RESULT,self.response.OK({
+                          session:_session
+                      }));
+                      self.io.sockets.clients(room).forEach(function(s){
+                          s.leave(room);
+                      });
+
+                    }
                   }
                 });
               }else{
