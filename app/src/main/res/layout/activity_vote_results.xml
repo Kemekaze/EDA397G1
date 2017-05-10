@@ -29,36 +29,37 @@
         android:id="@+id/headlines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="16dp">
+        android:paddingEnd="16dp"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:id="@+id/businessValueHeadline"
-            android:text="BV"
+            android:text="@string/bv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:gravity="center"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/effortHeadline"
-            android:text="Effort"
+            android:text="@string/effort"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:gravity="center"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/issueNameHeadline"
-            android:text="Issuename"
+            android:text="@string/issuename"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="70"
-            android:gravity="right|center"
-            android:textSize="16dp"
+            android:gravity="end|center"
+            android:textSize="16sp"
             android:textStyle="bold"
 
             />
@@ -68,7 +69,7 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@id/headlines">
     </ListView>
 
