@@ -2,35 +2,36 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        app:srcCompat="@android:color/white" />
+        android:layout_marginStart="10dp"
+        app:srcCompat="@android:color/white"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="35sp"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_weight="1"
-        android:text="Playername" />
+        android:gravity="center_vertical" />
 
     <TextView
         android:id="@+id/votedEffort"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:textSize="35sp"
-        android:layout_marginRight="10dp"
-        android:text="0" />
+        android:layout_gravity="end"
+        android:gravity="end|center_vertical"
+        android:textSize="20sp"
+        android:layout_marginEnd="10dp" />
 </LinearLayout>
