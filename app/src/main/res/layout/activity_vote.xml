@@ -17,80 +17,84 @@
         app:elevation="12dp"
         app:srcCompat="@drawable/ic_arrow_forward_black_24dp"/>
 
+    <include android:id="@+id/loadingSpinnerVote"
+             android:layout_width="75dp"
+             android:layout_height="75dp"
+             android:layout_gravity="center"
+        layout="@layout/loading_spinner" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="chalmers.eda397g1.VoteActivity">
+        tools:context="chalmers.eda397g1.ui.VoteActivity">
 
 
         <TextView
-            android:id="@+id/refrenceItemTitle"
+            android:id="@+id/title_text_lowest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textSize="30sp"
-            android:text="Reference Item Title" />
-
-        <TextView
-            android:id="@+id/refrenceItemBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="@string/lowest_effort_item"
             android:textSize="20sp"
-            android:text="Reference Item Body" />
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/referenceItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/refrenceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Effort: 2"
-            android:textSize="20sp"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="16sp"
+            android:textStyle="italic"/>
 
         <TextView
             android:id="@+id/currentItemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="Current Item"
-            android:textSize="20sp"/>
+            android:paddingTop="10dp"
+            android:text="@string/current_item"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/currentItemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/effort_picker"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="'Create a Activity'"
-            android:textSize="30sp"/>
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/effort_picker"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:paddingTop="10dp"
             android:text="@string/choose_priority"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
 
         <NumberPicker
             android:id="@+id/effort_picker"
             android:layout_width="175dp"
             android:layout_height="193dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_gravity="bottom|center_horizontal"
+            >
         </NumberPicker>
 
     </LinearLayout>

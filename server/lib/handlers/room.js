@@ -11,7 +11,7 @@ method.exists = function(room){
 method.get = function(socket){
   return Object.keys( this.io.sockets.adapter.sids[socket.id] );
 }
-method.getCurrentRoom = function(){
+method.getCurrentRoom = function(socket){
   var current_rooms = this.get(socket);
   if(current_rooms.length > 1)
     return current_rooms[1];
@@ -23,7 +23,6 @@ method.join = function(socket, room, cb){
   if(current_rooms.length > 1)
     socket.leave(current_rooms[1]);
   socket.join(room);
-  handler.ev.emit(handler.ev.JOIN,room);
   return cb(true);
 }
 method.create = function(socket, room, cb){
@@ -32,7 +31,6 @@ method.create = function(socket, room, cb){
   if(current_rooms.length > 1)
     socket.leave(current_rooms[1]);
   socket.join(room);
-  handler.ev.emit(handler.ev.CREATE,room);
   return cb(true);
 }
 method.end = function(room, cb){

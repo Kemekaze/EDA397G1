@@ -65,6 +65,7 @@ module.exports = function (socket, data, callback){
                        name: l.name
                      });
                    }
+                   var cr = new mongoose.Types.ObjectId();
                    var obj = {
                      card_id: c.id,
                      issue_id: i.id,
@@ -74,7 +75,11 @@ module.exports = function (socket, data, callback){
                      state: i.state,
                      business_value: bv--,
                      effort_value: -1,
-                     votes:[]
+                     current_round: cr,
+                     rounds:[{
+                       _id: cr,
+                       votes:[]
+                     }]
                    };
                    items.push(obj)
                  }
@@ -82,17 +87,21 @@ module.exports = function (socket, data, callback){
             }
             Client.findOne({phone_id: socket.phone_id},function(e,c){
               if(e){
+                logger.error(e);
                 callback(response.SERVER_ERROR('Something went wrong'));
-
               }else{
                 var session = new Session({
                     host: c.phone_id,
+                    clients_phone_id:[socket.phone_id],
                     github:{
                       repo_id: data.repo_id,
                       column_id: data.column_id,
                       project_id: data.project_id,
                       full_name: data.full_name,
-                      backlog_items: items
+                      backlog_items: items,
+                      lowest_effort:{
+                        votes:[]
+                      }
                     }
                 });
                 session.save(function(e,newSession){
@@ -106,6 +115,9 @@ module.exports = function (socket, data, callback){
                           login: c.github.login,
                           avatar: c.github.avatar
                         }
+                        handler.ev.emit(handler.ev.CREATED,{
+                          room: newSession._id
+                        });
                         callback(response.OK(obj));
                       });
                     }else{
@@ -116,10 +128,12 @@ module.exports = function (socket, data, callback){
               }
             });
          }else{
+            if(i_error) logger.error(i_error);
             callback(response.FORBIDDEN('Something went wrong'));
          }
          });
        }else{
+         if(c_error) logger.error(c_error);
          callback(response.FORBIDDEN('Something went wrong'));
        }
      })

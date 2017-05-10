@@ -18,7 +18,6 @@ module.exports = function (socket, data, callback){
     return callback(response.UNAUTHORIZED('Unauthorized'));
   if(data.full_name  == null)
     return callback(response.BAD_REQUEST('Invalid request'));
-
  socket.git.github.projects(data.full_name, function(error, resp, data){
    if(resp.statusCode == 200 && !error){
       var rtn = [];
@@ -33,6 +32,7 @@ module.exports = function (socket, data, callback){
       }
       callback(response.OK(rtn));
     }else{
+      if(error) logger.error(error);
       callback(response.FORBIDDEN('Something went wrong'));
     }
 

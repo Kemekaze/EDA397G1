@@ -156,31 +156,48 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script>
-      var socket = io('https://xr-plan.se:8443', { query: "token=42ig3Psps3oGbQ6H" });
-      var socket2 = io('https://xr-plan.se:8443', { query: "token=42ig3Psps3oGbQ6H" });
+      console.log(window.location.href);
+      var socket = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
+      var socket2 = io(window.location.href, { query: "token=42ig3Psps3oGbQ6H" });
+
+      //8508af3dc773fff
+      //f41f204d91922767
       socket.on('connect',function(data){
         socket.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
       });
       socket2.on('connect',function(data){
-        socket2.emit('authenticate.autologin',{phone_id:'f41f204d91922767'});
+        socket2.emit('authenticate.autologin',{phone_id:'8508af3dc773fff'});
       });
       socket.on('authenticate.autologin',function(data){
         console.log('Socket1 - authenticate.autologin');
         console.log(data);
         socket.emit('repositories');
       });
+      socket2.on('authenticate.github',function(data){
+        console.log('Socket2 - authenticate.github');
+        console.log(data);
+      });
+      socket2.on('authenticate.autologin',function(data){
+        console.log('Socket2 - authenticate.autologin');
+        console.log(data);
+      });
       var full_name  = "";
       var project_id = 0;
       var column_id  = 0;
       var repo_id    = 0;
+      var vote_lowest = '';
       socket.on('repositories',function(data){
         console.log('Socket1 - repositories');
         console.log(data);
-        full_name = data.data[7].full_name;
-        repo_id = data.data[7].id;
+        for (var repo in data.data) {
+          if(data.data[repo].full_name == 'Kemekaze/EDA397G1'){
+            full_name = data.data[repo].full_name;
+            repo_id = data.data[repo].id;
+          }
+        }
+
         socket.emit('repository.projects',{
-          full_name: data.data[7].full_name,
-          id: data.data[7].id
+          full_name: full_name
         });
       });
       socket.on('repository.projects',function(data){
@@ -195,29 +212,71 @@
         console.log('Socket1 - project.columns');
         console.log(data);
         column_id = data.data[0].id;
-        socket.emit('availSession.create',{
+        socket.emit('session.create',{
           repo_id: repo_id,
           full_name: full_name,
           project_id: project_id,
           column_id: column_id
         });
       });
-      socket.on('availSession.create',function(data){
-        console.log('Socket1 - availSession.create');
+      socket.on('session.create',function(data){
+        console.log('Socket1 - session.create');
         console.log(data);
-        socket2.emit('availSession.join',{game_id:data.data._id});
-        socket2.emit('available.availSessions');
+        socket2.emit('session.join',{game_id:data.data._id});
+        socket2.emit('available.sessions');
       });
-      socket2.on('available.availSessions',function(data){
-        console.log('Socket2 - available.availSessions');
-        console.log(data);
-      });
-      socket2.on('availSession.join',function(data){
-        console.log('Socket2 - availSession.join');
+      socket2.on('available.sessions',function(data){
+        console.log('Socket2 - available.sessions');
         console.log(data);
       });
-      socket.on('availSession.clients',function(data){
-        console.log('Socket1 - availSession.clients');
+      socket2.on('session.join',function(data){
+        console.log('Socket2 - session.join');
+        //socket2.emit('session.leave');
+        console.log(data);
+        var items = data.data.github.backlog_items
+        vote_lowest = items[Math.floor(Math.random()*items.length)]._id;
+        console.log(vote_lowest);
+        socket.emit('session.start');
+      });
+      /*socket.on('session.clients',function(data){
+        console.log('Socket1 - session.clients');
+        console.log(data);
+      });*/
+      socket2.on('session.leave',function (data) {
+        console.log('Socket2 - session.leave');
+        console.log(data);
+      });
+      socket.on('session.start',function (data) {
+        console.log('Socket1 - session.start');
+        console.log(data);
+        socket.emit('vote.lowest',{item_id: vote_lowest});
+
+      });
+      socket2.on('vote.lowest',function (data) {
+        console.log('Socket2 - vote.lowest');
+        console.log(data);
+      });
+      socket.on('vote.lowest',function (data) {
+        console.log('Socket1 - vote.lowest');
+        console.log(data);
+        socket2.emit('vote.lowest',{item_id: vote_lowest});
+      });
+      socket.on('vote.lowest.result',function (data) {
+        console.log('Socket1 - vote.lowest.result');
+        console.log(data);
+        socket.emit('vote',{item_id:data.data.next_id, effort: 100});
+        socket2.emit('vote',{item_id:data.data.next_id, effort: 100});
+      });
+      socket.on('vote',function (data) {
+        console.log('Socket1 - vote');
+        console.log(data);
+      });
+      socket.on('vote.round.result',function (data) {
+        console.log('Socket1 - vote.round.result');
+        console.log(data);
+      });
+      socket.on('vote.result',function (data) {
+        console.log('Socket1 - vote.result');
         console.log(data);
       });
     </script>

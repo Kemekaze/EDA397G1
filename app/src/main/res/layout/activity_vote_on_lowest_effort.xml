@@ -6,20 +6,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="chalmers.eda397g1.VoteOnLowestEffortActivity">
+    tools:context="chalmers.eda397g1.ui.VoteOnLowestEffortActivity">
 
-    <ListView
-        android:id="@+id/issueList"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:listSelector="@color/colorSelected"
-        android:layout_weight="1.0"
-        android:scrollbarThumbVertical="@android:color/holo_orange_light"
-        />
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/activity_vote_on_lowest_effort_content" />
+
+    <include android:id="@+id/loadingSpinner"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+             android:layout_gravity="center"
+        layout="@layout/loading_spinner" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab4"
+        android:id="@+id/button_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

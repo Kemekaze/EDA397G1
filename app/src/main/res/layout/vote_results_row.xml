@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/voteResultsRow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingEnd="16dp"
+
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:id="@+id/businessValue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/effort"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/issueName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="70"
+            android:gravity="end|center"
+            android:textSize="16sp"
+
+            />
+
+</LinearLayout>

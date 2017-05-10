@@ -5,7 +5,7 @@
     <string name="title_activity_vote_on_lowest_effort">Vote on Lowest Effort</string>
 
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -26,4 +26,11 @@
     <string name="comment">Comment</string>
     <string name="no_data_available">No available sessions</string>
     <string name="choose_priority">Pick effort</string>
+    <string name="no_items_available">No available items</string>
+    <string name="sign_out">Sign out</string>
+    <string name="lowest_effort_item">Lowest effort Item</string>
+    <string name="current_item">Current Item</string>
+    <string name="bv">BV</string>
+    <string name="effort">Effort</string>
+    <string name="issuename">Issuename</string>
 </resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/view_flip"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<android.support.v7.widget.CardView
+    android:id="@+id/itemCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="5dp"
+    android:layout_margin="5dp">
+
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/backlog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/backlog_value"/>
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:id="@+id/backlog_value"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/itemCardBack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp"
+        card_view:cardBackgroundColor="@color/colorSelected"
+        android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_done_black_24dp"
+            android:layout_centerInParent="true"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</ViewFlipper>

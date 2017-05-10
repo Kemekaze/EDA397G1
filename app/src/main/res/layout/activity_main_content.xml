@@ -5,21 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="chalmers.eda397g1.MainActivity"
+    tools:context="chalmers.eda397g1.ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/availabe_games"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/no_data_available" />
+        android:text="@string/no_data_available"
+        android:visibility="visible"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/availabe_games"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+    <ImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="213dp"
+        android:layout_height="23dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="59dp"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="user name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

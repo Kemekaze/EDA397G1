@@ -27,6 +27,7 @@ module.exports = function (socket, data, callback){
       }
       callback(response.OK(rtn));
     }else{
+      if(error) logger.error(error);
       callback(response.FORBIDDEN('Something went wrong'));
     }
 

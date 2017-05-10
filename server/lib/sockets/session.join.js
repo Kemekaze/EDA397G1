@@ -40,30 +40,60 @@ var Session = mongoose.model('Session');
 module.exports = function (socket, data, callback){
   if(!socket.git.auth)
     return callback(response.UNAUTHORIZED('Unauthorized'));
-  if(data.game_id  == null )
+  if(data.game_id == null )
     return callback(response.BAD_REQUEST('Invalid request'));
-
-  handler.room.join(socket, data.game_id, function(joined){
-    if(joined){
-      Session.findById(data.game_id,function(e,session){
-        if(!e){
-          var obj = session.toObject();
-          obj.isHost = (obj.host == socket.phone_id);
-          delete obj.__v;
-          delete obj.leader;
-          Client.findOne({phone_id: obj.host}, function(err,c){
-            obj.host = {
-              login: c.github.login,
-              avatar: c.github.avatar
-            }
-            callback(response.OK(obj));
-          });
-        }else{
-          callback(response.NOT_FOUND('Game could not be found'));
-        }
-      });
+  Session.findById(data.game_id,function(e,session){
+    if(!e){
+      if(session.state == Session.STATE.LOBBY){
+        handler.room.join(socket, data.game_id, function(joined){
+          if(joined){
+            Session.findByIdAndUpdate(session._id, {$push:{clients_phone_id:socket.phone_id}}, {new: true}, function(e,newSession){
+              if(!e){
+                var obj = newSession.toObject();
+                obj.isHost = (obj.host == socket.phone_id);
+                delete obj.__v;
+                delete obj.leader;
+                Client.findOne({phone_id: obj.host}, function(err,c){
+                  obj.host = {
+                    login: c.github.login,
+                    avatar: c.github.avatar
+                  }
+                  handler.ev.emit(handler.ev.JOINED,{
+                    room: data.game_id,
+                    phone_id: socket.phone_id
+                  });
+                  callback(response.OK(obj));
+                });
+              }else{
+                logger.error(e);
+                callback(response.SERVER_ERROR('Something went wrong'));
+              }
+            });
+          }
+        });
+      }else if (Session.inSession(session,socket.phone_id)) {
+        handler.room.join(socket, data.game_id, function(joined){
+          if(joined){
+            var obj = session.toObject();
+            obj.isHost = (obj.host == socket.phone_id);
+            delete obj.__v;
+            delete obj.leader;
+            Client.findOne({phone_id: obj.host}, function(err,c){
+              obj.host = {
+                login: c.github.login,
+                avatar: c.github.avatar
+              }
+              handler.ev.emit(handler.ev.JOINED, data.game_id);
+              callback(response.OK(obj));
+            });
+          }
+        });
+      }else{
+        callback(response.FORBIDDEN('Session already started'));
+      }
     }else{
-      callback(response.NOT_FOUND('Game could not be found'));
+      callback(response.NOT_FOUND('Session could not be found'));
     }
   });
+
 };
