@@ -50,7 +50,7 @@ public class LobbyActivity extends AppCompatActivity {
         } else {
             throw new RuntimeException("No bundle!");
         }
-        setTitle(session.getGithub().getFullName());
+        setTitle("Lobby for: " + session.getGithub().getFullName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.startGameButton);
 
