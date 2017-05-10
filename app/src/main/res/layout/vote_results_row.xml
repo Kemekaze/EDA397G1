@@ -27,14 +27,13 @@
             android:textSize="16sp"
             android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/issueName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="70"
-            android:gravity="end|center"
-            android:textSize="16sp"
+    <TextView
+        android:id="@+id/issueName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="70"
 
-            />
+        android:textAlignment="textStart"
+        android:textSize="16sp" />
 
 </LinearLayout>
