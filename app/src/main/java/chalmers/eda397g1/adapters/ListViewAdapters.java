@@ -39,6 +39,7 @@ public class ListViewAdapters extends ArrayAdapter {
         this.list=list;
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         if(rowView ==  null){
